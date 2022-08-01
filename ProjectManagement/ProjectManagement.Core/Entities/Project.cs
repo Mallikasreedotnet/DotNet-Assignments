@@ -8,8 +8,12 @@
         public int MaxHours { get; set; }
         public DateOnly StartDate { get; set; }
         public DateOnly EndDate { get; set; }
+        public override string? ToString()
+        {
+            return ($"{ProjectId} {ProjectName} {DepartmentId} {MaxHours} {StartDate} {EndDate}");
+        }
 
-       
+
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using ProjectManagement.Core.Contract;
 using ProjectManagement.Core.Entities;
+using ProjectManagement.Core.Model;
 using System.Collections;
 using static ProjectManagement.Infrastructure.Data.ProjectManagementDataInMemory;
 
@@ -7,103 +8,94 @@ namespace ProjectManagement.Infrastructure.Services
 {
     public class ProjectManagementService:IProjectManagementReport
     {
-        // Department 
-        public List<Department> GetDepartments()
-        {
-            return departments;
-        }
         
-        public IEnumerable<Department> GetDepartments(int deptId)
-        {
-            return from dept in departments
-                   where dept.DepartmentId == deptId
-                   select dept;
-        }
 
-        public IEnumerable<Department> GetDepartments(string deptName)
+        // Department 
+       
+        public IEnumerable<Department> GetDepartments(int? deptId=null,string? deptName=null)
         {
-            return from dept in departments
-                   where dept.DepartmentName == deptName
-                   select dept;
-        }
-            
-        public void DisplayDept(IEnumerable<Department> departments)
-        {
-            foreach (var department in departments)
+            if (deptId != null || deptName != null)
             {
-                Console.WriteLine($"{department.DepartmentId} {department.DepartmentName} {department.PhoneNumber}");
+                var deptDetails = from dept in departments
+                             where (deptId == null || dept.DepartmentId == deptId) && (deptName == null || dept.DepartmentName == deptName)
+                             select dept;
+                return deptDetails;
             }
-
+            return departments;
+                  
         }
 
-        // Project
-        public List<Project> GetProjects()
+        // Project Data
+        public IEnumerable<Project> GetProjects(int? projectdeptId=null,string? departmentName=null)
         {
+            if (projectdeptId != null || departmentName != null)
+            {
+                var projectDetails= from project in projects
+                                    join dept in departments on project.DepartmentId equals dept.DepartmentId
+                                    where (projectdeptId==null || project.DepartmentId == projectdeptId) && (departmentName==null || dept.DepartmentName==departmentName)
+                       select project;
+                return projectDetails;
+            }
             return projects;
         }
-        public IEnumerable<Project> GetProjects(int projectdeptId)
-        {
-            return from pro in projects
-                   where pro.DepartmentId == projectdeptId
-                   select pro;
-        }
-        public IEnumerable<Project> GetProjects(string departmentName)
-        {
-            return from project in projects
-                   join pro in departments on project.DepartmentId equals pro.DepartmentId
-                   where pro.DepartmentName == departmentName
-                   select project;
-        }
-        public void DisplayProject(IEnumerable<Project> projects)
-        {
-            foreach (var project in projects)
-            {
-                Console.WriteLine($"{project.ProjectId} {project.ProjectName} {project.DepartmentId} {project.MaxHours} {project.StartDate} {project.EndDate}");
-            }
-        }
 
-        // Employee
-        public List<Employee> GetEmployees()
+        // Employee Data
+        
+        public IEnumerable<Employee> GetEmployees(int? deptId=null,int? empNum=null)
         {
-            return employees;
-        }
-        public IEnumerable<Employee> GetEmployees(int empdeptId)
-        {
-            if(empdeptId < 5)
+            if(deptId!=null || empNum!=null)
             {
-                return from emp in employees
-                       where emp.DepartmentId == empdeptId
+                var empDetails = from emp in employees
+                       where(deptId==null || emp.DepartmentId == deptId) && (empNum==null || emp.EmployeeNumber==empNum)
                        select emp;
+                return empDetails;
             }
-            else
-            {
-                return from emp in employees
-                       where emp.EmployeeNumber == empdeptId
-                       select emp;
-            }
+            return employees; 
+           
         }
-        public IEnumerable EmployeeCount()
+        public  IEnumerable EmployeeCount()
         {
-          var empdata=  (from emp in employees
+          var empdata =  from emp in employees
                          group emp by emp.DepartmentId into g
-             select new { DepartmentId = g.Key, Count = g.Count() });
+             select new { DepartmentId = g.Key, Count = g.Count() };
             return empdata;
         }
 
-        //public IEnumerable EmployeeSalary()
-        //{
-        //    var empdata = (from emp in employees
-        //                   group emp by emp.DepartmentId into g
-        //                   select new { DepartmentId = g.Key, Count = g.Sum() });
-        //    return empdata;
-        //}
-        public void DisplayEmployee(IEnumerable<Employee> employees)
+        public IEnumerable EmployeeSalary()
         {
-            foreach (var employee in employees)
-            {
-                Console.WriteLine($"{employee.EmployeeNumber} {employee.EmployeeName} {employee.FirstName} {employee.LastName} {employee.Phone} {employee.Email} {employee.Salary}");
-            }
+            var empdata = from emp in employees
+                           group emp by emp.DepartmentId into g
+                           select new { DepartmentId = g.Key, sum = g.Sum(x=>x.Salary) };
+            return empdata;
         }
 
+        // Add a property Name to Assignment enitity 
+
+        public IEnumerable<CombineData> GetAllNames(int? deptId=null)
+        {
+            var names = (from dept in departments
+                        join emp in employees
+                        on dept.DepartmentId equals emp.DepartmentId
+                        join project in projects 
+                        on emp.DepartmentId equals project.DepartmentId
+                        join ass in assignments 
+                        on emp.EmployeeNumber equals ass.EmployeeNumber
+                        where(deptId==null || emp.DepartmentId == deptId)
+                        select new CombineData() { DepartmentName = dept.DepartmentName, ProjectName=project.ProjectName, EmployeeName = emp.EmployeeName, AssignmentName = ass.AssignmentName }).DistinctBy(a=>a.ProjectName);
+            
+            return names;
+        }
+        public List<Assignment> GetAssignments()
+        {
+            return assignments;
+        }
+        public  void GetDetails<T>(IEnumerable<T> collectiondata)
+        {
+            foreach (var data in collectiondata)
+            {
+                Console.WriteLine(data?.ToString());
+            }
+
+        }
     }
 }

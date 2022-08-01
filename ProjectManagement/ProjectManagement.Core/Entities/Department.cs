@@ -5,7 +5,10 @@
         public int DepartmentId { get; set; }
         public string? DepartmentName { get; set; }
         public ulong PhoneNumber { get; set; }
+        public override string? ToString()
+        {
+            return ($"{DepartmentId} {DepartmentName} {PhoneNumber}");
+        }
 
-     
     }
 }

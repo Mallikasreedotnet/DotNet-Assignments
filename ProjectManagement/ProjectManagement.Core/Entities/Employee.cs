@@ -10,6 +10,10 @@
         public ulong Phone { get; set; }
         public string? Email { get; set; }
         public int Salary { get; set; }
+        public override string? ToString()
+        {
+            return ($"{EmployeeNumber} {EmployeeName} {FirstName} {LastName} {DepartmentId} {Phone} {Email} {Salary}");
+        }
 
     }
     
