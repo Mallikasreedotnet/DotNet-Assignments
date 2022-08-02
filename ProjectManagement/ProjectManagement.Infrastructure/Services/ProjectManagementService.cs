@@ -14,7 +14,7 @@ namespace ProjectManagement.Infrastructure.Services
        
         public IEnumerable<Department> GetDepartments(int? deptId=null,string? deptName=null)
         {
-            if (deptId != null || deptName != null)
+            if (deptId.HasValue || deptName != null)
             {
                 var deptDetails = from dept in departments
                              where (deptId == null || dept.DepartmentId == deptId) && (deptName == null || dept.DepartmentName == deptName)
@@ -28,7 +28,7 @@ namespace ProjectManagement.Infrastructure.Services
         // Project Data
         public IEnumerable<Project> GetProjects(int? projectdeptId=null,string? departmentName=null)
         {
-            if (projectdeptId != null || departmentName != null)
+            if (projectdeptId.HasValue || departmentName != null)
             {
                 var projectDetails= from project in projects
                                     join dept in departments on project.DepartmentId equals dept.DepartmentId
@@ -103,13 +103,19 @@ namespace ProjectManagement.Infrastructure.Services
 
         // To search above result by text 
         public IEnumerable<ProjectResourceDetails> GetSearchingData( string? deptName)
-        
         {
-            var searchingDetails = from combines in GetAllNames()
-                                   where combines.DepartmentName.Contains(deptName) || combines.EmployeeName.Contains(deptName) || combines.ProjectName.Contains(deptName) || combines.AssignmentName.Contains(deptName)
-                                   select combines;
-            return searchingDetails;
-
+            IEnumerable<ProjectResourceDetails> list = null;
+            try
+            {
+                var searchingDetails = from combines in GetAllNames()
+                                       where combines.DepartmentName.Contains(deptName) || combines.EmployeeName.Contains(deptName) || combines.ProjectName.Contains(deptName) || combines.AssignmentName.Contains(deptName)
+                                       select combines;
+                return searchingDetails;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
         }
         public List<Assignment> GetAssignments()
         {
