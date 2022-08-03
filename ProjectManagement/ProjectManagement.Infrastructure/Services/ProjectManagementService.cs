@@ -14,15 +14,10 @@ namespace ProjectManagement.Infrastructure.Services
        
         public IEnumerable<Department> GetDepartments(int? deptId=null,string? deptName=null)
         {
-            if (deptId.HasValue || deptName != null)
-            {
-                var deptDetails = from dept in departments
-                             where (deptId == null || dept.DepartmentId == deptId) && (deptName == null || dept.DepartmentName == deptName)
-                             select dept;
-                return deptDetails;
-            }
-            return departments;
-                  
+                    var deptDetails = from dept in departments
+                                      where (deptId == null || dept.DepartmentId == deptId) && (deptName == null || dept.DepartmentName == deptName)
+                                      select dept;
+                    return deptDetails;
         }
 
         // Project Data
@@ -51,7 +46,6 @@ namespace ProjectManagement.Infrastructure.Services
                 return empDetails;
             }
             return employees; 
-           
         }
 
         //  The number of employees working for each department
@@ -104,18 +98,11 @@ namespace ProjectManagement.Infrastructure.Services
         // To search above result by text 
         public IEnumerable<ProjectResourceDetails> GetSearchingData( string? deptName)
         {
-            IEnumerable<ProjectResourceDetails> list = null;
-            try
-            {
                 var searchingDetails = from combines in GetAllNames()
                                        where combines.DepartmentName.Contains(deptName) || combines.EmployeeName.Contains(deptName) || combines.ProjectName.Contains(deptName) || combines.AssignmentName.Contains(deptName)
                                        select combines;
                 return searchingDetails;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
+            
         }
         public List<Assignment> GetAssignments()
         {

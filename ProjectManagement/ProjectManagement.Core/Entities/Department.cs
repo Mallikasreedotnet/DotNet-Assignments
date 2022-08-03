@@ -7,7 +7,7 @@
         public ulong PhoneNumber { get; set; }
         public override string? ToString()
         {
-            return ($"{DepartmentId} {DepartmentName} {PhoneNumber}");
+            return ($"{DepartmentId}\t {DepartmentName}\t {PhoneNumber}");
         }
 
     }

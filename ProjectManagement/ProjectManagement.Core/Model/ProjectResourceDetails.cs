@@ -9,7 +9,7 @@
 
         public override string? ToString()
         {
-            return ($"{DepartmentName} {ProjectName} {AssignmentName} {EmployeeName}");
+            return ($"{DepartmentName}\t {AssignmentName}\t {EmployeeName}\t {ProjectName}");
         }
     }
 }
