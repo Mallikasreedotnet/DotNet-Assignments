@@ -12,7 +12,7 @@
         public int Salary { get; set; }
         public override string? ToString()
         {
-            return ($"{EmployeeNumber} {EmployeeName} {FirstName} {LastName} {DepartmentId} {Phone} {Email} {Salary}");
+            return ($"{EmployeeNumber}\t {EmployeeName}\t {FirstName}\t {LastName}\t {DepartmentId}\t {Phone}\t {Email}\t {Salary}");
         }
 
     }

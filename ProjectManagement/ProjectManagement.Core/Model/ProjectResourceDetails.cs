@@ -1,6 +1,6 @@
 ﻿namespace ProjectManagement.Core.Model
 {
-    public class CombineData
+    public class ProjectResourceDetails
     {
         public string? DepartmentName { get; set; }
         public string? ProjectName { get; set; }
@@ -9,7 +9,7 @@
 
         public override string? ToString()
         {
-            return ($"{DepartmentName} {ProjectName} {AssignmentName} {EmployeeName}");
+            return ($"{DepartmentName}\t {AssignmentName}\t {EmployeeName}\t {ProjectName}");
         }
     }
 }

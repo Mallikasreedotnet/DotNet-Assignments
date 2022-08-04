@@ -14,8 +14,9 @@ namespace ProjectManagement.Core.Contract
         public void GetDetails<T>(IEnumerable<T> collectiondata);
         public IEnumerable EmployeeCount();
         public IEnumerable EmployeeSalary();
-        //public IEnumerable<CombineData> GetAllNames();
-         public IEnumerable<CombineData> GetAllNames(int? deptId = null);
+        public IEnumerable<ProjectResourceDetails> GetAllNames();
+        public IEnumerable<ProjectResourceDetails> GetCombineData( int? deptId = null, string? deptName = null);
+        public IEnumerable<ProjectResourceDetails> GetSearchingData( string deptName);
 
     }
 }
