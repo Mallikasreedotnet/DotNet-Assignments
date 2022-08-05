@@ -3,6 +3,7 @@ using ProjectManagement.Core.Entities;
 using ProjectManagement.Core.Model;
 using System.Collections;
 using static ProjectManagement.Infrastructure.Data.ProjectManagementDataInMemory;
+using Serilog;
 
 namespace ProjectManagement.Infrastructure.Services
 {
@@ -17,7 +18,8 @@ namespace ProjectManagement.Infrastructure.Services
         {
             if (deptId < 0)
             {
-                throw new InvalidDataException("Plase enter vaild data");
+                Log.Debug($"Plase enter vaild data : {deptId}");
+                throw new InvalidDataException();
             }
             var deptDetails = from dept in departments
                               where (deptId == null || dept.DepartmentId == deptId) && (deptName == null || dept.DepartmentName == deptName)
@@ -131,7 +133,7 @@ namespace ProjectManagement.Infrastructure.Services
                 Console.WriteLine(data?.ToString());
             }
         }
-        public void CheckData<t>(IEnumerable<t> CollecatedData)
+        public void CheckData<T>(IEnumerable<T> CollecatedData)
         {
             if (CollecatedData.Any())
             {
@@ -139,7 +141,7 @@ namespace ProjectManagement.Infrastructure.Services
             }
             else
             {
-                Console.WriteLine("data not found");
+                Console.WriteLine("data not found Please enter vad data");
             }
 
         }

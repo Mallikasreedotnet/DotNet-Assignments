@@ -1,10 +1,10 @@
 ﻿using ProjectManagement.Core.Entities;
 using ProjectManagement.Infrastructure.Services;
 using Serilog;
-using Serilog.Sinks.File;
+
 
 ProjectManagementService service = new ProjectManagementService();
-
+ServiceValidations serviceValidations = new ServiceValidations();
 
 Log.Logger = new LoggerConfiguration()
     .MinimumLevel.Debug()
@@ -44,89 +44,90 @@ do
         switch (choice)
         {
             case 1:
-                // department details for the department Id. 
+                serviceValidations.DepartmentDetails();
+                //// department details for the department Id. 
 
-                Console.WriteLine("\n Department details for the department Id.....\n ");
-
-                var deptId = service.GetDepartments(7);
-
-                service.CheckData(deptId);
-                Console.WriteLine();
+                //Console.WriteLine("\n Department details for the department Id.....\n ");
+                ////int id=Convert.ToInt32(Console.ReadLine());
+                ////if (id < 0)
+                ////{
+                ////    Log.Debug($"Plase enter vaild data : {id}");
+                ////    throw new InvalidDataException();
+                ////}
+                //var deptId = service.GetDepartments();
+                //service.CheckData(deptId);
+                //Console.WriteLine();
 
                 break;
             case 2:
-
+                serviceValidations.ProjectDetails();
                 // Department details for the Department Name.
 
-                Console.WriteLine("\n Department details for the Department Name.....\n");
-
-                var depName = service.GetDepartments(deptName: "@!#$#");
-
-                service.CheckData(depName);
-                Console.WriteLine();
+                //Console.WriteLine("\n Department details for the Department Name.....\n");
+                //var depName = service.GetDepartments(deptName: "@!#$#");
+                //service.CheckData(depName);
+                //Console.WriteLine();
 
                 break;
             case 3:
+                serviceValidations.EmployeeDetails();
                 // Get the all department data
 
-                var deptData = service.GetDepartments();
-                Console.WriteLine("\n Get the all department data.....\n");
-                service.CheckData(deptData);
-                Console.WriteLine();
+                //var deptData = service.GetDepartments();
+                //Console.WriteLine("\n Get the all department data.....\n");
+                //service.CheckData(deptData);
+                //Console.WriteLine();
                 break;
             case 4:
+                serviceValidations.EmployeeCount();
                 // Project Data
                 // The list of projects there for the department Id
 
-                Console.WriteLine("\n The list of projects there for the department Id.....\n");
-
-                var projectdeptId = service.GetProjects(1);
-
-
-                service.CheckData(projectdeptId);
-                Console.WriteLine();
+                //Console.WriteLine("\n The list of projects there for the department Id.....\n");
+                //var projectdeptId = service.GetProjects(1);
+                //service.CheckData(projectdeptId);
+                //Console.WriteLine();
 
                 break;
             case 5:
-
+                serviceValidations.EmployeeSumSalary();
                 // The list of projects there for the Department Name
 
-                Console.WriteLine("\n The list of projects there for the Department Name.....\n");
-
-                var projectdeptName = service.GetProjects(departmentName: "Accounting");
-
-                service.CheckData(projectdeptName);
-                Console.WriteLine();
+                //Console.WriteLine("\n The list of projects there for the Department Name.....\n");
+                //var projectdeptName = service.GetProjects(departmentName: "Accounting");
+                //service.CheckData(projectdeptName);
+                //Console.WriteLine();
 
                 break;
             case 6:
-
+                serviceValidations.PropertyName();
                 // Get the all Project Data
 
-                var projectData = service.GetProjects();
-                Console.WriteLine("\n Get the all Project Data.....\n");
-                service.CheckData(projectData);
-                Console.WriteLine();
+                //var projectData = service.GetProjects();
+                //Console.WriteLine("\n Get the all Project Data.....\n");
+                //service.CheckData(projectData);
+                //Console.WriteLine();
                 break;
             case 7:
+                serviceValidations.SearchingData();
                 // Employee Data
 
                 // The list of employees there for the department Id
 
-                Console.WriteLine("\n The list of employees there for the department Id.....\n");
-                var deptid = service.GetEmployees(1);
-                service.CheckData(deptid);
+                //Console.WriteLine("\n The list of employees there for the department Id.....\n");
+                //var deptid = service.GetEmployees(1);
+                //service.CheckData(deptid);
 
                 break;
 
             case 8:
-
+                serviceValidations.AssignmentDetails();
                 // The employees details for the Employee Id
 
-                Console.WriteLine("\n The employees details for the Employee Id.....\n");
-                var empid = service.GetEmployees(empNum: 1111);
-                service.CheckData(empid);
-                Console.WriteLine();
+                //Console.WriteLine("\n The employees details for the Employee Id.....\n");
+                //var empid = service.GetEmployees(empNum: 1111);
+                //service.CheckData(empid);
+                //Console.WriteLine();
                 break;
             case 9:
 
@@ -178,13 +179,15 @@ do
                 {
                     if (dataByDeptId == null || dataByDeptId < 0)
                     {
-                        throw new ArgumentOutOfRangeException();
+                        Log.Debug($"Please enter valid department Id : {dataByDeptId}");
+                        throw new ArgumentOutOfRangeException("invalid data");
                     }
                     var deptmentid = service.GetCombineData(deptId: dataByDeptId);
                     service.CheckData(deptmentid);
                 }
                 catch (ArgumentOutOfRangeException ar)
                 {
+                    Console.WriteLine(ar.Message);
                     Log.Error(ar, $"something went wrong error:{ar.Message}");
                 }
                 catch (Exception ex)
