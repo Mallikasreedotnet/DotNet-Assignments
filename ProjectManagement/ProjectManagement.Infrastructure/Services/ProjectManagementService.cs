@@ -9,18 +9,10 @@ namespace ProjectManagement.Infrastructure.Services
 {
     public class ProjectManagementService : IProjectManagementReport
     {
-
-
-        // Department 
+        // Department Data
 
         public IEnumerable<Department> GetDepartments(int? deptId = null, string? deptName = null)
-
         {
-            if (deptId < 0)
-            {
-                Log.Debug($"Plase enter vaild data : {deptId}");
-                throw new InvalidDataException();
-            }
             var deptDetails = from dept in departments
                               where (deptId == null || dept.DepartmentId == deptId) && (deptName == null || dept.DepartmentName == deptName)
                               select dept;
@@ -30,40 +22,21 @@ namespace ProjectManagement.Infrastructure.Services
         // Project Data
         public IEnumerable<Project> GetProjects(int? projectdeptId = null, string? departmentName = null)
         {
-
-            if (projectdeptId < 0)
-            {
-                throw new InvalidDataException("Plase enter vaild data");
-            }
             var projectDetails = from project in projects
                                  join dept in departments on project.DepartmentId equals dept.DepartmentId
                                  where (projectdeptId == null || project.DepartmentId == projectdeptId) && (departmentName == null || dept.DepartmentName == departmentName)
                                  select project;
             return projectDetails;
-
-            return projects;
         }
 
         // Employee Data
 
         public IEnumerable<Employee> GetEmployees(int? deptId = null, int? empNum = null)
         {
-
-            if (deptId < 0)
-            {
-                throw new InvalidDataException("Plase enter vaild data");
-            }
-            if (empNum == null)
-            {
-                throw new InvalidDataException("Please enter vaild name");
-            }
-
             var empDetails = from emp in employees
                              where (deptId == null || emp.DepartmentId == deptId) && (empNum == null || emp.EmployeeNumber == empNum)
                              select emp;
             return empDetails;
-
-            return employees;
         }
 
         //  The number of employees working for each department
@@ -120,7 +93,6 @@ namespace ProjectManagement.Infrastructure.Services
                                    where combines.DepartmentName.Contains(deptName) || combines.EmployeeName.Contains(deptName) || combines.ProjectName.Contains(deptName) || combines.AssignmentName.Contains(deptName)
                                    select combines;
             return searchingDetails;
-
         }
         public List<Assignment> GetAssignments()
         {
@@ -141,7 +113,7 @@ namespace ProjectManagement.Infrastructure.Services
             }
             else
             {
-                Console.WriteLine("data not found Please enter vad data");
+                Console.WriteLine("data not found Please enter valid data");
             }
 
         }

@@ -4,6 +4,7 @@
     {
         ProjectManagementService service = new ProjectManagementService();
 
+        // Department Data
         public void DepartmentDetails()
         {
             Console.WriteLine("Press 1 for get departments details for the department id.");
@@ -18,6 +19,9 @@
             switch (details)
             {
                 case 1:
+
+                    // department details for the department Id. 
+
                     Console.WriteLine("\n Department details for the department Id.....\n ");
                     int id = Convert.ToInt32(Console.ReadLine());
                     if (id <= 0)
@@ -34,6 +38,8 @@
                     break;
 
                 case 2:
+
+                    //Department details for the Department Name
 
                     Console.WriteLine("\n Department details for the Department Name.....\n");
                     string name = Console.ReadLine();
@@ -61,6 +67,7 @@
             }
         }
 
+        // Project Data
         public void ProjectDetails()
         {
             Console.WriteLine("Press 1 for get the list of projects there for the department id.");
@@ -75,6 +82,8 @@
             switch (details)
             {
                 case 1:
+
+                    // The list of projects there for the department Id
 
                     Console.WriteLine("\n The list of projects there for the department Id.....\n");
                     int? proId = Convert.ToInt32(Console.ReadLine());
@@ -92,6 +101,8 @@
                     break;
 
                 case 2:
+
+                    // The list of projects there for the Department Name
 
                     Console.WriteLine("\n The list of projects there for the Department Name.....\n");
                     string proName = Console.ReadLine();
@@ -120,6 +131,7 @@
             }
         }
 
+        // Employee Data
         public void EmployeeDetails()
         {
             Console.WriteLine("Press 1 for get the list of employees's there for the department id.");
@@ -134,7 +146,6 @@
             switch (details)
             {
                 case 1:
-                    // Employee Data
 
                     // The list of employees there for the department Id
 
@@ -150,10 +161,10 @@
                     }
                     var deptid = service.GetEmployees(deptId);
                     service.CheckData(deptid);
-
                     break;
 
                 case 2:
+
                     // The employees details for the Employee Id
 
                     Console.WriteLine("\n The employees details for the Employee Id.....\n");
@@ -185,8 +196,9 @@
                     throw new ArgumentOutOfRangeException("Please enter 1 to 3 ");
                     break;
             }
-
         }
+
+        // The number of employees working for each department
         public void EmployeeCount()
         {
             var employeecount = service.EmployeeCount();
@@ -196,9 +208,9 @@
                 Console.WriteLine(employee.ToString());
             }
             Console.WriteLine();
-
         }
 
+        // The total salary paid for each department
         public void EmployeeSumSalary()
         {
             var empsalary = service.EmployeeSalary();
@@ -210,16 +222,16 @@
             Console.WriteLine();
         }
 
+        // Add a property Name to Assignment enitity 
         public void PropertyName()
         {
-            // Add a property Name to Assignment enitity 
-
             var names = service.GetAllNames();
             Console.WriteLine("\n DepartmentName, ProjectName, AssignmentName, EmployeeName.....\n");
             service.CheckData(names);
             Console.WriteLine();
         }
 
+        // Searching Data
         public void SearchingData()
         {
             Console.WriteLine("press 1 for get department id that you want data. (Please enter department id.)");
@@ -233,6 +245,9 @@
             switch (details)
             {
                 case 1:
+
+                    //  Result by department wise by using department Id
+
                     Console.WriteLine("\n Enter Department Id.....\n");
                     int? dataByDeptId = Convert.ToInt32(Console.ReadLine());
                     if (dataByDeptId <= 0)
