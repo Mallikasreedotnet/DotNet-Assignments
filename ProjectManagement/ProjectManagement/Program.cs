@@ -72,6 +72,10 @@ do
     {
         Console.WriteLine(e.Message);
     }
+    catch(FormatException e) 
+    {
+        Console.WriteLine(e.Message);
+    }
     catch (Exception ex)
     {
         Console.WriteLine(ex.Message);
