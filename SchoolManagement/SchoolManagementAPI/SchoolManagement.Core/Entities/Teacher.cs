@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace SchoolManagement.Infrastructure.Models
+namespace SchoolManagement.Core.Entities
 {
     public partial class Teacher
     {
@@ -9,7 +9,7 @@ namespace SchoolManagement.Infrastructure.Models
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string Fname { get; set; } = null!;
-        public string Lname { get; set; } = null!;
+        public string? Lname { get; set; }
         public DateTime Dob { get; set; }
         public string Phone { get; set; } = null!;
         public string Mobile { get; set; } = null!;

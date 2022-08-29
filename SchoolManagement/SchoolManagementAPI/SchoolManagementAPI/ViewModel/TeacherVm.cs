@@ -1,16 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SchoolManagement.Core.Entities
+﻿namespace SchoolManagementAPI.ViewModel
 {
-    public partial class Parent
+    public class TeacherVm
     {
-        public Parent()
-        {
-            Students = new HashSet<Student>();
-        }
-
-        public int ParentId { get; set; }
+        public int TeacherId { get; set; }
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string Fname { get; set; } = null!;
@@ -21,7 +13,5 @@ namespace SchoolManagement.Core.Entities
         public bool Status { get; set; }
         public DateTime LastLoginDate { get; set; }
         public string LastLoginIp { get; set; } = null!;
-
-        public virtual ICollection<Student> Students { get; set; }
     }
 }

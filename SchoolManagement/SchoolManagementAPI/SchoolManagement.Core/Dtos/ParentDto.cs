@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace SchoolManagement.Core.Entities
+namespace SchoolManagement.Core.Dtos
 {
-    public partial class Parent
+    public class ParentDto
     {
-        public Parent()
-        {
-            Students = new HashSet<Student>();
-        }
-
         public int ParentId { get; set; }
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
@@ -21,7 +19,6 @@ namespace SchoolManagement.Core.Entities
         public bool Status { get; set; }
         public DateTime LastLoginDate { get; set; }
         public string LastLoginIp { get; set; } = null!;
-
-        public virtual ICollection<Student> Students { get; set; }
+        public string Studentname { get; set; } = null!;
     }
 }

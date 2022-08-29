@@ -1,12 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SchoolManagement.Infrastructure.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
+using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Infrastructure.EntityConfiguration
 {
@@ -16,10 +10,7 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
         {
 
             builder.ToTable("Parent");
-
-            builder.Property(e => e.ParentId)
-                .ValueGeneratedNever()
-                .HasColumnName("Parent_id");
+            builder.Property(e => e.ParentId).HasColumnName("Parent_id");
 
             builder.Property(e => e.Dob)
                 .HasColumnType("date")
@@ -57,6 +48,7 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
             builder.Property(e => e.Phone)
                 .HasMaxLength(15)
                 .IsUnicode(false);
+
         }
         
     }
