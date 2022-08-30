@@ -1,16 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SchoolManagement.Core.Contracts;
+using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Entities;
-using SchoolManagement.Infrastructure.Data;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 {
-    public class TeacherRepository : ITeacher
+    public class TeacherRepository : ITeacherRepository
     {
         private readonly SchoolManagementDbContext _schoolManagementDbContext;
-        public TeacherRepository(SchoolManagementDbContext schoolManagementDbContext)
+        public TeacherRepository()
         {
-            _schoolManagementDbContext = schoolManagementDbContext;
+            _schoolManagementDbContext =new SchoolManagementDbContext();
         }
         public async Task<IEnumerable<Teacher>> GetTeacherAsync()
         {
@@ -59,13 +58,14 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             updatedToBeTeacher.LastLoginDate = teacher.LastLoginDate;
             updatedToBeTeacher.LastLoginIp = teacher.LastLoginIp;
             _schoolManagementDbContext.Teachers.Update(updatedToBeTeacher);
+            await _schoolManagementDbContext.SaveChangesAsync();
             return updatedToBeTeacher;
         }
 
         public async Task<Teacher> DeleteAsync(int teacherId)
         {
             var deletedToBeTeacher= await GetTeacherAsync(teacherId);
-            _schoolManagementDbContext.Teachers.Add(deletedToBeTeacher);
+            _schoolManagementDbContext.Teachers.Remove(deletedToBeTeacher);
             await _schoolManagementDbContext.SaveChangesAsync();
             return deletedToBeTeacher;
         }

@@ -1,8 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using SchoolManagement.Core.Entities;
+﻿using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using SchoolManagement.Infrastructure.Extensions;
 
-namespace SchoolManagement.Infrastructure.Data
+namespace SchoolManagement.Core.Entities
 {
     public partial class SchoolManagementDbContext : DbContext
     {

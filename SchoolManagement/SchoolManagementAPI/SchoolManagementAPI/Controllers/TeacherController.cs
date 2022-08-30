@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Core.Contracts;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Entities;
-using SchoolManagement.Infrastructure.Data;
 using SchoolManagement.Infrastructure.Repository.EntityFramework;
 using SchoolManagementAPI.ViewModel;
 
@@ -11,10 +11,13 @@ namespace SchoolManagementAPI.Controllers
     [ApiController]
     public class TeacherController:Controller
     {
-        private readonly ITeacher _teacher;
-        public TeacherController()
+        private readonly ITeacherRepository _teacher;
+        private readonly IMapper _mapper;
+
+        public TeacherController(ITeacherRepository teacher, IMapper mapper)
         {
-           _teacher = new TeacherRepository(new SchoolManagementDbContext());
+            _teacher = teacher;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -32,29 +35,15 @@ namespace SchoolManagementAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] TeacherVm teacherVm)
         {
-            var teacher=new Teacher { Email = teacherVm.Email, Password=teacherVm.Password, Fname=teacherVm.Fname, Lname=teacherVm.Lname, 
-                Dob=teacherVm.Dob,Phone=teacherVm.Phone,Mobile=teacherVm.Mobile,Status=teacherVm.Status,
-                LastLoginDate=teacherVm.LastLoginDate, LastLoginIp=teacherVm.LastLoginIp };
-            return Ok(await _teacher.CreateTeacherAsync(teacher)); ;
+            var teacherData=_mapper.Map<TeacherVm,Teacher>(teacherVm);
+            return Ok(await _teacher.CreateTeacherAsync(teacherData)); ;
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] TeacherVm teacherVm)
         {
-            var teacher=new Teacher {
-                TeacherId=teacherVm.TeacherId,
-                Email = teacherVm.Email,
-                Password = teacherVm.Password,
-                Fname = teacherVm.Fname,
-                Lname = teacherVm.Lname,
-                Dob = teacherVm.Dob,
-                Phone = teacherVm.Phone,
-                Mobile = teacherVm.Mobile,
-                Status = teacherVm.Status,
-                LastLoginDate = teacherVm.LastLoginDate,
-                LastLoginIp = teacherVm.LastLoginIp
-            };
-            return Ok(await _teacher.UpdateAsync(id, teacher));
+            var teacherData=_mapper.Map<TeacherVm,Teacher>(teacherVm);
+            return Ok(await _teacher.UpdateAsync(id, teacherData));
         }
 
         [HttpDelete("{id}")]

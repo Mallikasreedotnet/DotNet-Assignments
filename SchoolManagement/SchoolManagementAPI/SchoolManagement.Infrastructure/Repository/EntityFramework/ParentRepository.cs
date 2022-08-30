@@ -1,17 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SchoolManagement.Core.Contracts;
+using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Entities;
-using SchoolManagement.Infrastructure.Data;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 {
-    public class ParentRepository : IParent
+    public class ParentRepository : IParentRepository
     {
         private readonly SchoolManagementDbContext _schoolManagementDbContext;
 
-        public ParentRepository(SchoolManagementDbContext schoolManagementContext)
+        public ParentRepository()
         {
-            _schoolManagementDbContext = schoolManagementContext;
+            _schoolManagementDbContext =new SchoolManagementDbContext();
         }
 
         public async Task<IEnumerable<Parent>> GetParentAsync()
@@ -47,12 +46,13 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             parentToBeUpdated.LastLoginDate = parent.LastLoginDate;
             parentToBeUpdated.LastLoginIp = parent.LastLoginIp;
             _schoolManagementDbContext.Parents.Update(parentToBeUpdated);
+            await _schoolManagementDbContext.SaveChangesAsync();
             return parentToBeUpdated;
         }
         public async Task<Parent> DeleteAsync(int parentId)
         {
             var deletedToBeParent = await GetParentAsync(parentId);
-            _schoolManagementDbContext.Parents.Add(deletedToBeParent);
+            _schoolManagementDbContext.Parents.Remove(deletedToBeParent);
             await _schoolManagementDbContext.SaveChangesAsync();
             return deletedToBeParent;
         }

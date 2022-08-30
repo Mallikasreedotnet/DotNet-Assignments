@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Core.Contracts;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Entities;
-using SchoolManagement.Infrastructure.Data;
 using SchoolManagement.Infrastructure.Repository.EntityFramework;
 using SchoolManagementAPI.ViewModel;
 
@@ -11,10 +11,12 @@ namespace SchoolManagementAPI.Controllers
     [ApiController]
     public class ParentController : Controller
     {
-        private readonly IParent _parent;
-        public ParentController()
+        private readonly IParentRepository _parent;
+        private readonly IMapper _mapper;
+        public ParentController(IParentRepository parent, IMapper mapper)
         {
-            _parent = new ParentRepository(new SchoolManagementDbContext());
+            _parent = parent;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -30,24 +32,22 @@ namespace SchoolManagementAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddParent([FromBody] ParentVm parentVm)
+        public async Task<ActionResult> Post([FromBody] ParentVm parentVm)
         {
-            
-            var parent=new Parent() 
-            {
-                Email=parentVm.Email,
-                Password=parentVm.Password, 
-                Fname=parentVm.Fname, 
-                Lname=parentVm.Lname, 
-                Dob=parentVm.Dob,
-                Phone=parentVm.Phone,
-                Mobile=parentVm.Mobile,
-                Status=parentVm.Status,
-                LastLoginDate=parentVm.LastLoginDate, 
-                LastLoginIp=parentVm.LastLoginIp
-            };
-            return Ok(await _parent.CreateParentAsync(parent));
+            var Data=_mapper.Map<ParentVm,Parent>(parentVm);
+            return Ok(await _parent.CreateParentAsync(Data));
+        }
+        [HttpPut("{id}")]
+        public async Task<ActionResult> Put(int id, [FromBody] ParentVm parentVm)
+        {
+            var Data = _mapper.Map<ParentVm, Parent>(parentVm);
+            return Ok(await _parent.UpdateAsync(id, Data));
+        }
 
+        [HttpDelete("{id}")]
+        public async Task Delete(int id)
+        {
+            await _parent.DeleteAsync(id);
         }
     }
 }

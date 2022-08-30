@@ -1,8 +1,8 @@
 ﻿using SchoolManagement.Core.Entities;
 
-namespace SchoolManagement.Core.Contracts
+namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
 {
-    public interface ITeacher
+    public interface ITeacherRepository
     {
         Task<IEnumerable<Teacher>> GetTeacherAsync();
         Task<Teacher> GetTeacherAsync(int teacherId);
