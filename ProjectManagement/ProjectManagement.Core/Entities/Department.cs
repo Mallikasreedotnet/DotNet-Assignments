@@ -9,6 +9,5 @@
         {
             return ($"{DepartmentId}\t {DepartmentName}\t {PhoneNumber}");
         }
-
     }
 }

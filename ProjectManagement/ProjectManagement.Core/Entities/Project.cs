@@ -12,8 +12,5 @@
         {
             return ($"{ProjectId}\t  {DepartmentId}\t {MaxHours}\t {StartDate}\t {EndDate}\t {ProjectName}");
         }
-
-
-
     }
 }
