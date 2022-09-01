@@ -19,7 +19,7 @@ namespace SchoolManagementAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
+        [HttpGet("GetParent")]
         public async Task<ActionResult> Get()
         {
             return Ok(await _parent.GetParentAsync());
