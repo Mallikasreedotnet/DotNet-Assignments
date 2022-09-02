@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SchoolManagement.Core.Entities;
+using SchoolManagement.Infrastructure.Entities;
+using static Dapper.SqlMapper;
 
 namespace SchoolManagement.Infrastructure.EntityConfiguration
 {
@@ -8,17 +9,17 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Teacher> builder)
         {
-
             builder.ToTable("Teacher");
-            builder.Property(e => e.TeacherId).HasColumnName("Teacher_id");
+
+            builder.Property(e => e.Teacher_id).HasColumnName("Teacher_id");
 
             builder.Property(e => e.Dob)
                 .HasColumnType("date")
-                .HasColumnName("DOB");
+            .HasColumnName("DOB");
 
             builder.Property(e => e.Email)
                 .HasMaxLength(45)
-                .IsUnicode(false);
+            .IsUnicode(false);
 
             builder.Property(e => e.Fname)
                 .HasMaxLength(45)

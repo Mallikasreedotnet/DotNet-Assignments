@@ -1,26 +1,33 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
-using SchoolManagement.Core.Entities;
+using SchoolManagement.Infrastructure.Data;
+using SchoolManagement.Infrastructure.Entities;
+using System.Data;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 {
     public class TeacherRepository : ITeacherRepository
     {
-        private readonly SchoolManagementDbContext _schoolManagementDbContext;
-        public TeacherRepository()
+        private readonly SchoolManagementDbContext _schoolDbContext;
+        private readonly IDbConnection _dbconnection;
+        public TeacherRepository(SchoolManagementDbContext schoolDbContext, IDbConnection dbconnection)
         {
-            _schoolManagementDbContext =new SchoolManagementDbContext();
+            _schoolDbContext = schoolDbContext;
+            _dbconnection = dbconnection;
         }
+
         public async Task<IEnumerable<Teacher>> GetTeacherAsync()
         {
-            var teacherData=await(from teacher in _schoolManagementDbContext.Teachers
-                            select teacher).ToListAsync();  
+            var query = "select * from Teacher";
+            var teacherData = await _dbconnection.QueryAsync<Teacher>(query);
             return teacherData;
         }
 
         public async Task<Teacher> GetTeacherAsync(int teacherId)
         {
-            return await _schoolManagementDbContext.Teachers.FindAsync(teacherId);
+            var query = "Select * from Teacher where Teacher_id=@TeacherId";
+            return (await _dbconnection.QueryFirstAsync<Teacher>(query, new { teacherId = teacherId }));
         }
 
         public async Task<Teacher> CreateTeacherAsync(Teacher teacher)
@@ -37,10 +44,10 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                 Password = teacher.Password,
                 Phone = teacher.Phone,
                 Status = teacher.Status,
-                TeacherId = teacher.TeacherId
+                Teacher_id = teacher.Teacher_id
             };
-            _schoolManagementDbContext.Teachers.Add(teacherData);
-            await _schoolManagementDbContext.SaveChangesAsync();
+            _schoolDbContext.Teachers.Add(teacherData);
+            await _schoolDbContext.SaveChangesAsync();
             return teacherData;
         }
 
@@ -57,16 +64,16 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             updatedToBeTeacher.Status = teacher.Status; 
             updatedToBeTeacher.LastLoginDate = teacher.LastLoginDate;
             updatedToBeTeacher.LastLoginIp = teacher.LastLoginIp;
-            _schoolManagementDbContext.Teachers.Update(updatedToBeTeacher);
-            await _schoolManagementDbContext.SaveChangesAsync();
+            _schoolDbContext.Teachers.Update(updatedToBeTeacher);
+            await _schoolDbContext.SaveChangesAsync();
             return updatedToBeTeacher;
         }
 
         public async Task<Teacher> DeleteAsync(int teacherId)
         {
             var deletedToBeTeacher= await GetTeacherAsync(teacherId);
-            _schoolManagementDbContext.Teachers.Remove(deletedToBeTeacher);
-            await _schoolManagementDbContext.SaveChangesAsync();
+            _schoolDbContext.Teachers.Remove(deletedToBeTeacher);
+            await _schoolDbContext.SaveChangesAsync();
             return deletedToBeTeacher;
         }
     }

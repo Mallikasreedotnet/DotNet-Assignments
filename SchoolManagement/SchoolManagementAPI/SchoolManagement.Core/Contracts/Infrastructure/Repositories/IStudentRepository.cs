@@ -1,4 +1,4 @@
-﻿using SchoolManagement.Core.Entities;
+﻿using SchoolManagement.Infrastructure.Entities;
 
 namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
 {

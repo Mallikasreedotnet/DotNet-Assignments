@@ -1,35 +1,40 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
-using SchoolManagement.Core.Entities;
+using SchoolManagement.Infrastructure.Data;
+using SchoolManagement.Infrastructure.Entities;
+using System.Data;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 {
     public class ParentRepository : IParentRepository
     {
-        private readonly SchoolManagementDbContext _schoolManagementDbContext;
-
-        public ParentRepository()
+        private readonly SchoolManagementDbContext _schoolDbContext;
+        private readonly IDbConnection _dbconnection;
+        public ParentRepository(SchoolManagementDbContext schoolDbContext,IDbConnection dbconnection)
         {
-            _schoolManagementDbContext =new SchoolManagementDbContext();
+            _schoolDbContext = schoolDbContext;
+            _dbconnection = dbconnection;
         }
 
         public async Task<IEnumerable<Parent>> GetParentAsync()
         {
-           var data= await (from parent in _schoolManagementDbContext.Parents
-                             select parent).ToListAsync();
-            return data;
+            var query = "select * from [Parent]";
+            var parentData = await _dbconnection.QueryAsync<Parent>(query);
+            return parentData;
         }
 
         public async Task<Parent> GetParentAsync(int parentId)
         {
-            return await _schoolManagementDbContext.Parents.FindAsync(parentId);
+            var query = "Select * from Parent where Parent_id=@parentId";
+            return (await _dbconnection.QueryFirstAsync<Parent>(query, new { parentId = parentId }));
         }
 
         public async Task<Parent> CreateParentAsync(Parent parent)
         {
 
-            _schoolManagementDbContext.Parents.Add(parent);
-            await _schoolManagementDbContext.SaveChangesAsync();
+            _schoolDbContext.Parents.Add(parent);
+            await _schoolDbContext.SaveChangesAsync();
             return parent;
         }
 
@@ -45,15 +50,15 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             parentToBeUpdated.Status = parent.Status;
             parentToBeUpdated.LastLoginDate = parent.LastLoginDate;
             parentToBeUpdated.LastLoginIp = parent.LastLoginIp;
-            _schoolManagementDbContext.Parents.Update(parentToBeUpdated);
-            await _schoolManagementDbContext.SaveChangesAsync();
+            _schoolDbContext.Parents.Update(parentToBeUpdated);
+            await _schoolDbContext.SaveChangesAsync();
             return parentToBeUpdated;
         }
         public async Task<Parent> DeleteAsync(int parentId)
         {
             var deletedToBeParent = await GetParentAsync(parentId);
-            _schoolManagementDbContext.Parents.Remove(deletedToBeParent);
-            await _schoolManagementDbContext.SaveChangesAsync();
+            _schoolDbContext.Parents.Remove(deletedToBeParent);
+            await _schoolDbContext.SaveChangesAsync();
             return deletedToBeParent;
         }
     }

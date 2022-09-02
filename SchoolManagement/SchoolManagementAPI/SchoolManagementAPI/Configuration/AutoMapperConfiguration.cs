@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SchoolManagement.Core.Entities;
+using SchoolManagement.Infrastructure.Entities;
 using SchoolManagementAPI.ViewModel;
 
 namespace SchoolManagementAPI.Configuration

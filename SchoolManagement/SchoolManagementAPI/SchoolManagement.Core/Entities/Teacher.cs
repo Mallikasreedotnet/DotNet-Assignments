@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace SchoolManagement.Core.Entities
+namespace SchoolManagement.Infrastructure.Entities
 {
     public partial class Teacher
     {
-        public int TeacherId { get; set; }
+        [Key]
+        public int Teacher_id { get; set; }
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string Fname { get; set; } = null!;

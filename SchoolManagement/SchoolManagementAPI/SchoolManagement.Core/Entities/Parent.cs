@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace SchoolManagement.Core.Entities
+namespace SchoolManagement.Infrastructure.Entities
 {
     public partial class Parent
     {
@@ -9,8 +10,8 @@ namespace SchoolManagement.Core.Entities
         {
             Students = new HashSet<Student>();
         }
-
-        public int ParentId { get; set; }
+        [Key]
+        public int Parent_id { get; set; }
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string Fname { get; set; } = null!;

@@ -1,31 +1,39 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
-using SchoolManagement.Core.Entities;
+using SchoolManagement.Infrastructure.Data;
+using SchoolManagement.Infrastructure.Entities;
+using System.Data;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 {
     public class StudentRepository : IStudentRepository
     {
-        private readonly SchoolManagementDbContext _schoolManagementDbContext;
-        public StudentRepository()
+        private readonly SchoolManagementDbContext _schoolDbContext;
+        private readonly IDbConnection _dbconnection;
+        public StudentRepository(SchoolManagementDbContext schoolDbContext, IDbConnection dbconnection)
         {
-            _schoolManagementDbContext =new SchoolManagementDbContext();
+            _schoolDbContext = schoolDbContext;
+            _dbconnection = dbconnection;
         }
         public async Task<IEnumerable<Student>> GetStudentAsync()
         {
-            var studentData = await (from student in _schoolManagementDbContext.Students
-                                 select student).ToListAsync();
+            var query = "select * from Student";
+            var studentData = await _dbconnection.QueryAsync<Student>(query);
             return studentData;
         }
+
         public async Task<Student> GetStudentAsync(int studentId)
         {
-            return await _schoolManagementDbContext.Students.FindAsync(studentId);
+            var query = "Select * from Student where Student_id=@StudentId";
+            return (await _dbconnection.QueryFirstAsync<Student>(query, new { studentId = studentId }));
         }
+
         public async Task<Student> CreateStudentAsync(Student student)
         {
             var studentData = new Student
             {
-                StudentId = student.StudentId,
+                Student_id = student.Student_id,
                 Email = student.Email,
                 Password = student.Password,
                 Fname = student.Fname,
@@ -34,13 +42,13 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                 Status = student.Status,
                 Phone = student.Phone,
                 Mobile = student.Mobile,
-                ParentId = student.ParentId,
+                Parent_id = student.Parent_id,
                 DateOfJoin = student.DateOfJoin,
                 LastLoginDate = student.LastLoginDate,
                 LastLoginIp = student.LastLoginIp,
             };
-            _schoolManagementDbContext.Students.Add(studentData);
-            await _schoolManagementDbContext.SaveChangesAsync();
+            _schoolDbContext.Students.Add(studentData);
+            await _schoolDbContext.SaveChangesAsync();
             return studentData;
         }
         public async Task<Student> UpdateAsync(int studentId,Student student)
@@ -53,21 +61,21 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             studentToBeUpdated.Dob = student.Dob;
             studentToBeUpdated.Phone = student.Phone;
             studentToBeUpdated.Mobile = student.Mobile;
-            studentToBeUpdated.ParentId = student.ParentId;
+            studentToBeUpdated.Parent_id = student.Parent_id;
             studentToBeUpdated.DateOfJoin = student.DateOfJoin;
             studentToBeUpdated.Status = student.Status;
             studentToBeUpdated.LastLoginDate = student.LastLoginDate;
             studentToBeUpdated.LastLoginIp = student.LastLoginIp;
-            _schoolManagementDbContext.Students.Update(studentToBeUpdated);
-            await _schoolManagementDbContext.SaveChangesAsync();
+            _schoolDbContext.Students.Update(studentToBeUpdated);
+            await _schoolDbContext.SaveChangesAsync();
             return studentToBeUpdated;
         }
 
         public async Task<Student> DeleteAsync(int studentId)
         {
             var deletedToBeStudent = await GetStudentAsync(studentId);
-            _schoolManagementDbContext.Students.Remove(deletedToBeStudent);
-            await _schoolManagementDbContext.SaveChangesAsync();
+            _schoolDbContext.Students.Remove(deletedToBeStudent);
+            await _schoolDbContext.SaveChangesAsync();
             return deletedToBeStudent;
         }
     }

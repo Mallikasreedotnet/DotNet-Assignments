@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SchoolManagement.Core.Entities;
+using SchoolManagement.Infrastructure.Entities;
+using static Dapper.SqlMapper;
 
 namespace SchoolManagement.Infrastructure.EntityConfiguration
 {
@@ -8,9 +9,9 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Student> builder)
         {
-
             builder.ToTable("Student");
-            builder.Property(e => e.StudentId).HasColumnName("Student_id");
+
+            builder.Property(e => e.Student_id).HasColumnName("Student_id");
 
             builder.Property(e => e.DateOfJoin)
                 .HasColumnType("date")
@@ -18,11 +19,11 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
 
             builder.Property(e => e.Dob)
                 .HasColumnType("date")
-                .HasColumnName("DOB");
+            .HasColumnName("DOB");
 
             builder.Property(e => e.Email)
                 .HasMaxLength(45)
-                .IsUnicode(false);
+            .IsUnicode(false);
 
             builder.Property(e => e.Fname)
                 .HasMaxLength(45)
@@ -45,7 +46,7 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
                 .HasMaxLength(15)
                 .IsUnicode(false);
 
-            builder.Property(e => e.ParentId).HasColumnName("Parent_id");
+            builder.Property(e => e.Parent_id).HasColumnName("Parent_id");
 
             builder.Property(e => e.Password)
                 .HasMaxLength(45)
@@ -56,8 +57,8 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
                 .IsUnicode(false);
 
             builder.HasOne(d => d.Parent)
-                .WithMany(p => p.Students)
-                .HasForeignKey(d => d.ParentId)
+            .WithMany(p => p.Students)
+                .HasForeignKey(d => d.Parent_id)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Student__Parent___38996AB5");
         }

@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
-using SchoolManagement.Core.Entities;
-using SchoolManagement.Infrastructure.Repository.EntityFramework;
+using SchoolManagement.Infrastructure.Entities;
 using SchoolManagementAPI.ViewModel;
 
 namespace SchoolManagementAPI.Controllers
