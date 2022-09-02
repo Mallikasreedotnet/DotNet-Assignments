@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Core.Contracts;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Entities;
-using SchoolManagement.Infrastructure.Data;
 using SchoolManagement.Infrastructure.Repository.EntityFramework;
 using SchoolManagementAPI.ViewModel;
 
@@ -11,11 +11,14 @@ namespace SchoolManagementAPI.Controllers
     [ApiController]
     public class StudentController : Controller
     {
-        private readonly IStudent _student;
-        public StudentController()
+        private readonly IStudentRepository _student;
+        private readonly IMapper _mapper;
+        public StudentController(IStudentRepository student, IMapper mapper)
         {
-            _student = new StudentRepository(new SchoolManagementDbContext());
+            _student = student;
+            _mapper = mapper;
         }
+
         [HttpGet]
         public async Task<ActionResult> Get()
         {
@@ -31,42 +34,16 @@ namespace SchoolManagementAPI.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] StudentVm studentVm)
         {
-            var student = new Student
-            {
-                Email = studentVm.Email,
-                Password = studentVm.Password,
-                Fname = studentVm.Fname,
-                Lname = studentVm.Lname,
-                Dob = studentVm.Dob,
-                Phone = studentVm.Phone,
-                Mobile = studentVm.Mobile,
-                Status = studentVm.Status,
-                LastLoginDate = studentVm.LastLoginDate,
-                LastLoginIp = studentVm.LastLoginIp,
-                DateOfJoin = studentVm.DateOfJoin
-            };
-            return Ok(await _student.CreateStudentAsync(student)); ;
+         
+            var studentData=_mapper.Map<StudentVm,Student>(studentVm);
+            return Ok(await _student.CreateStudentAsync(studentData)); ;
         }
 
         [HttpPut("{id}")]
         public async Task<ActionResult> Put(int id, [FromBody] StudentVm studentVm)
         {
-            var student = new Student
-            {
-                StudentId = studentVm.StudentId,
-                Email = studentVm.Email,
-                Password = studentVm.Password,
-                Fname = studentVm.Fname,
-                Lname = studentVm.Lname,
-                Dob = studentVm.Dob,
-                Phone = studentVm.Phone,
-                Mobile = studentVm.Mobile,
-                Status = studentVm.Status,
-                LastLoginDate = studentVm.LastLoginDate,
-                LastLoginIp = studentVm.LastLoginIp,
-                DateOfJoin = studentVm.DateOfJoin
-            };
-            return Ok(await _student.UpdateAsync(id, student));
+            var studentData=_mapper.Map<StudentVm,Student>(studentVm);
+            return Ok(await _student.UpdateAsync(id, studentData));
         }
 
         [HttpDelete("{id}")]

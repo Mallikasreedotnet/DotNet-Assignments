@@ -2,7 +2,7 @@
 {
     public class ParentVm
     {
-        public int ParentId { get; set; }
+       public int ParentId { get; set; }
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string Fname { get; set; } = null!;

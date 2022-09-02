@@ -1,16 +1,15 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SchoolManagement.Core.Contracts;
+using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Entities;
-using SchoolManagement.Infrastructure.Data;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 {
-    public class StudentRepository : IStudent
+    public class StudentRepository : IStudentRepository
     {
         private readonly SchoolManagementDbContext _schoolManagementDbContext;
-        public StudentRepository(SchoolManagementDbContext schoolManagementDbContext)
+        public StudentRepository()
         {
-            _schoolManagementDbContext = schoolManagementDbContext;
+            _schoolManagementDbContext =new SchoolManagementDbContext();
         }
         public async Task<IEnumerable<Student>> GetStudentAsync()
         {
@@ -40,6 +39,8 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                 LastLoginDate = student.LastLoginDate,
                 LastLoginIp = student.LastLoginIp,
             };
+            _schoolManagementDbContext.Students.Add(studentData);
+            await _schoolManagementDbContext.SaveChangesAsync();
             return studentData;
         }
         public async Task<Student> UpdateAsync(int studentId,Student student)
@@ -51,17 +52,21 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             studentToBeUpdated.Lname = student.Lname;
             studentToBeUpdated.Dob = student.Dob;
             studentToBeUpdated.Phone = student.Phone;
+            studentToBeUpdated.Mobile = student.Mobile;
+            studentToBeUpdated.ParentId = student.ParentId;
+            studentToBeUpdated.DateOfJoin = student.DateOfJoin;
             studentToBeUpdated.Status = student.Status;
             studentToBeUpdated.LastLoginDate = student.LastLoginDate;
             studentToBeUpdated.LastLoginIp = student.LastLoginIp;
             _schoolManagementDbContext.Students.Update(studentToBeUpdated);
+            await _schoolManagementDbContext.SaveChangesAsync();
             return studentToBeUpdated;
         }
 
         public async Task<Student> DeleteAsync(int studentId)
         {
             var deletedToBeStudent = await GetStudentAsync(studentId);
-            _schoolManagementDbContext.Students.Add(deletedToBeStudent);
+            _schoolManagementDbContext.Students.Remove(deletedToBeStudent);
             await _schoolManagementDbContext.SaveChangesAsync();
             return deletedToBeStudent;
         }
