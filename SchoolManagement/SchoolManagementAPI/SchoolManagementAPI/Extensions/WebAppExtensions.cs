@@ -1,4 +1,6 @@
-﻿namespace SchoolManagementAPI.Extensions
+﻿using Serilog;
+
+namespace SchoolManagementAPI.Extensions
 {
     public static class WebAppExtensions
     {
@@ -10,10 +12,12 @@
                 app.UseSwagger();
                 app.UseSwaggerUI();
             }
-
+          // app.UseResponseCompression();
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
+
+            app.UseSerilogRequestLogging();
 
             app.MapControllers();
         }

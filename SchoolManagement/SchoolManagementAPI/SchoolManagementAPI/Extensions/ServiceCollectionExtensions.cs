@@ -18,6 +18,7 @@ namespace SchoolManagementAPI.Extensions
             service.AddEndpointsApiExplorer();
             service.AddSwaggerGen();
 
+
         }
 
         public static  void RegisterApplicationServices(this IServiceCollection services,IConfiguration configuration)
@@ -27,7 +28,6 @@ namespace SchoolManagementAPI.Extensions
 
             services.AddDbContext<SchoolManagementDbContext>(option =>
             option.UseSqlServer(configuration.GetConnectionString("schoolManagementDbContext")));
-            //services.AddSingleton<IDbConnection>(connection);
             services.AddTransient<IParentRepository, ParentRepository>();
             services.AddTransient<IStudentRepository, StudentRepository>();
             services.AddTransient<ITeacherRepository, TeacherRepository>();
