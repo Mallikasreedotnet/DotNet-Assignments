@@ -1,9 +1,9 @@
 ﻿using Dapper;
-using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
-using SchoolManagement.Infrastructure.Entities;
 using System.Data;
+using System.Data.Common;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 {
@@ -27,18 +27,23 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         public async Task<Parent> GetParentAsync(int parentId)
         {
             var query = "Select * from Parent where Parent_id=@parentId";
-            return (await _dbconnection.QueryFirstAsync<Parent>(query, new { parentId = parentId }));
+            return (await _dbconnection.QueryAsync<Parent>(query, new { parentId })).FirstOrDefault();
+            // return (await _dbconnection.QueryFirstAsync<Parent>(query, new { parentId = parentId }));
         }
 
         public async Task<Parent> CreateParentAsync(Parent parent)
         {
-
+            if (_schoolDbContext.Parents.Count() == 0)
+            {
+                var identityResetQuery = "DBCC CHECKIDENT ('[Parent]',RESEED,0)";
+                await _dbconnection.QueryAsync(identityResetQuery);
+            }
             _schoolDbContext.Parents.Add(parent);
             await _schoolDbContext.SaveChangesAsync();
             return parent;
         }
 
-        public async Task<Parent> UpdateAsync(int parentId, Parent parent)
+        public async Task<Parent> UpdateParentAsync(int parentId, Parent parent)
         {
             var parentToBeUpdated = await GetParentAsync(parentId);
             parentToBeUpdated.Email = parent.Email;
@@ -47,6 +52,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             parentToBeUpdated.Lname = parent.Lname;
             parentToBeUpdated.Dob = parent.Dob;
             parentToBeUpdated.Phone = parent.Phone;
+            parentToBeUpdated.Mobile = parent.Mobile;
             parentToBeUpdated.Status = parent.Status;
             parentToBeUpdated.LastLoginDate = parent.LastLoginDate;
             parentToBeUpdated.LastLoginIp = parent.LastLoginIp;

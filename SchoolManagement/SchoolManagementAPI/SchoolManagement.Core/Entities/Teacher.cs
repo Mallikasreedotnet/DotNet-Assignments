@@ -2,10 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace SchoolManagement.Infrastructure.Entities
+namespace SchoolManagement.Core.Entities
 {
-    public partial class Teacher
+    public class Teacher
     {
+        public Teacher()
+        {
+            Classrooms = new HashSet<Classroom>();
+        }
         [Key]
         public int Teacher_id { get; set; }
         public string Email { get; set; } = null!;
@@ -18,5 +22,7 @@ namespace SchoolManagement.Infrastructure.Entities
         public bool Status { get; set; }
         public DateTime LastLoginDate { get; set; }
         public string LastLoginIp { get; set; } = null!;
+
+        public virtual ICollection<Classroom> Classrooms { get; set; }
     }
 }

@@ -9,6 +9,12 @@ namespace SchoolManagement.Infrastructure.Extensions
         modelBuilder.ApplyConfiguration(new ParentEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new StudentEntityTypeConfiguration());
         modelBuilder.ApplyConfiguration(new TeacherEntityTypeConfiguration());
-    }
+        modelBuilder.ApplyConfiguration(new AttendanceEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new ClassroomEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new ClassroomStudentEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new CourseEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new ExamEntityTypeConfiguration());
+        modelBuilder.ApplyConfiguration(new ExamResultEntityTypeConfiguration());
+        }
     }
 }

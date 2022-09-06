@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
-using SchoolManagement.Infrastructure.Entities;
+using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
 
 namespace SchoolManagementAPI.Controllers
 {
-    
+
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class StudentController : ApiControllerBase
     {
@@ -45,7 +45,6 @@ namespace SchoolManagementAPI.Controllers
                 if (result is null)
                     return NotFound();
                 return Ok(result);
-            
         }
 
         // Post Student
@@ -67,7 +66,7 @@ namespace SchoolManagementAPI.Controllers
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
         public async Task<ActionResult> Put(int id, [FromBody] StudentVm studentVm)
         {
-            if (id <= 0 || id != studentVm.Student_id)
+            if (id <= 0 )
             {
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be <= zero OR it doesn't match with model's Id.");
                 return BadRequest();
@@ -76,7 +75,7 @@ namespace SchoolManagementAPI.Controllers
             var result = await _student.UpdateAsync(id, studentData);
             if (result is null)
                 return NotFound();
-            return NoContent();
+            return Ok(result);
            
         }
 
@@ -94,7 +93,7 @@ namespace SchoolManagementAPI.Controllers
             var result = await _student.DeleteAsync(id);
             if (result is null)
                 return NotFound();
-            return NoContent();
+            return Ok(result);
         }
 
     }

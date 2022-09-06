@@ -1,8 +1,7 @@
 ﻿using Dapper;
-using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
-using SchoolManagement.Infrastructure.Entities;
 using System.Data;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
@@ -26,7 +25,8 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         public async Task<Student> GetStudentAsync(int studentId)
         {
             var query = "Select * from Student where Student_id=@StudentId";
-            return (await _dbconnection.QueryFirstAsync<Student>(query, new { studentId = studentId }));
+            return (await _dbconnection.QueryAsync<Student>(query, new { studentId })).FirstOrDefault();
+            // return (await _dbconnection.QueryFirstAsync<Student>(query, new { studentId = studentId }));
         }
 
         public async Task<Student> CreateStudentAsync(Student student)

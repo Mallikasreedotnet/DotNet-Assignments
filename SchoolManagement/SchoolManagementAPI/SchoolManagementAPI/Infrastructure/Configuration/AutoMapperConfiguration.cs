@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using SchoolManagement.Infrastructure.Entities;
+using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.ViewModel;
 
 namespace SchoolManagementAPI.Configuration
@@ -11,6 +11,7 @@ namespace SchoolManagementAPI.Configuration
             CreateMap<ParentVm, Parent>();
             CreateMap<StudentVm, Student>();
             CreateMap<TeacherVm, Teacher>();
+            CreateMap<GradeVm, Grade>();
         }
     }
 }

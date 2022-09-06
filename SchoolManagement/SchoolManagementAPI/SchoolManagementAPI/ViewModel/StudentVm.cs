@@ -2,7 +2,7 @@
 {
     public class StudentVm
     {
-        public int Student_id { get; set; }
+       
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string Fname { get; set; } = null!;

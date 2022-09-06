@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace SchoolManagement.Infrastructure.Entities
+namespace SchoolManagement.Core.Entities
 {
-    public partial class Student
+    public class Student
     {
         [Key]
         public int Student_id { get; set; }
@@ -22,6 +22,5 @@ namespace SchoolManagement.Infrastructure.Entities
         public DateTime? DateOfJoin { get; set; }
 
         public virtual Parent Parent { get; set; } = null!;
-       
     }
 }

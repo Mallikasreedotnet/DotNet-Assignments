@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace SchoolManagement.Infrastructure.Entities
+namespace SchoolManagement.Core.Entities
 {
-    public partial class Parent
+    public class Parent
     {
         public Parent()
         {

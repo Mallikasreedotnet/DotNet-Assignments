@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using SchoolManagement.Infrastructure.Entities;
-using static Dapper.SqlMapper;
+using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Infrastructure.EntityConfiguration
 {
