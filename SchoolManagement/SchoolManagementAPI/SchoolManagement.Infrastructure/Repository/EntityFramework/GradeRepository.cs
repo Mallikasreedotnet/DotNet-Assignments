@@ -11,6 +11,8 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
     {
         private readonly SchoolManagementDbContext _schoolDbContext;
         private readonly IDbConnection _dbconnection;
+        
+
         public GradeRepository(SchoolManagementDbContext schoolDbContext, IDbConnection dbConnection)
         {
             _schoolDbContext = schoolDbContext;
@@ -27,7 +29,6 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         {
             var query = "Select * from Grade where gradeId=@gradeId";
             return (await _dbconnection.QueryAsync<Grade>(query, new { gradeId })).FirstOrDefault();
-            // return (await _dbconnection.QueryFirstAsync<Grade>(query, new { gradeId= gradeId }));
         }
 
         public async Task<Grade> CreateGradeAsync(Grade grade)
@@ -45,7 +46,14 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _schoolDbContext.Grades.Update(gradeToBeUpdated);
             await _schoolDbContext.SaveChangesAsync();
             return gradeToBeUpdated;
-            
+        }
+
+        public async Task<Grade> DeleteAsync(int gradeId)
+        {
+            var deletedToBeGrade = await GetGradeAsync(gradeId);
+            _schoolDbContext.Grades.Remove(deletedToBeGrade);
+            await _schoolDbContext.SaveChangesAsync();
+            return deletedToBeGrade;
         }
     }
 }

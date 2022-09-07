@@ -12,6 +12,12 @@ namespace SchoolManagementAPI.Configuration
             CreateMap<StudentVm, Student>();
             CreateMap<TeacherVm, Teacher>();
             CreateMap<GradeVm, Grade>();
+            CreateMap<CourseVm, Course>();
+            CreateMap<ClassroomVm, Classroom>();
+            CreateMap<AttendanceVm, Attendance>();
+            CreateMap<ExamVm, Exam>();
+            CreateMap<ExamTypeVm, ExamType>();  
+
         }
     }
 }

@@ -13,8 +13,7 @@ builder.Services.AddSingleton<IMapper>(mapper);
 
 Log.Logger = new LoggerConfiguration().CreateBootstrapLogger();
 builder.Host.UseSerilog(((ctx, lc) => lc.ReadFrom.Configuration(ctx.Configuration)));
-//builder.Logging.ClearProviders();
-//builder.Logging.AddEventLog();
+
 
 IConfiguration configuration  = builder.Configuration;
 builder.Services.RegisterSystemServices();

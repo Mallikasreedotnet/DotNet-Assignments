@@ -26,7 +26,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         {
             var query = "Select * from Student where Student_id=@StudentId";
             return (await _dbconnection.QueryAsync<Student>(query, new { studentId })).FirstOrDefault();
-            // return (await _dbconnection.QueryFirstAsync<Student>(query, new { studentId = studentId }));
+      
         }
 
         public async Task<Student> CreateStudentAsync(Student student)

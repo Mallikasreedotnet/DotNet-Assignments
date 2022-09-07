@@ -15,5 +15,6 @@
         public DateTime LastLoginDate { get; set; }
         public string LastLoginIp { get; set; } = null!;
         public DateTime? DateOfJoin { get; set; }
+        public int ClassroomId { get; set; }
     }
 }

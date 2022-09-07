@@ -32,6 +32,11 @@ namespace SchoolManagementAPI.Extensions
             services.AddTransient<IStudentRepository, StudentRepository>();
             services.AddTransient<ITeacherRepository, TeacherRepository>();
             services.AddTransient<IGradeRepository, GradeRepository>();
+            services.AddTransient<ICourseRepository, CourseRepository>();
+            services.AddTransient<IClassroomRepository, ClassroomRepository>();
+            services.AddTransient<IAttendanceRepository, AttendanceRepository>();
+            services.AddTransient<IExamRepository,ExamRepository>();
+            //Bservices.AddTransient<IExamTypeRepository, ExamTypeRepository>();
             services.AddTransient<IDbConnection>(db => new SqlConnection(
                                 configuration.GetConnectionString("schoolManagementDbContext")));
         }

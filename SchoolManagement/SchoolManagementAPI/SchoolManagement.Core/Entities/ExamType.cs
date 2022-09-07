@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolManagement.Core.Entities
 {
+    [Table("ExamType")]
     public class ExamType
     {
         public ExamType()

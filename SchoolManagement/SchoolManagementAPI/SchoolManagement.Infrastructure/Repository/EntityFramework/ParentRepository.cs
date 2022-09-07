@@ -28,16 +28,11 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         {
             var query = "Select * from Parent where Parent_id=@parentId";
             return (await _dbconnection.QueryAsync<Parent>(query, new { parentId })).FirstOrDefault();
-            // return (await _dbconnection.QueryFirstAsync<Parent>(query, new { parentId = parentId }));
+          
         }
 
         public async Task<Parent> CreateParentAsync(Parent parent)
         {
-            if (_schoolDbContext.Parents.Count() == 0)
-            {
-                var identityResetQuery = "DBCC CHECKIDENT ('[Parent]',RESEED,0)";
-                await _dbconnection.QueryAsync(identityResetQuery);
-            }
             _schoolDbContext.Parents.Add(parent);
             await _schoolDbContext.SaveChangesAsync();
             return parent;
