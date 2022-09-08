@@ -24,27 +24,14 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
 
             builder.Property(e => e.Marks)
                 .HasMaxLength(45)
-            .IsUnicode(false);
-
-            builder.Property(e => e.Student_id).HasColumnName("Student_id");
-
-            builder.HasOne(d => d.Course)
-                .WithMany()
-                .HasForeignKey(d => d.CourseId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__ExamResul__cours__6FE99F9F");
-
-            builder.HasOne(d => d.Exam)
-                .WithMany()
-                .HasForeignKey(d => d.ExamId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__ExamResul__examI__6E01572D");
+                .IsUnicode(false);
 
             builder.HasOne(d => d.Student)
                 .WithMany()
-                .HasForeignKey(d => d.Student_id)
+                .HasForeignKey(d => d.StudentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__ExamResul__Stude__6EF57B66");
+
         }
     }
 }

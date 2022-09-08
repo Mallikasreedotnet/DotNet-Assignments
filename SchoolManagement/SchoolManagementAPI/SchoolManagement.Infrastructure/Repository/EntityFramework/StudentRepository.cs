@@ -24,7 +24,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Student> GetStudentAsync(int studentId)
         {
-            var query = "Select * from Student where Student_id=@StudentId";
+            var query = "Select * from Student where StudentId=@StudentId";
             return (await _dbconnection.QueryAsync<Student>(query, new { studentId })).FirstOrDefault();
       
         }
@@ -33,7 +33,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         {
             var studentData = new Student
             {
-                Student_id = student.Student_id,
+                StudentId = student.StudentId,
                 Email = student.Email,
                 Password = student.Password,
                 Fname = student.Fname,
@@ -42,13 +42,13 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                 Status = student.Status,
                 Phone = student.Phone,
                 Mobile = student.Mobile,
-                Parent_id = student.Parent_id,
+                ParentId = student.ParentId,
                 DateOfJoin = student.DateOfJoin,
                 LastLoginDate = student.LastLoginDate,
                 LastLoginIp = student.LastLoginIp,
             };
             _schoolDbContext.Students.Add(studentData);
-            await _schoolDbContext.SaveChangesAsync();
+            var result= await _schoolDbContext.SaveChangesAsync();
             return studentData;
         }
         public async Task<Student> UpdateAsync(int studentId,Student student)
@@ -61,7 +61,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             studentToBeUpdated.Dob = student.Dob;
             studentToBeUpdated.Phone = student.Phone;
             studentToBeUpdated.Mobile = student.Mobile;
-            studentToBeUpdated.Parent_id = student.Parent_id;
+            studentToBeUpdated.ParentId = student.ParentId;
             studentToBeUpdated.DateOfJoin = student.DateOfJoin;
             studentToBeUpdated.Status = student.Status;
             studentToBeUpdated.LastLoginDate = student.LastLoginDate;

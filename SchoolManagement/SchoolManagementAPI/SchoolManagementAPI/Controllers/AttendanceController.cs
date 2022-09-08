@@ -53,8 +53,8 @@ namespace SchoolManagementAPI.Controllers
         public async Task<ActionResult> Post([FromBody] AttendanceVm attendanceVm)
         {
             _logger.LogInformation("Add new data for attendance");
-            var Data = _mapper.Map<AttendanceVm, Attendance>(attendanceVm);
-            var result = await _attendanceRepository.CreateAttendanceAsync(Data);
+            var data = _mapper.Map<AttendanceVm, Attendance>(attendanceVm);
+            var result = await _attendanceRepository.CreateAttendanceAsync(data);
             return Ok(result);
         }
 

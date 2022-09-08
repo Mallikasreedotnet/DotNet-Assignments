@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SchoolManagement.Core.Entities;
+using static Dapper.SqlMapper;
 
 namespace SchoolManagement.Infrastructure.EntityConfiguration
 {
@@ -10,7 +11,7 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
         {
             builder.ToTable("Teacher");
 
-            builder.Property(e => e.Teacher_id).HasColumnName("Teacher_id");
+            builder.Property(e => e.TeacherId).HasColumnName("TeacherId");
 
             builder.Property(e => e.Dob)
                 .HasColumnType("date")
@@ -22,16 +23,13 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
 
             builder.Property(e => e.Fname)
                 .HasMaxLength(45)
-                .IsUnicode(false);
+            .IsUnicode(false);
 
-            builder.Property(e => e.LastLoginDate)
-                .HasColumnType("date")
-                .HasColumnName("Last_login_date");
+            builder.Property(e => e.LastLoginDate).HasColumnType("date");
 
             builder.Property(e => e.LastLoginIp)
                 .HasMaxLength(45)
-                .IsUnicode(false)
-                .HasColumnName("Last_login_ip");
+                .IsUnicode(false);
 
             builder.Property(e => e.Lname)
                 .HasMaxLength(45)

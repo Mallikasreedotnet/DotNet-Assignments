@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace SchoolManagement.Core.Entities
 {
-    [Table("Attendance")]
-    public class Attendance
+    public partial class Attendance
     {
+        public int AttendanceId { get; set; }
         public DateTime Date { get; set; }
-        public int Student_id { get; set; }
+        public int StudentId { get; set; }
         public bool Status { get; set; }
         public string Remark { get; set; } = null!;
 

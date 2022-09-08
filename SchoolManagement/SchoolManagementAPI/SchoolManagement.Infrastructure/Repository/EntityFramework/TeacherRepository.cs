@@ -25,7 +25,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Teacher> GetTeacherAsync(int teacherId)
         {
-            var query = "Select * from Teacher where Teacher_id=@TeacherId";
+            var query = "Select * from Teacher where TeacherId=@TeacherId";
             return (await _dbconnection.QueryAsync<Teacher>(query, new { teacherId })).FirstOrDefault();
             
         }
@@ -44,7 +44,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                 Password = teacher.Password,
                 Phone = teacher.Phone,
                 Status = teacher.Status,
-                Teacher_id = teacher.Teacher_id
+                TeacherId = teacher.TeacherId
             };
             _schoolDbContext.Teachers.Add(teacherData);
             await _schoolDbContext.SaveChangesAsync();

@@ -26,7 +26,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Parent> GetParentAsync(int parentId)
         {
-            var query = "Select * from Parent where Parent_id=@parentId";
+            var query = "Select * from Parent where ParentId=@parentId";
             return (await _dbconnection.QueryAsync<Parent>(query, new { parentId })).FirstOrDefault();
           
         }

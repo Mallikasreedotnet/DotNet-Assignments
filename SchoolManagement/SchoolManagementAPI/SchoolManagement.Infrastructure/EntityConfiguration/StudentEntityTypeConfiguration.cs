@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SchoolManagement.Core.Entities;
+using static Dapper.SqlMapper;
 
 namespace SchoolManagement.Infrastructure.EntityConfiguration
 {
@@ -9,8 +10,6 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
         public void Configure(EntityTypeBuilder<Student> builder)
         {
             builder.ToTable("Student");
-
-            builder.Property(e => e.Student_id).HasColumnName("Student_id");
 
             builder.Property(e => e.DateOfJoin)
                 .HasColumnType("date")
@@ -26,16 +25,13 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
 
             builder.Property(e => e.Fname)
                 .HasMaxLength(45)
-                .IsUnicode(false);
+            .IsUnicode(false);
 
-            builder.Property(e => e.LastLoginDate)
-                .HasColumnType("date")
-                .HasColumnName("Last_login_date");
+            builder.Property(e => e.LastLoginDate).HasColumnType("date");
 
             builder.Property(e => e.LastLoginIp)
                 .HasMaxLength(45)
-                .IsUnicode(false)
-                .HasColumnName("Last_login_ip");
+                .IsUnicode(false);
 
             builder.Property(e => e.Lname)
                 .HasMaxLength(45)
@@ -44,8 +40,6 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
             builder.Property(e => e.Mobile)
                 .HasMaxLength(15)
                 .IsUnicode(false);
-
-            builder.Property(e => e.Parent_id).HasColumnName("Parent_id");
 
             builder.Property(e => e.Password)
                 .HasMaxLength(45)
@@ -56,8 +50,8 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
                 .IsUnicode(false);
 
             builder.HasOne(d => d.Parent)
-            .WithMany(p => p.Students)
-                .HasForeignKey(d => d.Parent_id)
+                .WithMany(p => p.Students)
+                .HasForeignKey(d => d.ParentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Student__Parent___38996AB5");
         }

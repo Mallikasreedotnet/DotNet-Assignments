@@ -4,14 +4,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SchoolManagement.Core.Entities
 {
-    public class Parent
+    public partial class Parent
     {
         public Parent()
         {
             Students = new HashSet<Student>();
         }
-        [Key]
-        public int Parent_id { get; set; }
+       // [Key]
+        public int ParentId { get; set; }
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string Fname { get; set; } = null!;

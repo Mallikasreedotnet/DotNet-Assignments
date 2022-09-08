@@ -17,10 +17,8 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
             builder.HasNoKey();
 
             builder.ToTable("ClassroomStudent");
-
+            
             builder.Property(e => e.ClassroomId).HasColumnName("classroomId");
-
-            builder.Property(e => e.Student_id).HasColumnName("Student_id");
 
             builder.HasOne(d => d.Classroom)
                 .WithMany()
@@ -30,9 +28,10 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
 
             builder.HasOne(d => d.Student)
                 .WithMany()
-                .HasForeignKey(d => d.Student_id)
+                .HasForeignKey(d => d.StudentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Classroom__Stude__656C112C");
+
         }
     }
 }

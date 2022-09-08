@@ -32,7 +32,7 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
                     .HasForeignKey(d => d.GradeId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK__Course__gradeId__628FA481");
-    }
+        }
 
     }
 }

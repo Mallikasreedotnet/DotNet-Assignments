@@ -12,7 +12,7 @@ namespace SchoolManagement.Core.Entities
             Classrooms = new HashSet<Classroom>();
             Courses = new HashSet<Course>();
         }
-
+        
         public int? GradeId { get; set; }
         public string Name { get; set; } = null!;
         public string Description { get; set; } = null!;

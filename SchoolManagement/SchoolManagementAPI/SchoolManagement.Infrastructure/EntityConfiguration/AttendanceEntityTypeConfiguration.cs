@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SchoolManagement.Core.Entities;
+using static Dapper.SqlMapper;
 
 
 namespace SchoolManagement.Infrastructure.EntityConfiguration
@@ -9,21 +10,20 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<Attendance> builder)
         {
-            builder.HasNoKey();
+            builder.HasKey(e => e.AttendanceId);
 
             builder.ToTable("Attendance");
-
+            builder.Property(e => e.AttendanceId).HasColumnName("AttendanceId");
             builder.Property(e => e.Date).HasColumnType("date");
 
             builder.Property(e => e.Remark).HasColumnType("text");
 
-            builder.Property(e => e.Student_id).HasColumnName("Student_id");
-
             builder.HasOne(d => d.Student)
                 .WithMany()
-                .HasForeignKey(d => d.Student_id)
+                .HasForeignKey(d => d.StudentId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__Attendanc__Stude__6754599E");
+            
         }
     }
 }

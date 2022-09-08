@@ -23,30 +23,31 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return attendanceData;
         }
 
-        public async Task<Attendance> GetAttendanceAsync(int studentId)
+        public async Task<Attendance> GetAttendanceAsync(int attendanceId)
         {
-            var query = "Select * from Attendance where Student_id=@StudentId";
-            return (await _dbconnection.QueryAsync<Attendance>(query, new { studentId })).FirstOrDefault();
+            var query = "Select * from Attendance where AttendanceId=@AttendanceId";
+            return (await _dbconnection.QueryAsync<Attendance>(query, new { attendanceId })).FirstOrDefault();
         }
 
         public async Task<Attendance> CreateAttendanceAsync(Attendance attendance)
         {
-            var attendenceRecord = new Attendance()
-            {
-                Date = DateTime.Now,
-                Remark = attendance.Remark,
-                Status = attendance.Status,
-                Student_id = attendance.Student_id
-            };
-            _schoolDbContext.Attendances.Add(attendenceRecord);
+            //var attendanceRecord = new Attendance()
+            //{
+            //    Date = DateTime.Now,
+            //    Remark = attendance.Remark,
+            //    Status = attendance.Status,
+            //    StudentId = attendance.StudentId
+            //};
+            attendance.Date = DateTime.Now;
+            _schoolDbContext.Attendances.Add(attendance);
             await _schoolDbContext.SaveChangesAsync();
             return attendance;
         }
 
-        public async Task<Attendance> UpdateAttendanceAsync(int studentId, Attendance attendance)
+        public async Task<Attendance> UpdateAttendanceAsync(int attendanceId, Attendance attendance)
         {
-            var attendanceToBeUpdated = await GetAttendanceAsync(studentId);
-            attendanceToBeUpdated.Student_id = attendance.Student_id;
+            var attendanceToBeUpdated = await GetAttendanceAsync(attendanceId);
+            attendanceToBeUpdated.StudentId = attendance.StudentId;
             attendanceToBeUpdated.Date = attendance.Date;
             attendanceToBeUpdated.Status = attendance.Status;
             attendanceToBeUpdated.Remark = attendance.Remark;
@@ -55,9 +56,9 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return attendanceToBeUpdated;
         }
 
-        public async Task<Attendance> DeleteAsync(int studentId)
+        public async Task<Attendance> DeleteAsync(int attendanceId)
         {
-            var deletedToBeAttendance = await GetAttendanceAsync(studentId);
+            var deletedToBeAttendance = await GetAttendanceAsync(attendanceId);
             _schoolDbContext.Attendances.Remove(deletedToBeAttendance);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeAttendance;

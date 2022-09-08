@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
 namespace SchoolManagement.Core.Entities
 {
-    public class Student
+    public partial class Student
     {
-        [Key]
-        public int Student_id { get; set; }
+        public int StudentId { get; set; }
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
         public string Fname { get; set; } = null!;
@@ -15,7 +13,7 @@ namespace SchoolManagement.Core.Entities
         public DateTime Dob { get; set; }
         public string Phone { get; set; } = null!;
         public string Mobile { get; set; } = null!;
-        public int Parent_id { get; set; }
+        public int ParentId { get; set; }
         public bool Status { get; set; }
         public DateTime LastLoginDate { get; set; }
         public string LastLoginIp { get; set; } = null!;

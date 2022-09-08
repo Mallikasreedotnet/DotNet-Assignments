@@ -7,6 +7,6 @@
         public string Section { get; set; } = null!;
         public bool Status { get; set; }
         public string Remarks { get; set; } = null!;
-        public int Teacher_id { get; set; }
+        public int TeacherId { get; set; }
     }
 }

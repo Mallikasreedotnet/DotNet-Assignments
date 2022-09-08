@@ -10,7 +10,7 @@
         public DateTime Dob { get; set; }
         public string Phone { get; set; } = null!;
         public string Mobile { get; set; } = null!;
-        public int Parent_id { get; set; }
+        public int ParentId { get; set; }
         public bool Status { get; set; }
         public DateTime LastLoginDate { get; set; }
         public string LastLoginIp { get; set; } = null!;

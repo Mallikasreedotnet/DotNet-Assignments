@@ -40,7 +40,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         {
             var classroomToBeUpdated = await GetClassroomAsync(classroomId);
             classroomToBeUpdated.Section = classroom.Section;
-            classroomToBeUpdated.Teacher_id= classroom.Teacher_id;
+            classroomToBeUpdated.TeacherId= classroom.TeacherId;
             classroomToBeUpdated.Status= classroom.Status;
             classroomToBeUpdated.GradeId= classroom.GradeId;
             classroomToBeUpdated.Year= classroom.Year;
