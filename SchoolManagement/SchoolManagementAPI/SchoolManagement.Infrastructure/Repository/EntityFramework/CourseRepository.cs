@@ -26,7 +26,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         public async Task<Course> GetCourseAsync(int courseId)
         {
             var query = "Select * from Course where courseId=@CourseId";
-            return (await _dbconnection.QueryAsync<Course>(query, new { courseId })).FirstOrDefault();
+            return (await _dbconnection.QueryFirstOrDefaultAsync<Course>(query, new { courseId }));
         }
 
         public async Task<Course> CreateCourseAsync(Course course)

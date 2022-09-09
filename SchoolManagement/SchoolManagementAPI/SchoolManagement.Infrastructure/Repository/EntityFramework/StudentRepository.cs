@@ -1,8 +1,11 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
 using System.Data;
+using SchoolManagementDbContext = SchoolManagement.Infrastructure.Data.SchoolManagementDbContext;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 {
@@ -25,7 +28,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         public async Task<Student> GetStudentAsync(int studentId)
         {
             var query = "Select * from Student where StudentId=@StudentId";
-            return (await _dbconnection.QueryAsync<Student>(query, new { studentId })).FirstOrDefault();
+            return (await _dbconnection.QueryFirstOrDefaultAsync<Student>(query, new { studentId }));
       
         }
 
@@ -49,7 +52,29 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             };
             _schoolDbContext.Students.Add(studentData);
             var result= await _schoolDbContext.SaveChangesAsync();
+
             return studentData;
+        }
+
+        public async Task<StudentsWithClassDto> GetStudentsWithClass(int studentId)
+        {
+            var studentWithClassroomRecord = await (from student in _schoolDbContext.Students
+                                                    join classRoomStudent in _schoolDbContext.ClassroomStudents
+                                                    on student.StudentId equals classRoomStudent.StudentId
+                                                    join classRoom in _schoolDbContext.Classrooms
+                                                    on classRoomStudent.ClassroomId equals classRoom.ClassroomId
+                                                    join grade in _schoolDbContext.Grades
+                                                    on classRoom.GradeId equals grade.GradeId
+                                                    where student.StudentId == studentId
+                                                    select new StudentsWithClassDto
+                                                    {
+                                                        Fname = student.Fname,
+                                                        Lname = student.Lname,
+                                                        GradeName = grade.Name,
+                                                        ClassroomId = classRoom.ClassroomId,
+                                                    }).FirstOrDefaultAsync();
+              return studentWithClassroomRecord;
+           
         }
         public async Task<Student> UpdateAsync(int studentId,Student student)
         {

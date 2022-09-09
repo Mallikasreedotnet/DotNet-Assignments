@@ -26,7 +26,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         public async Task<Classroom> GetClassroomAsync(int classroomId)
         {
             var query = "Select * from Classroom where classroomId=@ClassroomId";
-            return (await _dbconnection.QueryAsync<Classroom>(query, new { classroomId })).FirstOrDefault();
+            return (await _dbconnection.QueryFirstOrDefaultAsync<Classroom>(query, new { classroomId }));
         }
 
         public async Task<Classroom> CreateClassroomAsync(Classroom classroom)

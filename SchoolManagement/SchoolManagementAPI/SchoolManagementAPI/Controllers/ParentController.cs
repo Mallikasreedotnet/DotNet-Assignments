@@ -36,7 +36,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Get Parent/{id}
-        [Route("controller/{id}")]
+        [Route("{id}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> Get(int id)
@@ -62,7 +62,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Put Parent/{id}
-        [Route("controller/{id}")]
+        [Route("{id}")]
         [HttpPut]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
        
@@ -84,7 +84,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Delete Parent/{id}
-        [Route("controller/{id}")]
+        [Route("{id}")]
         [HttpDelete]
         [ApiConventionMethod(typeof(CustomApiConventions),nameof(CustomApiConventions.Delete))]
         public async Task<ActionResult> Delete(int id)

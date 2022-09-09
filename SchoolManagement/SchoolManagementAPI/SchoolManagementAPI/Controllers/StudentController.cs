@@ -35,7 +35,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Get Student/{id}
-        [Route("controller/{id}")]
+        [Route("{id}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> Get(int id)
@@ -46,6 +46,20 @@ namespace SchoolManagementAPI.Controllers
                     return NotFound();
                 return Ok(result);
         }
+
+
+        // Get Student id with class id
+        [Route("/StudentClass{studentId}")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public async Task<ActionResult> GetStudentAndClassId(int studentId)
+        {
+            var result = await _student.GetStudentsWithClass(studentId);
+            if (result is null)
+                return NotFound();
+            return Ok(result);
+        }
+
 
         // Post Student
         [Route("")]
@@ -61,7 +75,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Put Student/{id}
-        [Route("controller/{id}")]
+        [Route("{id}")]
         [HttpPut]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
         public async Task<ActionResult> Put(int id, [FromBody] StudentVm studentVm)
@@ -76,11 +90,10 @@ namespace SchoolManagementAPI.Controllers
             if (result is null)
                 return NotFound();
             return Ok(result);
-           
         }
 
         // Delete Student/{id}
-        [Route("controller/{id}")]
+        [Route("{id}")]
         [HttpDelete]
         [ApiConventionMethod(typeof(CustomApiConventions), nameof(CustomApiConventions.Delete))]
         public async Task<ActionResult> Delete(int id)

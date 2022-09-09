@@ -1,4 +1,5 @@
-﻿using SchoolManagement.Core.Entities;
+﻿using SchoolManagement.Core.Dtos;
+using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
 {
@@ -9,5 +10,6 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
         Task<Teacher> CreateTeacherAsync(Teacher teacher);
         Task<Teacher> UpdateAsync(int teacherId, Teacher teacher);
         Task<Teacher> DeleteAsync(int teacherId);
+        Task<ClassroomDto> GetTeacherWithClass(int teacherId);
     }
 }

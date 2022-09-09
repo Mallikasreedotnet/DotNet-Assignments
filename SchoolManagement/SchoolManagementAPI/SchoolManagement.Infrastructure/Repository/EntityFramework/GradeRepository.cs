@@ -28,7 +28,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         public async Task<Grade> GetGradeAsync(int gradeId)
         {
             var query = "Select * from Grade where gradeId=@gradeId";
-            return (await _dbconnection.QueryAsync<Grade>(query, new { gradeId })).FirstOrDefault();
+            return (await _dbconnection.QueryFirstOrDefaultAsync<Grade>(query, new { gradeId }));
         }
 
         public async Task<Grade> CreateGradeAsync(Grade grade)

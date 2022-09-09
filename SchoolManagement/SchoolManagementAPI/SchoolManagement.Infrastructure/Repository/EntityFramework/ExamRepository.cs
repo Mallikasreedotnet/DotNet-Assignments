@@ -66,7 +66,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         public async Task<ExamType> GetExamTypeAsync(int examTypeId)
         {
             var query = "Select * from ExamType where examTypeId=@ExamTypeId";
-            return (await _dbconnection.QueryAsync<ExamType>(query, new { examTypeId })).FirstOrDefault();
+            return (await _dbconnection.QueryFirstOrDefaultAsync<ExamType>(query, new { examTypeId }));
         }
 
         public async Task<ExamType> CreateExamTypeAsync(ExamType examType)
