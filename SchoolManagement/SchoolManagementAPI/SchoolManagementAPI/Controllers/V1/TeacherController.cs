@@ -4,9 +4,10 @@ using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.ViewModel;
 
-namespace SchoolManagementAPI.Controllers
+namespace SchoolManagementAPI.Controllers.V1
 {
-
+    [ApiVersion("1.0")]
+    [ApiVersion("1.1")]
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class TeacherController: ApiControllerBase
     {
@@ -21,7 +22,8 @@ namespace SchoolManagementAPI.Controllers
             _logger = logger;   
         }
 
-        // Get Teacher
+        // Get Teachers
+        [MapToApiVersion("1.0")]
         [Route("")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
@@ -34,7 +36,19 @@ namespace SchoolManagementAPI.Controllers
             return Ok(result);
         }
 
+        // Get Teachers
+        [MapToApiVersion("1.1")]
+        [Route("")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public ActionResult<string> GetDataFromNewVersion()
+        {
+            _logger.LogInformation("Getting sample text from version 2 API");
+            return Ok("Sample Text from V1.1 API");
+        }
+
         // Get Teacher/{id}
+        [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
@@ -49,6 +63,7 @@ namespace SchoolManagementAPI.Controllers
 
 
         // Get Teacher id with classroom
+        [MapToApiVersion("1.0")]
         [Route("/TeacherClass{teacherId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
@@ -62,6 +77,7 @@ namespace SchoolManagementAPI.Controllers
 
 
         // Post Teacher
+        [MapToApiVersion("1.0")]
         [Route("")]
         [HttpPost]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
@@ -71,10 +87,10 @@ namespace SchoolManagementAPI.Controllers
             var teacherData=_mapper.Map<TeacherVm,Teacher>(teacherVm);
             var result = await _teacher.CreateTeacherAsync(teacherData);
             return Ok(result);
-            // return Ok(await _teacher.CreateTeacherAsync(teacherData)); ;
         }
 
         // Put Teacher/{id}
+        [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpPut]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
@@ -94,6 +110,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Delete Teacher/{id}
+        [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpDelete]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Delete))]

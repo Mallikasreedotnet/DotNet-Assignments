@@ -6,8 +6,10 @@ using SchoolManagement.Infrastructure.Repository.EntityFramework;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
 
-namespace SchoolManagementAPI.Controllers
+namespace SchoolManagementAPI.Controllers.V1
 {
+    [ApiVersion("1.0")]
+    [ApiVersion("1.1")]
     public class ExamController : ApiControllerBase
     {
         private readonly IExamRepository _examRepository;
@@ -22,6 +24,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Get Exam
+        [MapToApiVersion("1.0")]
         [Route("")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
@@ -34,7 +37,19 @@ namespace SchoolManagementAPI.Controllers
             return Ok(result);
         }
 
+        // Get Exam
+        [MapToApiVersion("1.1")]
+        [Route("")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public ActionResult<string> GetDataFromNewVersion()
+        {
+            _logger.LogInformation("Getting sample text from version 2 API");
+            return Ok("Sample Text from V1.1 API");
+        }
+
         // Get Exam {id}
+        [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
@@ -48,6 +63,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Post Exam
+        [MapToApiVersion("1.0")]
         [Route("")]
         [HttpPost]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
@@ -60,6 +76,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Put Exam {id}
+        [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpPut]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
@@ -81,6 +98,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Delete Exam {id}
+        [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpDelete]
         [ApiConventionMethod(typeof(CustomApiConventions), nameof(CustomApiConventions.Delete))]
@@ -98,6 +116,8 @@ namespace SchoolManagementAPI.Controllers
         }
 
 
+        // Get ExamTypes
+        [MapToApiVersion("1.0")]
         [Route("type")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
@@ -110,7 +130,19 @@ namespace SchoolManagementAPI.Controllers
             return Ok(result);
         }
 
+        // Get ExamTypes
+        [MapToApiVersion("1.1")]
+        [Route("type")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public ActionResult<string> GetDataFromNewVersions()
+        {
+            _logger.LogInformation("Getting sample text from version 2 API");
+            return Ok("Sample Text from V1.1 API");
+        }
+
         // Get ExamType {id}
+        [MapToApiVersion("1.0")]
         [HttpGet]
         [Route("type/{id}")]       
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
@@ -124,6 +156,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Post ExamType
+        [MapToApiVersion("1.0")]
         [Route("type")]
         [HttpPost]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
@@ -135,7 +168,8 @@ namespace SchoolManagementAPI.Controllers
             return Ok(result);
         }
 
-        //// Put ExamType {id}
+        // Put ExamType {id}
+        [MapToApiVersion("1.0")]
         [HttpPut]
         [Route("type/{id}")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
@@ -158,6 +192,7 @@ namespace SchoolManagementAPI.Controllers
 
 
         // Delete ExamType {id}
+        [MapToApiVersion("1.0")]
         [Route("type/{id}")]
         [HttpDelete]
         [ApiConventionMethod(typeof(CustomApiConventions), nameof(CustomApiConventions.Delete))]

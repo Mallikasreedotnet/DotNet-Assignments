@@ -6,10 +6,13 @@ using System.Threading.Tasks;
 
 namespace SchoolManagement.Core.Dtos
 {
-    public class ParentDto
+    public class ExamDto
     {
-        public int StudentId { get; set; }
+        public string Name { get; set; } = null!;
         public string Fname { get; set; } = null!;
-        public string? Lname { get; set; }
+        public string? Marks { get; set; }
+        public int courseId { get; set; } 
+
+
     }
 }

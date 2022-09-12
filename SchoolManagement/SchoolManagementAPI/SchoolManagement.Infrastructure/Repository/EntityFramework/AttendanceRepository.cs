@@ -31,13 +31,6 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Attendance> CreateAttendanceAsync(Attendance attendance)
         {
-            //var attendanceRecord = new Attendance()
-            //{
-            //    Date = DateTime.Now,
-            //    Remark = attendance.Remark,
-            //    Status = attendance.Status,
-            //    StudentId = attendance.StudentId
-            //};
             attendance.Date = DateTime.Now;
             _schoolDbContext.Attendances.Add(attendance);
             await _schoolDbContext.SaveChangesAsync();

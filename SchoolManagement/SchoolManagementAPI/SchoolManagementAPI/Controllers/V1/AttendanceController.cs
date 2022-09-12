@@ -5,8 +5,10 @@ using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
 
-namespace SchoolManagementAPI.Controllers
+namespace SchoolManagementAPI.Controllers.V1
 {
+    [ApiVersion("1.0")]
+    [ApiVersion("1.1")]
     public class AttendanceController : ApiControllerBase
     {
         private readonly IAttendanceRepository _attendanceRepository;
@@ -21,6 +23,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Get Attendances
+        [MapToApiVersion("1.0")]
         [Route("")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
@@ -33,7 +36,19 @@ namespace SchoolManagementAPI.Controllers
             return Ok(result);
         }
 
+        // Get Attendences
+        [MapToApiVersion("1.1")]
+        [Route("")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public ActionResult<string> GetDataFromNewVersion()
+        {
+            _logger.LogInformation("Getting sample text from version 2 API");
+            return Ok("Sample Text from V1.1 API");
+        }
+
         // Get Classroom {id}
+        [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
@@ -47,6 +62,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Post Attendance
+        [MapToApiVersion("1.0")]
         [Route("")]
         [HttpPost]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
@@ -59,6 +75,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Put Attendance {id}
+        [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpPut]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
@@ -80,6 +97,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Delete Attendance {id}
+        [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpDelete]
         [ApiConventionMethod(typeof(CustomApiConventions), nameof(CustomApiConventions.Delete))]
@@ -95,8 +113,5 @@ namespace SchoolManagementAPI.Controllers
                 return NotFound();
             return Ok(result);
         }
-
-
-
     }
 }

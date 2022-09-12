@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
 using System.Data;
@@ -29,6 +31,21 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             var query = "Select * from Parent where ParentId=@parentId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<Parent>(query, new { parentId }));
           
+        }
+
+        public async Task<ParentDto> GetParentWithStudent(int parentId)
+        {
+            var parentWithStudents = await(from parent in _schoolDbContext.Parents.Include(p=>p.ParentId)
+                                     join student in _schoolDbContext.Students
+                                     on parent.ParentId equals student.ParentId
+                                     where parent.ParentId == parentId 
+                                     select new ParentDto
+                                     {
+                                         StudentId = student.StudentId,
+                                         Lname = student.Lname,
+                                         Fname = student.Fname,
+                                     }).FirstOrDefaultAsync();
+            return parentWithStudents;
         }
 
         public async Task<Parent> CreateParentAsync(Parent parent)

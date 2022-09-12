@@ -52,7 +52,6 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             };
             _schoolDbContext.Students.Add(studentData);
             var result= await _schoolDbContext.SaveChangesAsync();
-
             return studentData;
         }
 

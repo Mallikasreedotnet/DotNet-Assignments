@@ -5,9 +5,10 @@ using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
 
-namespace SchoolManagementAPI.Controllers
+namespace SchoolManagementAPI.Controllers.V1
 {
-
+    [ApiVersion("1.0")]
+    [ApiVersion("1.1")]
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class ParentController : ApiControllerBase
     {
@@ -23,6 +24,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // GET Parent
+        [MapToApiVersion("1.0")]
         [Route("")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions),nameof(DefaultApiConventions.Get))]
@@ -35,7 +37,20 @@ namespace SchoolManagementAPI.Controllers
             return Ok(result);
         }
 
+
+        // Get Parents
+        [MapToApiVersion("1.1")]
+        [Route("")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public ActionResult<string> GetDataFromNewVersion()
+        {
+            _logger.LogInformation("Getting sample text from version 2 API");
+            return Ok("Sample Text from V1.1 API");
+        }
+
         // Get Parent/{id}
+        [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
@@ -48,7 +63,21 @@ namespace SchoolManagementAPI.Controllers
             return Ok(result);
         }
 
+        // Get Parent with student
+        [MapToApiVersion("1.0")]
+        [Route("/ParentClass{parentId}")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public async Task<ActionResult> GetParentAndStudent(int parentId)
+        {
+            var result = await _parent.GetParentWithStudent(parentId);
+            if (result is null)
+                return NotFound();
+            return Ok(result);
+        }
+
         // Post Parent
+        [MapToApiVersion("1.0")]
         [Route("")]
         [HttpPost]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
@@ -58,14 +87,14 @@ namespace SchoolManagementAPI.Controllers
             var Data=_mapper.Map<ParentVm,Parent>(parentVm);
             var result = await _parent.CreateParentAsync(Data);
             return Ok(result);
-           // return Ok(await _parent.CreateParentAsync(Data));
+        
         }
 
         // Put Parent/{id}
+        [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpPut]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
-       
         public async Task<ActionResult> Put(int id, [FromBody] ParentVm parentVm)
         {
             if (id <= 0 )
@@ -84,6 +113,7 @@ namespace SchoolManagementAPI.Controllers
         }
 
         // Delete Parent/{id}
+        [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpDelete]
         [ApiConventionMethod(typeof(CustomApiConventions),nameof(CustomApiConventions.Delete))]

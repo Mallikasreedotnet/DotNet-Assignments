@@ -18,10 +18,9 @@ namespace SchoolManagement.Core.Entities
         public DateTime LastLoginDate { get; set; }
         public string LastLoginIp { get; set; } = null!;
         public DateTime? DateOfJoin { get; set; }
-      //  public int? ClassroomId { get; set; }
-
+     
         public virtual Parent Parent { get; set; } = null!;
-        //public virtual Classroom Classroom { get; set; } = null!;
+        
 
     }
 }
