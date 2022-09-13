@@ -37,16 +37,11 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return attendance;
         }
 
-        public async Task<Attendance> UpdateAttendanceAsync(int attendanceId, Attendance attendance)
+        public async Task<Attendance> UpdateAttendanceAsync( Attendance attendance)
         {
-            var attendanceToBeUpdated = await GetAttendanceAsync(attendanceId);
-            attendanceToBeUpdated.StudentId = attendance.StudentId;
-            attendanceToBeUpdated.Date = attendance.Date;
-            attendanceToBeUpdated.Status = attendance.Status;
-            attendanceToBeUpdated.Remark = attendance.Remark;
-            _schoolDbContext.Attendances.Update(attendanceToBeUpdated);
+            _schoolDbContext.Attendances.Update(attendance);
             await _schoolDbContext.SaveChangesAsync();
-            return attendanceToBeUpdated;
+            return attendance;
         }
 
         public async Task<Attendance> DeleteAsync(int attendanceId)

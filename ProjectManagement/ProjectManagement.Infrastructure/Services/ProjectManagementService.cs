@@ -3,7 +3,7 @@ using ProjectManagement.Core.Entities;
 using ProjectManagement.Core.Model;
 using System.Collections;
 using static ProjectManagement.Infrastructure.Data.ProjectManagementDataInMemory;
-using Serilog;
+//using Serilog;
 
 namespace ProjectManagement.Infrastructure.Services
 {

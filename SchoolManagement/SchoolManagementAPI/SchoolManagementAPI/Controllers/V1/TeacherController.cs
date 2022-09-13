@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.ViewModel;
 
@@ -11,13 +12,13 @@ namespace SchoolManagementAPI.Controllers.V1
     [ApiConventionType(typeof(DefaultApiConventions))]
     public class TeacherController: ApiControllerBase
     {
-        private readonly ITeacherRepository _teacher;
+        private readonly ITeacherService _teacherService;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
 
-        public TeacherController(ITeacherRepository teacher, IMapper mapper, ILogger<TeacherController> logger)
+        public TeacherController(ITeacherService teacherService, IMapper mapper, ILogger<TeacherController> logger)
         {
-            _teacher = teacher;
+            _teacherService = teacherService;
             _mapper = mapper;
             _logger = logger;   
         }
@@ -30,7 +31,7 @@ namespace SchoolManagementAPI.Controllers.V1
         public async Task<ActionResult> Get()
         {
             _logger.LogInformation("Getting list of all teachers");
-            var result = await _teacher.GetTeacherAsync();
+            var result = await _teacherService.GetTeacherAsync();
             if (!result.Any())
                 return NotFound();
             return Ok(result);
@@ -55,7 +56,7 @@ namespace SchoolManagementAPI.Controllers.V1
         public async Task<ActionResult> Get(int id)
         {
             _logger.LogInformation("Getting list of teacher by ID:{id}", id);
-            var result = await _teacher.GetTeacherAsync(id);
+            var result = await _teacherService.GetTeacherAsync(id);
             if (result is null)
                 return NotFound();
             return Ok(result);
@@ -69,7 +70,7 @@ namespace SchoolManagementAPI.Controllers.V1
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> GetTeacherAndClassroom(int teacherId)
         {
-            var result = await _teacher.GetTeacherWithClass(teacherId);
+            var result = await _teacherService.GetTeacherWithClass(teacherId);
             if (result is null)
                 return NotFound();
             return Ok(result);
@@ -85,7 +86,7 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Add new data for teacher");
             var teacherData=_mapper.Map<TeacherVm,Teacher>(teacherVm);
-            var result = await _teacher.CreateTeacherAsync(teacherData);
+            var result = await _teacherService.CreateTeacherAsync(teacherData);
             return Ok(result);
         }
 
@@ -102,7 +103,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 return BadRequest();
             }
             var teacherData=_mapper.Map<TeacherVm,Teacher>(teacherVm);
-            var result = await _teacher.UpdateAsync(id, teacherData);
+            var result = await _teacherService.UpdateAsync(id, teacherData);
             if (result is null)
                 return NotFound();
             return Ok(result);
@@ -121,7 +122,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _teacher.DeleteAsync(id);
+            var result = await _teacherService.DeleteAsync(id);
             if (result is null)
                 return NotFound();
             return Ok(result);

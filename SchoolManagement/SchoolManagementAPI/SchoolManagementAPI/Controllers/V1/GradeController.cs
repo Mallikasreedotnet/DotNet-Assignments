@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
@@ -12,12 +13,12 @@ namespace SchoolManagementAPI.Controllers.V1
     [ApiVersion("1.1")]
     public class GradeController : ApiControllerBase
     {
-        private readonly IGradeRepository _gradeRepository;
+        private readonly IGradeService _gradeService;
         private readonly IMapper _mapper;
         private readonly ILogger _logger;
-        public GradeController(IGradeRepository gradeRepository, IMapper mapper, ILogger<GradeController> logger)
+        public GradeController(IGradeService gradeSrevice, IMapper mapper, ILogger<GradeController> logger)
         {
-            _gradeRepository = gradeRepository;
+            _gradeService = gradeSrevice;
             _mapper = mapper;
             _logger = logger;
         }
@@ -30,7 +31,7 @@ namespace SchoolManagementAPI.Controllers.V1
         public async Task<ActionResult> Get()
         {
             _logger.LogInformation("Getting list of all grades");
-            var result = await _gradeRepository.GetGradeAsync();
+            var result = await _gradeService.GetGradeAsync();
             //if (!result.Any())
             //    return NotFound();
             return Ok(result);
@@ -56,7 +57,7 @@ namespace SchoolManagementAPI.Controllers.V1
         public async Task<ActionResult> Get(int id)
         {
             _logger.LogInformation("Getting list of grade by ID:{id}", id);
-            var result = await _gradeRepository.GetGradeAsync(id);
+            var result = await _gradeService.GetGradeAsync(id);
             if (result == null)
                 return NotFound();
             return Ok(result);
@@ -71,7 +72,7 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Add new data for grades");
             var Data = _mapper.Map<GradeVm, Grade>(gradeVm);
-            var result = await _gradeRepository.CreateGradeAsync(Data);
+            var result = await _gradeService.CreateGradeAsync(Data);
             return Ok(result);
         }
 
@@ -88,7 +89,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 return BadRequest();
             }
             var data = _mapper.Map<GradeVm, Grade>(gradeVm);
-            var result = await _gradeRepository.UpdateGradeAsync(id, data);
+            var result = await _gradeService.UpdateGradeAsync(id, data);
             if (result is null)
             {
                 return NotFound();
@@ -96,7 +97,6 @@ namespace SchoolManagementAPI.Controllers.V1
             }
             return Ok(result);
         }
-
 
         // Delete Grade {id}
         [MapToApiVersion("1.0")]
@@ -110,7 +110,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _gradeRepository.DeleteAsync(id);
+            var result = await _gradeService.DeleteAsync(id);
             if (result is null)
                 return NotFound();
             return Ok(result);

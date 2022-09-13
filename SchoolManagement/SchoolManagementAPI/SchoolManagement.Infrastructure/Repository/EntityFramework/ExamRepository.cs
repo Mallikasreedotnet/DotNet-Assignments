@@ -26,7 +26,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         public async Task<Exam> GetExamAsync(int examId)
         {
             var query = "Select * from Exam where examId=@ExamId";
-            return (await _dbconnection.QueryAsync<Exam>(query, new { examId })).FirstOrDefault();
+            return (await _dbconnection.QueryFirstOrDefaultAsync<Exam>(query, new { examId }));
         }
 
         public async Task<Exam> CreateExamAsync(Exam exam)
@@ -36,20 +36,16 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return exam;
         }
 
-        public async Task<Exam> UpdateExamAsync(int examId, Exam exam)
+        public async Task<Exam> UpdateExamAsync(Exam exam)
         {
-            var examToBeUpdated = await GetExamAsync(examId);
-            examToBeUpdated.StartDate = exam.StartDate;
-            examToBeUpdated.Name= exam.Name;
-            examToBeUpdated.ExamTypeId= exam.ExamTypeId;
-            _schoolDbContext.Exams.Update(examToBeUpdated);
+            _schoolDbContext.Exams.Update(exam);
             await _schoolDbContext.SaveChangesAsync();
-            return examToBeUpdated;
+            return exam;
         }
 
-        public async Task<Exam> DeleteAsync(int classroomId)
+        public async Task<Exam> DeleteAsync(int ExamId)
         {
-            var deletedToBeExam = await GetExamAsync(classroomId);
+            var deletedToBeExam = await GetExamAsync(ExamId);
             _schoolDbContext.Exams.Remove(deletedToBeExam);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeExam;
@@ -76,14 +72,11 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return examType;
         }
 
-        public async Task<ExamType> UpdateExamTypeAsync(int examTypeId, ExamType examType)
+        public async Task<ExamType> UpdateExamTypeAsync(ExamType examType)
         {
-            var examTypeToBeUpdated = await GetExamTypeAsync(examTypeId);
-            examTypeToBeUpdated.Description = examType.Description;
-            examTypeToBeUpdated.Name = examType.Name;
-            _schoolDbContext.ExamTypes.Update(examTypeToBeUpdated);
+            _schoolDbContext.ExamTypes.Update(examType);
             await _schoolDbContext.SaveChangesAsync();
-            return examTypeToBeUpdated;
+            return examType;
         }
 
         public async Task<ExamType> DeleteExamTypeAsync(int examTypeId)

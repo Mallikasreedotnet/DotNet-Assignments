@@ -13,7 +13,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
     {
         private readonly SchoolManagementDbContext _schoolDbContext;
         private readonly IDbConnection _dbconnection;
-        public ParentRepository(SchoolManagementDbContext schoolDbContext,IDbConnection dbconnection)
+        public ParentRepository(SchoolManagementDbContext schoolDbContext, IDbConnection dbconnection)
         {
             _schoolDbContext = schoolDbContext;
             _dbconnection = dbconnection;
@@ -30,21 +30,21 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         {
             var query = "Select * from Parent where ParentId=@parentId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<Parent>(query, new { parentId }));
-          
+
         }
 
-        public async Task<ParentDto> GetParentWithStudent(int parentId)
+        public async Task<IEnumerable<ParentDto>> GetParentWithStudent(int parentId)
         {
-            var parentWithStudents = await(from parent in _schoolDbContext.Parents.Include(p=>p.ParentId)
-                                     join student in _schoolDbContext.Students
-                                     on parent.ParentId equals student.ParentId
-                                     where parent.ParentId == parentId 
-                                     select new ParentDto
-                                     {
-                                         StudentId = student.StudentId,
-                                         Lname = student.Lname,
-                                         Fname = student.Fname,
-                                     }).FirstOrDefaultAsync();
+            var parentWithStudents = await (from parent in _schoolDbContext.Parents
+                                            join student in _schoolDbContext.Students
+                                            on parent.ParentId equals student.ParentId
+                                            where parent.ParentId == parentId
+                                            select new ParentDto
+                                            {
+                                                StudentId = student.StudentId,
+                                                Lname = student.Lname,
+                                                Fname = student.Fname,
+                                            }).ToListAsync();
             return parentWithStudents;
         }
 
@@ -55,23 +55,13 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return parent;
         }
 
-        public async Task<Parent> UpdateParentAsync(int parentId, Parent parent)
+        public async Task<Parent> UpdateParentAsync(Parent parent)
         {
-            var parentToBeUpdated = await GetParentAsync(parentId);
-            parentToBeUpdated.Email = parent.Email;
-            parentToBeUpdated.Password = parent.Password;
-            parentToBeUpdated.Fname = parent.Fname;
-            parentToBeUpdated.Lname = parent.Lname;
-            parentToBeUpdated.Dob = parent.Dob;
-            parentToBeUpdated.Phone = parent.Phone;
-            parentToBeUpdated.Mobile = parent.Mobile;
-            parentToBeUpdated.Status = parent.Status;
-            parentToBeUpdated.LastLoginDate = parent.LastLoginDate;
-            parentToBeUpdated.LastLoginIp = parent.LastLoginIp;
-            _schoolDbContext.Parents.Update(parentToBeUpdated);
+            _schoolDbContext.Parents.Update(parent);
             await _schoolDbContext.SaveChangesAsync();
-            return parentToBeUpdated;
+            return parent;
         }
+
         public async Task<Parent> DeleteAsync(int parentId)
         {
             var deletedToBeParent = await GetParentAsync(parentId);

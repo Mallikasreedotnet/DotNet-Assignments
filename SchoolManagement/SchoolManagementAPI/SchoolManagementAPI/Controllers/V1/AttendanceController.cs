@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
@@ -11,13 +12,13 @@ namespace SchoolManagementAPI.Controllers.V1
     [ApiVersion("1.1")]
     public class AttendanceController : ApiControllerBase
     {
-        private readonly IAttendanceRepository _attendanceRepository;
+        private readonly IAttendanceService _attendanceService;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
 
-        public AttendanceController(IAttendanceRepository classroomRepository, ILogger<AttendanceController> logger, IMapper mapper)
+        public AttendanceController(IAttendanceService attendanceService, ILogger<AttendanceController> logger, IMapper mapper)
         {
-            _attendanceRepository = classroomRepository;
+            _attendanceService = attendanceService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -30,7 +31,7 @@ namespace SchoolManagementAPI.Controllers.V1
         public async Task<ActionResult> Get()
         {
             _logger.LogInformation("Getting list of all attendances");
-            var result = await _attendanceRepository.GetAttendanceAsync();
+            var result = await _attendanceService.GetAttendanceAsync();
             //if (!result.Any())
             //    return NotFound();
             return Ok(result);
@@ -55,7 +56,7 @@ namespace SchoolManagementAPI.Controllers.V1
         public async Task<ActionResult> Get(int id)
         {
             _logger.LogInformation("Getting list of Attendance by ID:{id}", id);
-            var result = await _attendanceRepository.GetAttendanceAsync(id);
+            var result = await _attendanceService.GetAttendanceAsync(id);
             if (result == null)
                 return NotFound();
             return Ok(result);
@@ -70,7 +71,7 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Add new data for attendance");
             var data = _mapper.Map<AttendanceVm, Attendance>(attendanceVm);
-            var result = await _attendanceRepository.CreateAttendanceAsync(data);
+            var result = await _attendanceService.CreateAttendanceAsync(data);
             return Ok(result);
         }
 
@@ -87,7 +88,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 return BadRequest();
             }
             var data = _mapper.Map<AttendanceVm, Attendance>(attendanceVm);
-            var result = await _attendanceRepository.UpdateAttendanceAsync(id, data);
+            var result = await _attendanceService.UpdateAttendanceAsync(id,data);
             if (result is null)
             {
                 return NotFound();
@@ -108,7 +109,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _attendanceRepository.DeleteAsync(id);
+            var result = await _attendanceService.DeleteAsync(id);
             if (result is null)
                 return NotFound();
             return Ok(result);

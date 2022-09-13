@@ -43,48 +43,22 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                                                  Fname=teacher.Fname,
                                                  Lname=teacher.Lname,
                                                  Section=classroom.Section,
-                                                 ClassroomId = classroom.ClassroomId,
-                                             }).FirstOrDefaultAsync();
+                                             }).FirstAsync();
             return teacherWithClassroomRecord;
         }
 
         public async Task<Teacher> CreateTeacherAsync(Teacher teacher)
         {
-            var teacherData = new Teacher()
-            {
-                Dob = teacher.Dob,
-                Email = teacher.Email,
-                Fname = teacher.Fname,
-                LastLoginDate = teacher.LastLoginDate,
-                LastLoginIp = teacher.LastLoginIp,
-                Lname = teacher.Lname,
-                Mobile = teacher.Mobile,
-                Password = teacher.Password,
-                Phone = teacher.Phone,
-                Status = teacher.Status,
-                TeacherId = teacher.TeacherId
-            };
-            _schoolDbContext.Teachers.Add(teacherData);
+            _schoolDbContext.Teachers.Add(teacher);
             await _schoolDbContext.SaveChangesAsync();
-            return teacherData;
+            return teacher;
         }
 
-        public async Task<Teacher> UpdateAsync(int teacherId,Teacher teacher)
+        public async Task<Teacher> UpdateAsync(Teacher teacher)
         {
-            var updatedToBeTeacher=await GetTeacherAsync(teacherId);
-            updatedToBeTeacher.Email = teacher.Email;
-            updatedToBeTeacher.Password = teacher.Password;
-            updatedToBeTeacher.Fname = teacher.Fname;
-            updatedToBeTeacher.Lname = teacher.Lname;
-            updatedToBeTeacher.Dob=teacher.Dob;
-            updatedToBeTeacher.Phone = teacher.Phone;
-            updatedToBeTeacher.Mobile = teacher.Mobile;
-            updatedToBeTeacher.Status = teacher.Status; 
-            updatedToBeTeacher.LastLoginDate = teacher.LastLoginDate;
-            updatedToBeTeacher.LastLoginIp = teacher.LastLoginIp;
-            _schoolDbContext.Teachers.Update(updatedToBeTeacher);
+            _schoolDbContext.Teachers.Update(teacher);
             await _schoolDbContext.SaveChangesAsync();
-            return updatedToBeTeacher;
+            return teacher;
         }
 
         public async Task<Teacher> DeleteAsync(int teacherId)

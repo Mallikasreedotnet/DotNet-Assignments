@@ -36,18 +36,11 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return classroom;
         }
 
-        public async Task<Classroom> UpdateClassroomAsync(int classroomId, Classroom classroom)
+        public async Task<Classroom> UpdateClassroomAsync( Classroom classroom)
         {
-            var classroomToBeUpdated = await GetClassroomAsync(classroomId);
-            classroomToBeUpdated.Section = classroom.Section;
-            classroomToBeUpdated.TeacherId= classroom.TeacherId;
-            classroomToBeUpdated.Status= classroom.Status;
-            classroomToBeUpdated.GradeId= classroom.GradeId;
-            classroomToBeUpdated.Year= classroom.Year;
-            classroomToBeUpdated.Remarks= classroom.Remarks;
-            _schoolDbContext.Classrooms.Update(classroomToBeUpdated);
+            _schoolDbContext.Classrooms.Update(classroom);
             await _schoolDbContext.SaveChangesAsync();
-            return classroomToBeUpdated;
+            return classroom;
         }
 
         public async Task<Classroom> DeleteAsync(int classroomId)

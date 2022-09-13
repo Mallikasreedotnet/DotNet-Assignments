@@ -12,7 +12,6 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         private readonly SchoolManagementDbContext _schoolDbContext;
         private readonly IDbConnection _dbconnection;
         
-
         public GradeRepository(SchoolManagementDbContext schoolDbContext, IDbConnection dbConnection)
         {
             _schoolDbContext = schoolDbContext;
@@ -38,14 +37,11 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return grade;
         }
 
-        public async Task<Grade> UpdateGradeAsync(int gradeId,Grade grade)
+        public async Task<Grade> UpdateGradeAsync(Grade grade)
         {
-            var gradeToBeUpdated = await GetGradeAsync(gradeId);
-            gradeToBeUpdated.Description = grade.Description;
-            gradeToBeUpdated.Name = grade.Name;
-            _schoolDbContext.Grades.Update(gradeToBeUpdated);
+            _schoolDbContext.Grades.Update(grade);
             await _schoolDbContext.SaveChangesAsync();
-            return gradeToBeUpdated;
+            return grade;
         }
 
         public async Task<Grade> DeleteAsync(int gradeId)

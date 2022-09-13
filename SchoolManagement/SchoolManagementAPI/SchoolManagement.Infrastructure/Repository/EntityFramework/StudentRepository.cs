@@ -34,25 +34,25 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Student> CreateStudentAsync(Student student)
         {
-            var studentData = new Student
-            {
-                StudentId = student.StudentId,
-                Email = student.Email,
-                Password = student.Password,
-                Fname = student.Fname,
-                Lname = student.Lname,
-                Dob = student.Dob,
-                Status = student.Status,
-                Phone = student.Phone,
-                Mobile = student.Mobile,
-                ParentId = student.ParentId,
-                DateOfJoin = student.DateOfJoin,
-                LastLoginDate = student.LastLoginDate,
-                LastLoginIp = student.LastLoginIp,
-            };
-            _schoolDbContext.Students.Add(studentData);
-            var result= await _schoolDbContext.SaveChangesAsync();
-            return studentData;
+            //var studentData = new Student
+            //{
+            //    StudentId = student.StudentId,
+            //    Email = student.Email,
+            //    Password = student.Password,
+            //    Fname = student.Fname,
+            //    Lname = student.Lname,
+            //    Dob = student.Dob,
+            //    Status = student.Status,
+            //    Phone = student.Phone,
+            //    Mobile = student.Mobile,
+            //    ParentId = student.ParentId,
+            //    DateOfJoin = student.DateOfJoin,
+            //    LastLoginDate = student.LastLoginDate,
+            //    LastLoginIp = student.LastLoginIp,
+            //};
+            _schoolDbContext.Students.Add(student);
+            await _schoolDbContext.SaveChangesAsync();
+            return student;
         }
 
         public async Task<StudentsWithClassDto> GetStudentsWithClass(int studentId)
@@ -71,28 +71,15 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                                                         Lname = student.Lname,
                                                         GradeName = grade.Name,
                                                         ClassroomId = classRoom.ClassroomId,
-                                                    }).FirstOrDefaultAsync();
+                                                    }).FirstAsync();
               return studentWithClassroomRecord;
            
         }
-        public async Task<Student> UpdateAsync(int studentId,Student student)
+        public async Task<Student> UpdateAsync(Student student)
         {
-            var studentToBeUpdated = await GetStudentAsync(studentId);
-            studentToBeUpdated.Email = student.Email;
-            studentToBeUpdated.Password = student.Password;
-            studentToBeUpdated.Fname = student.Fname;
-            studentToBeUpdated.Lname = student.Lname;
-            studentToBeUpdated.Dob = student.Dob;
-            studentToBeUpdated.Phone = student.Phone;
-            studentToBeUpdated.Mobile = student.Mobile;
-            studentToBeUpdated.ParentId = student.ParentId;
-            studentToBeUpdated.DateOfJoin = student.DateOfJoin;
-            studentToBeUpdated.Status = student.Status;
-            studentToBeUpdated.LastLoginDate = student.LastLoginDate;
-            studentToBeUpdated.LastLoginIp = student.LastLoginIp;
-            _schoolDbContext.Students.Update(studentToBeUpdated);
+            _schoolDbContext.Students.Update(student);
             await _schoolDbContext.SaveChangesAsync();
-            return studentToBeUpdated;
+            return student;
         }
 
         public async Task<Student> DeleteAsync(int studentId)

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
@@ -14,23 +15,11 @@ namespace SchoolManagementAPI.Controllers.V2
         private readonly IAttendanceRepository _attendanceRepository;
         private readonly ILogger<AttendanceController> _logger;
         private readonly IMapper _mapper;
-        public AttendanceController(IAttendanceRepository classroomRepository, ILogger<AttendanceController> logger, IMapper mapper)
+        public AttendanceController(IAttendanceRepository attendanceRepository, ILogger<AttendanceController> logger, IMapper mapper)
         {
-            _attendanceRepository = classroomRepository;
+            _attendanceRepository = attendanceRepository;
             _logger = logger;
             _mapper = mapper;   
-        }
-
-        // Get Attendances
-        [MapToApiVersion("2.0")]
-        [Route("")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> Get(string? Fname = null)
-        {
-            _logger.LogInformation("Getting list of all attendances");
-            var result = await _attendanceRepository.GetAttendanceAsync();
-            return Ok(result);
         }
 
         // Get Attendance {id}

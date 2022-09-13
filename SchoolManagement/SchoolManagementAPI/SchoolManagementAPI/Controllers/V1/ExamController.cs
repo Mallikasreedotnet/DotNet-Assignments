@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Repository.EntityFramework;
 using SchoolManagementAPI.Infrastructure.Specs;
@@ -12,13 +13,13 @@ namespace SchoolManagementAPI.Controllers.V1
     [ApiVersion("1.1")]
     public class ExamController : ApiControllerBase
     {
-        private readonly IExamRepository _examRepository;
+        private readonly IExamService _examService;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
 
-        public ExamController(IExamRepository examRepository, ILogger<ExamController> logger, IMapper mapper)
+        public ExamController(IExamService examService, ILogger<ExamController> logger, IMapper mapper)
         {
-            _examRepository = examRepository;
+            _examService = examService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -31,7 +32,7 @@ namespace SchoolManagementAPI.Controllers.V1
         public async Task<ActionResult> Get()
         {
             _logger.LogInformation("Getting list of all Exams");
-            var result = await _examRepository.GetExamAsync();
+            var result = await _examService.GetExamAsync();
             //if (!result.Any())
             //    return NotFound();
             return Ok(result);
@@ -56,7 +57,7 @@ namespace SchoolManagementAPI.Controllers.V1
         public async Task<ActionResult> Get(int id)
         {
             _logger.LogInformation("Getting list of Exam by ID:{id}", id);
-            var result = await _examRepository.GetExamAsync(id);
+            var result = await _examService.GetExamAsync(id);
             if (result == null)
                 return NotFound();
             return Ok(result);
@@ -71,7 +72,7 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Add new data for Exam");
             var Data = _mapper.Map<ExamVm, Exam>(examVm);
-            var result = await _examRepository.CreateExamAsync(Data);
+            var result = await _examService.CreateExamAsync(Data);
             return Ok(result);
         }
 
@@ -88,7 +89,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 return BadRequest();
             }
             var data = _mapper.Map<ExamVm, Exam>(examVm);
-            var result = await _examRepository.UpdateExamAsync(id, data);
+            var result = await _examService.UpdateExamAsync(id, data);
             if (result is null)
             {
                 return NotFound();
@@ -109,7 +110,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _examRepository.DeleteAsync(id);
+            var result = await _examService.DeleteAsync(id);
             if (result is null)
                 return NotFound();
             return Ok(result);
@@ -124,7 +125,7 @@ namespace SchoolManagementAPI.Controllers.V1
         public async Task<ActionResult> GetExamType()
         {
             _logger.LogInformation("Getting list of all ExamTpye");
-            var result = await _examRepository.GetExamTypeAsync(); ;
+            var result = await _examService.GetExamTypeAsync(); ;
             //if (!result.Any())
             //    return NotFound();
             return Ok(result);
@@ -149,7 +150,7 @@ namespace SchoolManagementAPI.Controllers.V1
         public async Task<ActionResult> GetExamType(int id)
         {
             _logger.LogInformation("Getting list of ExamTpye by ID:{id}", id);
-            var result = await _examRepository.GetExamTypeAsync(id);
+            var result = await _examService.GetExamTypeAsync(id);
             if (result == null)
                 return NotFound();
             return Ok(result);
@@ -164,7 +165,7 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Add new data for courses");
             var Data = _mapper.Map<ExamTypeVm, ExamType>(examTypeVm);
-            var result = await _examRepository.CreateExamTypeAsync(Data);
+            var result = await _examService.CreateExamTypeAsync(Data);
             return Ok(result);
         }
 
@@ -181,7 +182,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 return BadRequest();
             }
             var data = _mapper.Map<ExamTypeVm, ExamType>(examTypeVm);
-            var result = await _examRepository.UpdateExamTypeAsync(id, data);
+            var result = await _examService.UpdateExamTypeAsync(id, data);
             if (result is null)
             {
                 return NotFound();
@@ -189,7 +190,6 @@ namespace SchoolManagementAPI.Controllers.V1
             }
             return Ok(result);
         }
-
 
         // Delete ExamType {id}
         [MapToApiVersion("1.0")]
@@ -203,7 +203,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _examRepository.DeleteExamTypeAsync(id);
+            var result = await _examService.DeleteExamTypeAsync(id);
             if (result is null)
                 return NotFound();
             return Ok(result);

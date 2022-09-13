@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
@@ -11,13 +12,13 @@ namespace SchoolManagementAPI.Controllers.V1
     [ApiVersion("1.1")]
     public class CourseController : ApiControllerBase
     {
-        private readonly ICourseRepository _courseRepository;
+        private readonly ICourseService _courseService;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
 
-        public CourseController(ICourseRepository courseRepository, ILogger<CourseController> logger, IMapper mapper)
+        public CourseController(ICourseService courseService, ILogger<CourseController> logger, IMapper mapper)
         {
-            _courseRepository = courseRepository;
+            _courseService = courseService;
             _mapper = mapper;
             _logger = logger;
         }
@@ -30,7 +31,7 @@ namespace SchoolManagementAPI.Controllers.V1
         public async Task<ActionResult> Get()
         {
             _logger.LogInformation("Getting list of all courses");
-            var result = await _courseRepository.GetCourseAsync();
+            var result = await _courseService.GetCourseAsync();
             //if (!result.Any())
             //    return NotFound();
             return Ok(result);
@@ -55,7 +56,7 @@ namespace SchoolManagementAPI.Controllers.V1
         public async Task<ActionResult> Get(int id)
         {
             _logger.LogInformation("Getting list of course by ID:{id}", id);
-            var result = await _courseRepository.GetCourseAsync(id);
+            var result = await _courseService.GetCourseAsync(id);
             if (result == null)
                 return NotFound();
             return Ok(result);
@@ -70,7 +71,7 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Add new data for courses");
             var Data = _mapper.Map<CourseVm, Course>(courseVm);
-            var result = await _courseRepository.CreateCourseAsync(Data);
+            var result = await _courseService.CreateCourseAsync(Data);
             return Ok(result);
         }
 
@@ -88,7 +89,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 return BadRequest();
             }
             var data = _mapper.Map<CourseVm, Course>(courseVm);
-            var result = await _courseRepository.UpdateCourseAsync(id, data);
+            var result = await _courseService.UpdateCourseAsync(id, data);
             if (result is null)
             {
                 return NotFound();
@@ -110,7 +111,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _courseRepository.DeleteAsync(id);
+            var result = await _courseService.DeleteAsync(id);
             if (result is null)
                 return NotFound();
             return Ok(result);

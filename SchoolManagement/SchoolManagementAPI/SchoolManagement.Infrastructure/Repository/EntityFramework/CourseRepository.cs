@@ -36,15 +36,11 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return course;
         }
 
-        public async Task<Course> UpdateCourseAsync(int courseId, Course course)
+        public async Task<Course> UpdateCourseAsync(Course course)
         {
-            var courseToBeUpdated = await GetCourseAsync(courseId);
-            courseToBeUpdated.Description = course.Description;
-            courseToBeUpdated.Name = course.Name;
-            courseToBeUpdated.GradeId = course.GradeId;
-            _schoolDbContext.Courses.Update(courseToBeUpdated);
+            _schoolDbContext.Courses.Update(course);
             await _schoolDbContext.SaveChangesAsync();
-            return courseToBeUpdated;
+            return course;
         }
 
         public async Task<Course> DeleteAsync(int courseId)
