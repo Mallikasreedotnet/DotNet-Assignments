@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.Infrastructure.Specs;
@@ -32,8 +31,6 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Getting list of all attendances");
             var result = await _attendanceService.GetAttendanceAsync();
-            //if (!result.Any())
-            //    return NotFound();
             return Ok(result);
         }
 
@@ -92,7 +89,6 @@ namespace SchoolManagementAPI.Controllers.V1
             if (result is null)
             {
                 return NotFound();
-                // return NoContent();
             }
             return Ok(result);
         }
@@ -110,6 +106,19 @@ namespace SchoolManagementAPI.Controllers.V1
                 return BadRequest();
             }
             var result = await _attendanceService.DeleteAsync(id);
+            if (result is null)
+                return NotFound();
+            return Ok(result);
+        }
+
+        [MapToApiVersion("1.0")]
+        [Route("StudentWithAttendance/{studentId}")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public async Task<ActionResult> GetStudentAttendanceDetails(int studentId)
+        {
+            _logger.LogInformation("Getting list of student by ID:{id}", studentId);
+            var result = await _attendanceService.GetStudentAttendanceAsync(studentId);
             if (result is null)
                 return NotFound();
             return Ok(result);

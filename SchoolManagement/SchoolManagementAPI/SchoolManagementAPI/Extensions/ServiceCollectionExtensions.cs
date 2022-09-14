@@ -7,6 +7,8 @@ using SchoolManagement.Infrastructure.Repository.EntityFramework;
 using SchoolManagementAPI.Infrastructure.Configuration;
 using System.Data;
 using Microsoft.AspNetCore.Mvc;
+using SchoolManagement.Core.Contracts.Infrastructure.Services;
+using SchoolManagement.Infrastructure.Services;
 
 namespace SchoolManagementAPI.Extensions
 {
@@ -43,6 +45,8 @@ namespace SchoolManagementAPI.Extensions
         {
             services.AddDbContext<SchoolManagementDbContext>(option =>
             option.UseSqlServer(configuration.GetConnectionString("schoolManagementDbContext")));
+            
+            
             services.AddTransient<IParentRepository, ParentRepository>();
             services.AddTransient<IStudentRepository, StudentRepository>();
             services.AddTransient<ITeacherRepository, TeacherRepository>();
@@ -51,8 +55,20 @@ namespace SchoolManagementAPI.Extensions
             services.AddTransient<IClassroomRepository, ClassroomRepository>();
             services.AddTransient<IAttendanceRepository, AttendanceRepository>();
             services.AddTransient<IExamRepository,ExamRepository>();
+
             services.AddTransient<IDbConnection>(db => new SqlConnection(
                                 configuration.GetConnectionString("schoolManagementDbContext")));
+
+            //Services
+            services.AddTransient<IParentService, ParentService>();
+            services.AddTransient<IStudentService,StudentService>();
+            services.AddTransient<ITeacherService,TeacherService>();
+            services.AddTransient<IGradeService,GradeService>();
+            services.AddTransient<IAttendanceService,AttendanceService>();
+            services.AddTransient<IExamService,ExamService>();
+            services.AddTransient<ICourseService,CourseService>();
+            services.AddTransient<IClassroomService,ClassroomService>();
+
         }
     }
 }

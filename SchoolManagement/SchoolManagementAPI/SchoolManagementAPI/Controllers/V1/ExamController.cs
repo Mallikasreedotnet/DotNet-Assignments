@@ -1,9 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
-using SchoolManagement.Infrastructure.Repository.EntityFramework;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
 
@@ -33,8 +31,6 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Getting list of all Exams");
             var result = await _examService.GetExamAsync();
-            //if (!result.Any())
-            //    return NotFound();
             return Ok(result);
         }
 
@@ -54,10 +50,10 @@ namespace SchoolManagementAPI.Controllers.V1
         [Route("{id}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult> Get(int studentId)
         {
-            _logger.LogInformation("Getting list of Exam by ID:{id}", id);
-            var result = await _examService.GetExamAsync(id);
+            _logger.LogInformation("Getting list of Exam by ID:{id}", studentId);
+            var result = await _examService.GetExamAsync(studentId);
             if (result == null)
                 return NotFound();
             return Ok(result);
@@ -93,7 +89,6 @@ namespace SchoolManagementAPI.Controllers.V1
             if (result is null)
             {
                 return NotFound();
-                // return NoContent();
             }
             return Ok(result);
         }
@@ -126,8 +121,6 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Getting list of all ExamTpye");
             var result = await _examService.GetExamTypeAsync(); ;
-            //if (!result.Any())
-            //    return NotFound();
             return Ok(result);
         }
 
@@ -186,7 +179,6 @@ namespace SchoolManagementAPI.Controllers.V1
             if (result is null)
             {
                 return NotFound();
-                // return NoContent();
             }
             return Ok(result);
         }
@@ -208,5 +200,16 @@ namespace SchoolManagementAPI.Controllers.V1
                 return NotFound();
             return Ok(result);
         }
+
+        // Get ExamType Details
+        [MapToApiVersion("1.0")]
+        [HttpGet("id")]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public async Task<ActionResult> GetExamTypeDetails(int studentId,int examTypeId,int courseId)
+        {
+            var result= await _examService.GetExamDetails(studentId, examTypeId,courseId);
+            return Ok(result);
+        }
+
     }
 }

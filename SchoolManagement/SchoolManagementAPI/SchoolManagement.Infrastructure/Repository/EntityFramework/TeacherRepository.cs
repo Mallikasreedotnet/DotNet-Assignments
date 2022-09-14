@@ -40,8 +40,8 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                                              where teacher.TeacherId == teacherId
                                              select new ClassroomDto
                                              {
-                                                 Fname=teacher.Fname,
-                                                 Lname=teacher.Lname,
+                                                 TeacherFname=teacher.Fname,
+                                                 TeacherLname=teacher.Lname,
                                                  Section=classroom.Section,
                                              }).FirstAsync();
             return teacherWithClassroomRecord;

@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.ViewModel;
@@ -32,8 +31,6 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Getting list of all teachers");
             var result = await _teacherService.GetTeacherAsync();
-            if (!result.Any())
-                return NotFound();
             return Ok(result);
         }
 

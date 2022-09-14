@@ -33,8 +33,6 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Getting list of all parents");
             var result =  await _parentService.GetParentAsync();
-            if (!result.Any())
-                return NotFound();
             return Ok(result);
         }
 
@@ -71,6 +69,7 @@ namespace SchoolManagementAPI.Controllers.V1
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> GetParentAndStudent(int parentId)
         {
+            _logger.LogInformation("Getting list of parent by ID:{id}", parentId);
             var result = await _parentService.GetParentWithStudent(parentId);
             if (result is null)
                 return NotFound();
@@ -108,7 +107,6 @@ namespace SchoolManagementAPI.Controllers.V1
             if (result is null)
             {
                 return NotFound();
-               // return NoContent();
             }
             return Ok(result);
         }

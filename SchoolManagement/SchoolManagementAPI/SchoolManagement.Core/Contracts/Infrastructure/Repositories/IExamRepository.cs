@@ -1,4 +1,6 @@
-﻿using SchoolManagement.Core.Entities;
+﻿using SchoolManagement.Core.Dtos;
+using SchoolManagement.Core.Entities;
+using System.Threading.Tasks;
 
 namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
 {
@@ -14,6 +16,6 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
         Task<ExamType> CreateExamTypeAsync(ExamType examType);
         Task<ExamType> UpdateExamTypeAsync(ExamType examType);
         Task<ExamType> DeleteExamTypeAsync(int examTypeId);
-
+        Task<IEnumerable<StudentExamDto>> GetExamDetails(int? studentId, int? examTypeId,int? courseId);
     }
 }

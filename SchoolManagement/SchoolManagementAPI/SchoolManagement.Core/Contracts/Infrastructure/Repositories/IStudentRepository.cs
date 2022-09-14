@@ -11,5 +11,6 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
         Task<Student> CreateStudentAsync(Student student);
         Task<Student> UpdateAsync(Student student);
         Task<Student> DeleteAsync(int studentId);
+        
     }
 }

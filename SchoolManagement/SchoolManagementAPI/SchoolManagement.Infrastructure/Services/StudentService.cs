@@ -55,5 +55,7 @@ namespace SchoolManagement.Infrastructure.Services
         {
            return await _studentRepository.DeleteAsync(studentId);
         }
+
+        
     }
 }

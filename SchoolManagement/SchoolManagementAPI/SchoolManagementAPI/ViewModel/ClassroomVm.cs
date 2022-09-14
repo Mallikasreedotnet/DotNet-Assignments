@@ -7,7 +7,7 @@ namespace SchoolManagementAPI.ViewModel
         public int Year { get; set; }
         [Required]
         public int GradeId { get; set; }
-        
+        [Required]
         public string Section { get; set; } = null!;
         public bool Status { get; set; }
         public string Remarks { get; set; } = null!;

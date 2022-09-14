@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-
-namespace SchoolManagement.Core.Entities
+﻿namespace SchoolManagement.Core.Entities
 {
     public partial class Teacher
     {

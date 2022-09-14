@@ -1,4 +1,5 @@
-﻿using SchoolManagement.Core.Entities;
+﻿using SchoolManagement.Core.Dtos;
+using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Core.Contracts.Infrastructure.Services
 {
@@ -9,5 +10,6 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Services
         Task<Attendance> CreateAttendanceAsync(Attendance attendance);
         Task<Attendance> UpdateAttendanceAsync(int attendanceId, Attendance attendance);
         Task<Attendance> DeleteAsync(int attendanceId);
+        Task<StudentAttendanceDto> GetStudentAttendanceAsync(int studentId);
     }
 }

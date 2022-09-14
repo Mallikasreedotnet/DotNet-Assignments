@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
+using SchoolManagement.Infrastructure.Services;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
 
@@ -20,7 +21,7 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _studentService = studentService;
             _mapper = mapper;
-            _logger = logger;   
+            _logger = logger;
         }
 
         // Get Students
@@ -32,8 +33,6 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Getting list of all students");
             var result = await _studentService.GetStudentAsync();
-            if (!result.Any())
-                return NotFound();
             return Ok(result);
         }
 
@@ -56,11 +55,11 @@ namespace SchoolManagementAPI.Controllers.V1
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> Get(int id)
         {
-                _logger.LogInformation("Getting list of student by ID:{id}", id);
-                var result = await _studentService.GetStudentAsync(id);
-                if (result is null)
-                    return NotFound();
-                return Ok(result);
+            _logger.LogInformation("Getting list of student by ID:{id}", id);
+            var result = await _studentService.GetStudentAsync(id);
+            if (result is null)
+                return NotFound();
+            return Ok(result);
         }
 
 
@@ -86,7 +85,7 @@ namespace SchoolManagementAPI.Controllers.V1
         public async Task<ActionResult> Post([FromBody] StudentVm studentVm)
         {
             _logger.LogInformation("Add new data for students");
-            var studentData=_mapper.Map<StudentVm,Student>(studentVm);
+            var studentData = _mapper.Map<StudentVm, Student>(studentVm);
             var result = await _studentService.CreateStudentAsync(studentData);
             return Ok(result);
         }
@@ -98,12 +97,12 @@ namespace SchoolManagementAPI.Controllers.V1
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
         public async Task<ActionResult> Put(int id, [FromBody] StudentVm studentVm)
         {
-            if (id <= 0 )
+            if (id <= 0)
             {
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be <= zero OR it doesn't match with model's Id.");
                 return BadRequest();
             }
-            var studentData=_mapper.Map<StudentVm,Student>(studentVm);
+            var studentData = _mapper.Map<StudentVm, Student>(studentVm);
             var result = await _studentService.UpdateAsync(id, studentData);
             if (result is null)
                 return NotFound();

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
-using SchoolManagement.Infrastructure.Data;
 using System.Data;
 using SchoolManagementDbContext = SchoolManagement.Infrastructure.Data.SchoolManagementDbContext;
 
@@ -34,22 +33,6 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Student> CreateStudentAsync(Student student)
         {
-            //var studentData = new Student
-            //{
-            //    StudentId = student.StudentId,
-            //    Email = student.Email,
-            //    Password = student.Password,
-            //    Fname = student.Fname,
-            //    Lname = student.Lname,
-            //    Dob = student.Dob,
-            //    Status = student.Status,
-            //    Phone = student.Phone,
-            //    Mobile = student.Mobile,
-            //    ParentId = student.ParentId,
-            //    DateOfJoin = student.DateOfJoin,
-            //    LastLoginDate = student.LastLoginDate,
-            //    LastLoginIp = student.LastLoginIp,
-            //};
             _schoolDbContext.Students.Add(student);
             await _schoolDbContext.SaveChangesAsync();
             return student;
@@ -73,8 +56,9 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                                                         ClassroomId = classRoom.ClassroomId,
                                                     }).FirstAsync();
               return studentWithClassroomRecord;
-           
         }
+
+
         public async Task<Student> UpdateAsync(Student student)
         {
             _schoolDbContext.Students.Update(student);

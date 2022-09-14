@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.Infrastructure.Specs;
@@ -32,8 +30,6 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Getting list of all grades");
             var result = await _gradeService.GetGradeAsync();
-            //if (!result.Any())
-            //    return NotFound();
             return Ok(result);
         }
 
@@ -93,7 +89,6 @@ namespace SchoolManagementAPI.Controllers.V1
             if (result is null)
             {
                 return NotFound();
-                // return NoContent();
             }
             return Ok(result);
         }

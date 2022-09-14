@@ -1,5 +1,6 @@
 ﻿using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Contracts.Infrastructure.Services;
+using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Infrastructure.Services
@@ -70,6 +71,12 @@ namespace SchoolManagement.Infrastructure.Services
         public async Task<ExamType> DeleteExamTypeAsync(int examTypeId)
         {
             return await _examRepository.DeleteExamTypeAsync(examTypeId);
+
+        }
+
+        public async Task<IEnumerable<StudentExamDto>> GetExamDetails(int? studentId=0, int? examTypeId = 0, int? courseId=0)
+        {
+            return await _examRepository.GetExamDetails(studentId,examTypeId,courseId);
         }
     }
 }

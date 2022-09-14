@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
 using System.Data;
@@ -42,6 +44,24 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _schoolDbContext.Attendances.Update(attendance);
             await _schoolDbContext.SaveChangesAsync();
             return attendance;
+        }
+
+        public async Task<StudentAttendanceDto> GetStudentAttendanceAsync(int studentId)
+        {
+            var studentAttendance = await (from student in _schoolDbContext.Students
+                                           join attendance in _schoolDbContext.Attendances
+                                           on student.StudentId equals attendance.StudentId
+                                           where student.StudentId == studentId
+                                           select new StudentAttendanceDto
+                                           {
+                                               StudentFname = student.Fname,
+                                               StudentLname = student.Lname,
+                                               StudentEmail = student.Email,
+                                               Date = attendance.Date,
+                                               Remark = attendance.Remark,
+                                               Status = attendance.Status
+                                           }).FirstAsync();
+            return studentAttendance;
         }
 
         public async Task<Attendance> DeleteAsync(int attendanceId)

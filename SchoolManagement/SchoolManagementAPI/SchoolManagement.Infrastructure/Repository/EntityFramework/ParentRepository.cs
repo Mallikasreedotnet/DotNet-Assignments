@@ -5,7 +5,6 @@ using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
 using System.Data;
-using System.Data.Common;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 {

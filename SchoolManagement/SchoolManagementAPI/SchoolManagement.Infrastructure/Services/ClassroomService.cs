@@ -1,9 +1,10 @@
 ﻿using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Infrastructure.Services
 {
-    public class ClassroomService
+    public class ClassroomService : IClassroomService
     {
         private readonly IClassroomRepository _classroomRepository;
         public ClassroomService(IClassroomRepository classroomRepository)
@@ -25,7 +26,7 @@ namespace SchoolManagement.Infrastructure.Services
         {
             return await _classroomRepository.CreateClassroomAsync(classroom);
         }
-        public async Task<Classroom> UpdateClassroomAsync(int classroomId,Classroom classroom)
+        public async Task<Classroom> UpdateClassroomAsync(int classroomId, Classroom classroom)
         {
             var classroomToBeUpdated = await GetClassroomAsync(classroomId);
             classroomToBeUpdated.Section = classroom.Section;

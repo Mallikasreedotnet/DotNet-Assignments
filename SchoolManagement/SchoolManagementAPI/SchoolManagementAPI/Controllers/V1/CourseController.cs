@@ -32,8 +32,6 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Getting list of all courses");
             var result = await _courseService.GetCourseAsync();
-            //if (!result.Any())
-            //    return NotFound();
             return Ok(result);
         }
 
@@ -93,7 +91,6 @@ namespace SchoolManagementAPI.Controllers.V1
             if (result is null)
             {
                 return NotFound();
-                // return NoContent();
             }
             return Ok(result);
         }
