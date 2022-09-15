@@ -1,4 +1,5 @@
-﻿using SchoolManagement.Core.Entities;
+﻿using SchoolManagement.Core.Dtos;
+using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
 {
@@ -9,5 +10,6 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
         Task<Classroom> CreateClassroomAsync(Classroom classroom);
         Task<Classroom> UpdateClassroomAsync( Classroom classroom);
         Task<Classroom> DeleteAsync(int classroomId);
+        Task<IEnumerable<ClassroomDetailsDto>> GetClassroomDetailsAsync(int classroomId);
     }
 }

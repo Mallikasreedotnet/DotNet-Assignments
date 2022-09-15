@@ -20,14 +20,14 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<IEnumerable<Exam>> GetExamAsync()
         {
-            var query = "select * from [Exam]";
+            var query = "execute spGetExam";
             var ExamData = await _dbconnection.QueryAsync<Exam>(query);
             return ExamData;
         }
 
         public async Task<Exam> GetExamAsync(int examId)
         {
-            var query = "Select * from Exam where examId=@ExamId";
+            var query = "execute spGetExamId @examId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<Exam>(query, new { examId }));
         }
 
@@ -56,14 +56,14 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         // Exam Type
         public async Task<IEnumerable<ExamType>> GetExamTypeAsync()
         {
-            var query = "select * from [ExamType]";
+            var query = "execute spGetExamType";
             var courseData = await _dbconnection.QueryAsync<ExamType>(query);
             return courseData;
         }
 
         public async Task<ExamType> GetExamTypeAsync(int examTypeId)
         {
-            var query = "Select * from ExamType where examTypeId=@ExamTypeId";
+            var query = "execute spGetExamTypeId @examTypeId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<ExamType>(query, new { examTypeId }));
         }
 

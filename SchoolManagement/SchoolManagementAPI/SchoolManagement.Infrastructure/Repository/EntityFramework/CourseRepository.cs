@@ -18,7 +18,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<IEnumerable<Course>> GetCourseAsync()
         {
-            var query = "select * from [Course]";
+            var query = "execute spGetCourse";
             var courseData = await _dbconnection.QueryAsync<Course>(query);
             return courseData;
         }
@@ -31,6 +31,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Course> CreateCourseAsync(Course course)
         {
+
             _schoolDbContext.Courses.Add(course);
             await _schoolDbContext.SaveChangesAsync();
             return course;
@@ -50,5 +51,6 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeCourse;
         }
+
     }
 }

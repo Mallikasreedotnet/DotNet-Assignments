@@ -112,5 +112,17 @@ namespace SchoolManagementAPI.Controllers.V1
         }
 
 
+        [MapToApiVersion("1.0")]
+        [Route("api/{classroomId}")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public async Task<ActionResult> GetClassroom(int classroomId)
+        {
+            _logger.LogInformation("Getting list of classroomDetails by ID:{id}", classroomId);
+            var result = await _classroomService.GetClassroomDetailsAsync(classroomId);
+            if (result == null)
+                return NotFound();
+            return Ok(result);
+        }
     }
 }

@@ -110,5 +110,18 @@ namespace SchoolManagementAPI.Controllers.V1
                 return NotFound();
             return Ok(result);
         }
+
+        [MapToApiVersion("1.0")]
+        [Route("{gradeId}")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public async Task<ActionResult> GetGradeDetails(int gradeId)
+        {
+            _logger.LogInformation("Getting list of grade by ID:{id}", gradeId);
+            var result = await _gradeService.GetGradeCourseAsync(gradeId);
+            if (result is null)
+                return NotFound();
+            return Ok(result);
+        }
     }
 }

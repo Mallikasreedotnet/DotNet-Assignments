@@ -62,7 +62,7 @@ namespace SchoolManagementAPI.Controllers.V1
 
         // Get Teacher id with classroom
         [MapToApiVersion("1.0")]
-        [Route("/TeacherClass{teacherId}")]
+        [Route("TeacherClass{teacherId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> GetTeacherAndClassroom(int teacherId)
@@ -124,6 +124,5 @@ namespace SchoolManagementAPI.Controllers.V1
                 return NotFound();
             return Ok(result);
         }
-
     }
 }

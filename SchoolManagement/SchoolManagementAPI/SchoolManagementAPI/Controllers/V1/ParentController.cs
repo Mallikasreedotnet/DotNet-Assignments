@@ -64,7 +64,7 @@ namespace SchoolManagementAPI.Controllers.V1
 
         // Get Parent with student
         [MapToApiVersion("1.0")]
-        [Route("/ParentClass{parentId}")]
+        [Route("ParentClass{parentId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> GetParentAndStudent(int parentId)

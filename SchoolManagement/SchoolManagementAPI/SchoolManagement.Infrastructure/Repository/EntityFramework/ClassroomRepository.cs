@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
 using System.Data;
@@ -18,7 +20,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<IEnumerable<Classroom>> GetClassroomAsync()
         {
-            var query = "select * from [Classroom]";
+            var query = "execute spGetClassroom";
             var classroomData = await _dbconnection.QueryAsync<Classroom>(query);
             return classroomData;
         }
@@ -51,6 +53,26 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return deletedToBeClassroom;
         }
     
+        public async Task<IEnumerable<ClassroomDetailsDto>> GetClassroomDetailsAsync(int classroomId)
+        {
+            var classroomDetails = await(from classroom in _schoolDbContext.Classrooms
+                                   join classroomstudent in _schoolDbContext.ClassroomStudents
+                                   on classroom.ClassroomId equals classroomstudent.ClassroomId
+                                   join student in _schoolDbContext.Students
+                                   on classroomstudent.StudentId equals student.StudentId
+                                   join grade in _schoolDbContext.Grades
+                                   on classroom.GradeId equals grade.GradeId
+                                   where classroom.ClassroomId == classroomId
+                                   select new ClassroomDetailsDto
+                                   {
+                                       StudentFname = student.Fname,
+                                       StudentLname = student.Lname,
+                                       GradeName=grade.Name,
+                                       Year=classroom.Year,
+                                       Section=classroom.Section,
+                                   }).ToListAsync();
+            return classroomDetails;
 
+        }
     }
 }

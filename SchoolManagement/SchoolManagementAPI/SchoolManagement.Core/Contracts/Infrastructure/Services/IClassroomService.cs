@@ -1,4 +1,5 @@
-﻿using SchoolManagement.Core.Entities;
+﻿using SchoolManagement.Core.Dtos;
+using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Core.Contracts.Infrastructure.Services
 {
@@ -9,5 +10,6 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Services
         Task<IEnumerable<Classroom>> GetClassroomAsync();
         Task<Classroom> GetClassroomAsync(int classroomId);
         Task<Classroom> UpdateClassroomAsync(int classroomId, Classroom classroom);
+        Task<IEnumerable<ClassroomDetailsDto>> GetClassroomDetailsAsync(int classroomId);
     }
 }

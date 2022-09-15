@@ -20,7 +20,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<IEnumerable<Attendance>> GetAttendanceAsync()
         {
-            var query = "select * from [Attendance]";
+            var query = "execute spGetAttendance";
             var attendanceData = await _dbconnection.QueryAsync<Attendance>(query);
             return attendanceData;
         }

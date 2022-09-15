@@ -1,4 +1,5 @@
-﻿using SchoolManagement.Core.Entities;
+﻿using SchoolManagement.Core.Dtos;
+using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
 {
@@ -9,5 +10,6 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
         Task<Grade> CreateGradeAsync(Grade grade);
         Task<Grade> UpdateGradeAsync(Grade grade);
         Task<Grade> DeleteAsync(int gradeId);
+        Task<GradeCourseDto> GetGradeCourseAsync(int gradeId);
     }
 }

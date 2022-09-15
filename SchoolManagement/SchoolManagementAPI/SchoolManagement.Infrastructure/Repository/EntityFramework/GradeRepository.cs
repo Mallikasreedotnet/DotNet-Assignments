@@ -1,5 +1,7 @@
 ﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
 using System.Data;
@@ -49,6 +51,29 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _schoolDbContext.Grades.Remove(deletedToBeGrade);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeGrade;
+        }
+
+        public async Task<GradeCourseDto> GetGradeCourseAsync(int gradeId)
+        {
+            var gradeResult = await( from grade in _schoolDbContext.Grades
+                              join course in _schoolDbContext.Courses
+                              on grade.GradeId equals course.GradeId
+                              join classroom in _schoolDbContext.Classrooms
+                              on grade.GradeId equals classroom.GradeId
+                              join teacher in _schoolDbContext.Teachers
+                              on classroom.TeacherId equals teacher.TeacherId
+                              where grade.GradeId == gradeId
+                              select new GradeCourseDto
+                              {
+                                  GradeName=grade.Name,
+                                  CourseName=course.Name,
+                                  Year=classroom.Year,
+                                  Section=classroom.Section,
+                                  TeacherFname=teacher.Fname,
+                                  TeacherLname=teacher.Lname,
+                                  Phone=teacher.Phone,
+                              }).FirstAsync();
+            return gradeResult;
         }
     }
 }

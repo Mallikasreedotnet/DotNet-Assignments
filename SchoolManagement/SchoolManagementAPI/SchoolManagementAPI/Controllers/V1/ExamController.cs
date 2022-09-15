@@ -47,13 +47,13 @@ namespace SchoolManagementAPI.Controllers.V1
 
         // Get Exam {id}
         [MapToApiVersion("1.0")]
-        [Route("{id}")]
+        [Route("{examId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> Get(int studentId)
+        public async Task<ActionResult> Get(int examId)
         {
-            _logger.LogInformation("Getting list of Exam by ID:{id}", studentId);
-            var result = await _examService.GetExamAsync(studentId);
+            _logger.LogInformation("Getting list of Exam by ID:{id}", examId);
+            var result = await _examService.GetExamAsync(examId);
             if (result == null)
                 return NotFound();
             return Ok(result);
@@ -203,7 +203,8 @@ namespace SchoolManagementAPI.Controllers.V1
 
         // Get ExamType Details
         [MapToApiVersion("1.0")]
-        [HttpGet("id")]
+        [Route("ExamDetails/{studentId}")]
+        [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> GetExamTypeDetails(int studentId,int examTypeId,int courseId)
         {

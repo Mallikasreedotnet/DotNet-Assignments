@@ -65,7 +65,7 @@ namespace SchoolManagementAPI.Controllers.V1
 
         // Get Student id with class id
         [MapToApiVersion("1.0")]
-        [Route("/StudentClass{studentId}")]
+        [Route("StudentClass{studentId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> GetStudentAndClassId(int studentId)
