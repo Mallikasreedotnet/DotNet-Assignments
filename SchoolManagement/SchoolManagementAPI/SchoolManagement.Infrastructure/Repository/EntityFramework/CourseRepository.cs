@@ -25,7 +25,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Course> GetCourseAsync(int courseId)
         {
-            var query = "Select * from Course where courseId=@CourseId";
+            var query = "execute spGetCourseId @CourseId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<Course>(query, new { courseId }));
         }
 
@@ -51,6 +51,10 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeCourse;
         }
-
+        public async Task<Course> GetCourseName(string Name,int gradeId)
+        {
+            var avaliableName = "execute spGetCourseAvaliable @gradeId,@Name";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<Course>(avaliableName, new { Name , gradeId }));
+        }
     }
 }

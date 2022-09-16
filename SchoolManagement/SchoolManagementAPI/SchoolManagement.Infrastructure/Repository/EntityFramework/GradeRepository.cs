@@ -20,14 +20,14 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
         }
         public async Task<IEnumerable<Grade>> GetGradeAsync()
         {
-            var query = "Select * from Grade";
+            var query = "execute spGetGrade";
             var result = await _dbconnection.QueryAsync<Grade>(query);
             return result;
         }
 
         public async Task<Grade> GetGradeAsync(int gradeId)
         {
-            var query = "Select * from Grade where gradeId=@gradeId";
+            var query = "execute spGetGradeId @gradeId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<Grade>(query, new { gradeId }));
         }
 

@@ -47,13 +47,13 @@ namespace SchoolManagementAPI.Controllers.V1
 
         // Get Grade {id}
         [MapToApiVersion("1.0")]
-        [Route("{id}")]
+        [Route("{gradeId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> Get(int id)
+        public async Task<ActionResult> Get(int gradeId)
         {
-            _logger.LogInformation("Getting list of grade by ID:{id}", id);
-            var result = await _gradeService.GetGradeAsync(id);
+            _logger.LogInformation("Getting list of grade by ID:{id}", gradeId);
+            var result = await _gradeService.GetGradeAsync(gradeId);
             if (result == null)
                 return NotFound();
             return Ok(result);
@@ -112,7 +112,7 @@ namespace SchoolManagementAPI.Controllers.V1
         }
 
         [MapToApiVersion("1.0")]
-        [Route("{gradeId}")]
+        [Route("api/{gradeId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> GetGradeDetails(int gradeId)

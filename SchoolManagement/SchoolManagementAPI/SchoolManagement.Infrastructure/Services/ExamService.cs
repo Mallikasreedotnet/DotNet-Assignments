@@ -76,7 +76,7 @@ namespace SchoolManagement.Infrastructure.Services
 
         public async Task<IEnumerable<StudentExamDto>> GetExamDetails(int? studentId=0, int? examTypeId = 0, int? courseId=0)
         {
-            return await _examRepository.GetExamDetails(studentId,examTypeId,courseId);
+                return await _examRepository.GetExamDetails(studentId,examTypeId,courseId);
         }
     }
 }

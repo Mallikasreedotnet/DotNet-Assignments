@@ -4,7 +4,7 @@ using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Infrastructure.Services
 {
-    
+
     public class CourseService : ICourseService
     {
         private readonly ICourseRepository _courseRepository;
@@ -34,13 +34,18 @@ namespace SchoolManagement.Infrastructure.Services
             courseToBeUpdated.Description = course.Description;
             courseToBeUpdated.Name = course.Name;
             courseToBeUpdated.GradeId = course.GradeId;
-           var data=await _courseRepository.UpdateCourseAsync(courseToBeUpdated);
+            var data = await _courseRepository.UpdateCourseAsync(courseToBeUpdated);
             return data;
         }
 
         public async Task<Course> DeleteAsync(int courseId)
         {
             return await _courseRepository.DeleteAsync(courseId);
+        }
+
+        public async Task<Course> GetCourseName(string Name,int gradeId)
+        {
+            return await _courseRepository.GetCourseName(Name,gradeId);
         }
     }
 }

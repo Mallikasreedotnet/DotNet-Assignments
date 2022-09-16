@@ -9,5 +9,6 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Services
         Task<Course> CreateCourseAsync(Course course);
         Task<Course> UpdateCourseAsync(int courseId, Course course);
         Task<Course> DeleteAsync(int courseId);
+        Task<Course> GetCourseName(string Name,int gradeId);
     }
 }

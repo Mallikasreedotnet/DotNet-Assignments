@@ -67,9 +67,16 @@ namespace SchoolManagementAPI.Controllers.V1
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public async Task<ActionResult> Post([FromBody] CourseVm courseVm)
         {
+            var available = await _courseService.GetCourseName(courseVm.Name,courseVm.GradeId);
+            if(available!=null && available.Name == courseVm.Name && available.GradeId ==courseVm.GradeId)
+            {
+                return BadRequest("Course already exist");
+            }
             _logger.LogInformation("Add new data for courses");
             var Data = _mapper.Map<CourseVm, Course>(courseVm);
             var result = await _courseService.CreateCourseAsync(Data);
+            if (result == null)
+                return BadRequest();
             return Ok(result);
         }
 
@@ -113,5 +120,6 @@ namespace SchoolManagementAPI.Controllers.V1
                 return NotFound();
             return Ok(result);
         }
+
     }
 }

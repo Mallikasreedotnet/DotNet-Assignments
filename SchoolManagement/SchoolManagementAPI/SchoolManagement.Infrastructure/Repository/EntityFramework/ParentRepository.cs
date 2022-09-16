@@ -20,14 +20,14 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<IEnumerable<Parent>> GetParentAsync()
         {
-            var query = "select * from [Parent]";
+            var query = "execute spGetParent";
             var parentData = await _dbconnection.QueryAsync<Parent>(query);
             return parentData;
         }
 
         public async Task<Parent> GetParentAsync(int parentId)
         {
-            var query = "Select * from Parent where ParentId=@parentId";
+            var query = "execute spGetParentId @parentId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<Parent>(query, new { parentId }));
 
         }

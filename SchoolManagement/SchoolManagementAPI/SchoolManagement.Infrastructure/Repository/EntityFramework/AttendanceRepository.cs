@@ -27,7 +27,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Attendance> GetAttendanceAsync(int attendanceId)
         {
-            var query = "Select * from Attendance where AttendanceId=@AttendanceId";
+            var query = "execute spGetAttendanceId @AttendanceId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<Attendance>(query, new { attendanceId }));
         }
 
