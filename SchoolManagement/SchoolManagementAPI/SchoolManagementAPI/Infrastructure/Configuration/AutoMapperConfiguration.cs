@@ -17,6 +17,7 @@ namespace SchoolManagementAPI.Configuration
             CreateMap<AttendanceVm, Attendance>();
             CreateMap<ExamVm, Exam>();
             CreateMap<ExamTypeVm, ExamType>();  
+            CreateMap<ExamResultVm, ExamResult>();
 
         }
     }

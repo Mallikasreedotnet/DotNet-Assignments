@@ -11,5 +11,6 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
         Task<Classroom> UpdateClassroomAsync( Classroom classroom);
         Task<Classroom> DeleteAsync(int classroomId);
         Task<IEnumerable<ClassroomDetailsDto>> GetClassroomDetailsAsync(int classroomId);
+        Task<Classroom> GetTeacherwithGrade(int gradeId, int teacherId, string section);
     }
 }

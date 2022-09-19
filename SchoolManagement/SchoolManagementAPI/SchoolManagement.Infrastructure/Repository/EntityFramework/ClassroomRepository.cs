@@ -5,6 +5,7 @@ using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
 using System.Data;
+using System.Xml.Linq;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 {
@@ -73,6 +74,12 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                                    }).ToListAsync();
             return classroomDetails;
 
+        }
+
+        public async Task<Classroom> GetTeacherwithGrade(int gradeId,int teacherId, string section)
+        {
+            var Data = "select * from Classroom where gradeId=@gradeId and teacherId=@teacherId and section=@section";
+            return  (await _dbconnection.QueryFirstOrDefaultAsync<Classroom>(Data, new { gradeId,teacherId,section}));
         }
     }
 }

@@ -14,9 +14,9 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<ExamResult> builder)
         {
-            builder.HasNoKey();
-
             builder.ToTable("ExamResult");
+
+            builder.Property(e => e.ExamResultId).HasColumnName("examResultId");
 
             builder.Property(e => e.CourseId).HasColumnName("courseId");
 
@@ -25,12 +25,23 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
             builder.Property(e => e.Marks)
                 .HasMaxLength(45)
                 .IsUnicode(false);
+            //builder.HasNoKey();
 
-            builder.HasOne(d => d.Student)
-                .WithMany()
-                .HasForeignKey(d => d.StudentId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("FK__ExamResul__Stude__6EF57B66");
+            //builder.ToTable("ExamResult");
+
+            //builder.Property(e => e.CourseId).HasColumnName("courseId");
+
+            //builder.Property(e => e.ExamId).HasColumnName("examId");
+
+            //builder.Property(e => e.Marks)
+            //    .HasMaxLength(45)
+            //    .IsUnicode(false);
+
+            //builder.HasOne(d => d.Student)
+            //    .WithMany()
+            //    .HasForeignKey(d => d.StudentId)
+            //    .OnDelete(DeleteBehavior.ClientSetNull)
+            //    .HasConstraintName("FK__ExamResul__Stude__6EF57B66");
 
         }
     }

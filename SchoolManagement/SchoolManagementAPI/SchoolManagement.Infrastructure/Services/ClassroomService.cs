@@ -45,9 +45,14 @@ namespace SchoolManagement.Infrastructure.Services
             return await _classroomRepository.DeleteAsync(classroomId);
         }
 
-       public async Task<IEnumerable<ClassroomDetailsDto>> GetClassroomDetailsAsync(int classroomId)
+        public async Task<IEnumerable<ClassroomDetailsDto>> GetClassroomDetailsAsync(int classroomId)
         {
             return await _classroomRepository.GetClassroomDetailsAsync(classroomId);
+        }
+
+        public async Task<Classroom> GetTeacherwithGrade(int gradeId, int teacherId, string section)
+        {
+            return await _classroomRepository.GetTeacherwithGrade(gradeId, teacherId,section);
         }
     }
 }

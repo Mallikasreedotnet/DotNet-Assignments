@@ -37,12 +37,18 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             var teacherWithClassroomRecord = await(from teacher in _schoolDbContext.Teachers
                                              join classroom in _schoolDbContext.Classrooms
                                              on teacher.TeacherId equals classroom.TeacherId
+                                             join grade in _schoolDbContext.Grades
+                                             on classroom.GradeId equals grade.GradeId
+                                             join course in _schoolDbContext.Courses
+                                             on classroom.GradeId equals course.CourseId
                                              where teacher.TeacherId == teacherId
                                              select new ClassroomDto
                                              {
                                                  TeacherFname=teacher.Fname,
                                                  TeacherLname=teacher.Lname,
                                                  Section=classroom.Section,
+                                                 CourseName=course.Name,
+                                                 GradeName=grade.Name
                                              }).FirstAsync();
             return teacherWithClassroomRecord;
         }
