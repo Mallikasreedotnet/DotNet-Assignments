@@ -1,7 +1,11 @@
-﻿namespace SchoolManagement.Core.Entities
+﻿using System;
+using System.Collections.Generic;
+
+namespace SchoolManagement.Core.Entities
 {
     public partial class ClassroomStudent
     {
+        public int ClassroomStudentId { get; set; }
         public int ClassroomId { get; set; }
         public int StudentId { get; set; }
 

@@ -4,7 +4,7 @@
     {
         public int ExamId { get; set; }
         public int ExamTypeId { get; set; }
-        public string Name { get; set; } = null!;
+        public string ExamName { get; set; } = null!;
         public DateTime StartDate { get; set; }
 
         public virtual ExamType ExamType { get; set; } = null!;

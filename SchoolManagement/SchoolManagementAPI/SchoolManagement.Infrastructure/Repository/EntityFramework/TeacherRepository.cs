@@ -47,8 +47,8 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                                                  TeacherFname=teacher.Fname,
                                                  TeacherLname=teacher.Lname,
                                                  Section=classroom.Section,
-                                                 CourseName=course.Name,
-                                                 GradeName=grade.Name
+                                                 CourseName=course.CourseName,
+                                                 GradeName=grade.GradeName
                                              }).FirstAsync();
             return teacherWithClassroomRecord;
         }

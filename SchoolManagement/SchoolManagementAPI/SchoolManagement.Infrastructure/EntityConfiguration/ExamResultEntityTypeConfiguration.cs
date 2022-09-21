@@ -16,11 +16,11 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
         {
             builder.ToTable("ExamResult");
 
-            builder.Property(e => e.ExamResultId).HasColumnName("examResultId");
+            builder.Property(e => e.ExamResultId).HasColumnName("ExamResultId");
 
-            builder.Property(e => e.CourseId).HasColumnName("courseId");
+            builder.Property(e => e.CourseId).HasColumnName("CourseId");
 
-            builder.Property(e => e.ExamId).HasColumnName("examId");
+            builder.Property(e => e.ExamId).HasColumnName("ExamId");
 
             builder.Property(e => e.Marks)
                 .HasMaxLength(45)

@@ -12,9 +12,9 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
 
             builder.ToTable("Classroom");
 
-            builder.Property(e => e.ClassroomId).HasColumnName("classroomId");
+            builder.Property(e => e.ClassroomId).HasColumnName("ClassroomId");
 
-            builder.Property(e => e.GradeId).HasColumnName("gradeId");
+            builder.Property(e => e.GradeId).HasColumnName("GradeId");
 
             builder.Property(e => e.Remarks)
                 .HasMaxLength(45)

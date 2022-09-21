@@ -16,17 +16,17 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
         {
             builder.ToTable("Exam");
 
-            builder.Property(e => e.ExamId).HasColumnName("examId");
+            builder.Property(e => e.ExamId).HasColumnName("ExamId");
 
-            builder.Property(e => e.ExamTypeId).HasColumnName("examTypeId");
+            builder.Property(e => e.ExamTypeId).HasColumnName("ExamTypeId");
 
-            builder.Property(e => e.Name)
+            builder.Property(e => e.ExamName)
                 .HasMaxLength(45)
             .IsUnicode(false);
 
             builder.Property(e => e.StartDate)
                 .HasColumnType("date")
-                .HasColumnName("startDate");
+                .HasColumnName("StartDate");
 
             builder.HasOne(d => d.ExamType)
                 .WithMany(p => p.Exams)

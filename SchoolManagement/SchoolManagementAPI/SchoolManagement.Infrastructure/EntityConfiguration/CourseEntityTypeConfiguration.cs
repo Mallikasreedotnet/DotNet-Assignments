@@ -15,15 +15,15 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
         {
             builder.ToTable("Course");
 
-                builder.Property(e => e.CourseId).HasColumnName("courseId");
+                builder.Property(e => e.CourseId).HasColumnName("CourseId");
 
         builder.Property(e => e.Description)
                     .HasMaxLength(45)
                     .IsUnicode(false);
 
-        builder.Property(e => e.GradeId).HasColumnName("gradeId");
+        builder.Property(e => e.GradeId).HasColumnName("GradeId");
 
-        builder.Property(e => e.Name)
+        builder.Property(e => e.CourseName)
                     .HasMaxLength(45)
                     .IsUnicode(false);
 

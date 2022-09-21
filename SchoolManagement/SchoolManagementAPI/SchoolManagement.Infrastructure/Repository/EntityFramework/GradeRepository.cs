@@ -65,8 +65,8 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                               where grade.GradeId == gradeId
                               select new GradeCourseDto
                               {
-                                  GradeName=grade.Name,
-                                  CourseName=course.Name,
+                                  GradeName=grade.GradeName,
+                                  CourseName=course.CourseName,
                                   Year=classroom.Year,
                                   Section=classroom.Section,
                                   TeacherFname=teacher.Fname,

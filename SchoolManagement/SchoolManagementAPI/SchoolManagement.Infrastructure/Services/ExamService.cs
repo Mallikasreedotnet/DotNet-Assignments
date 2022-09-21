@@ -32,7 +32,7 @@ namespace SchoolManagement.Infrastructure.Services
         {
             var examToBeUpdated = await GetExamAsync(examId);
             examToBeUpdated.StartDate = exam.StartDate;
-            examToBeUpdated.Name = exam.Name;
+            examToBeUpdated.ExamName = exam.ExamName;
             examToBeUpdated.ExamTypeId = exam.ExamTypeId;
            var data=await _examRepository.UpdateExamAsync(examToBeUpdated);
            return data;
@@ -63,7 +63,7 @@ namespace SchoolManagement.Infrastructure.Services
         {
             var examTypeToBeUpdated = await GetExamTypeAsync(examTypeId);
             examTypeToBeUpdated.Description = examType.Description;
-            examTypeToBeUpdated.Name = examType.Name;
+            examTypeToBeUpdated.ExamTypeName = examType.ExamTypeName;
            var data= await _examRepository.UpdateExamTypeAsync(examTypeToBeUpdated);
             return examTypeToBeUpdated;
         }
@@ -74,7 +74,7 @@ namespace SchoolManagement.Infrastructure.Services
 
         }
 
-        public async Task<IEnumerable<StudentExamDto>> GetExamDetails(int? studentId=0, int? examTypeId = 0, int? courseId=0)
+        public async Task<IEnumerable<StudentExamDto>> GetExamDetails(int? studentId=null, int? examTypeId = null, int? courseId=null)
         {
                 return await _examRepository.GetExamDetails(studentId,examTypeId,courseId);
         }

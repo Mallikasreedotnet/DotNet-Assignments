@@ -67,8 +67,8 @@ namespace SchoolManagementAPI.Controllers.V1
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public async Task<ActionResult> Post([FromBody] CourseVm courseVm)
         {
-            var available = await _courseService.GetCourseName(courseVm.Name,courseVm.GradeId);
-            if(available!=null && available.Name == courseVm.Name && available.GradeId ==courseVm.GradeId)
+            var available = await _courseService.GetCourseName(courseVm.CourseName,courseVm.GradeId);
+            if(available!=null && available.CourseName == courseVm.CourseName && available.GradeId ==courseVm.GradeId)
             {
                 return BadRequest("Course already exist");
             }

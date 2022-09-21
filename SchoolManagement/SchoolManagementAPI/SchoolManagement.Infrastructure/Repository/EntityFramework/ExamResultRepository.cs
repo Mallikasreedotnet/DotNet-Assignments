@@ -16,6 +16,19 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _dbconnection = dbconnection;
         }
 
+        public async Task<IEnumerable<ExamResult>> GetExamResultAsync()
+        {
+            var query = "execute spGetExamResult";
+            var ExamData = await _dbconnection.QueryAsync<ExamResult>(query);
+            return ExamData;
+        }
+
+        public async Task<ExamResult> GetExamResultAsync(int examResultId)
+        {
+            var query = "execute spGetExamResultId @examResultId";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<ExamResult>(query, new {examResultId}));
+        }
+
         public async Task<ExamResult> CreateExamResultAsync(ExamResult examResult)
         {
             _schoolDbContext.ExamResults.Add(examResult);
@@ -23,9 +36,24 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return examResult;
         }
 
+        public async Task<ExamResult> UpdateExamResultAsync(ExamResult examResult)
+        {
+            _schoolDbContext.ExamResults.Update(examResult);
+            await _schoolDbContext.SaveChangesAsync();
+            return examResult;
+        }
+
+        public async Task<ExamResult> DeleteAsync(int examResultId)
+        {
+            var deletedToBeExamResult = await GetExamResultAsync(examResultId);
+            _schoolDbContext.ExamResults.Remove(deletedToBeExamResult);
+            await _schoolDbContext.SaveChangesAsync();
+            return deletedToBeExamResult;
+        }
+
         public async Task<ExamResult> GetExamDetailsWithId(int examId,int studentId,int courseId)
         {
-            var avaliableName = "select * from examResult where examId=@examId and studentId=@studentId and courseId=@courseId";
+            var avaliableName = "execute spGetExamResultDetails @examId, @studentId, @courseId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<ExamResult>(avaliableName, new { examId,studentId,courseId }));
         }
     }

@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
+using SchoolManagement.Infrastructure.Services;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
 
@@ -9,35 +11,33 @@ namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
     [ApiVersion("1.1")]
-    public class AttendanceController : ApiControllerBase
+    public class ClassroomStudentController : ApiControllerBase
     {
-        private readonly IAttendanceService _attendanceService;
+        private readonly IClassroomStudentService _classroomStudentService;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
 
-        public AttendanceController(IAttendanceService attendanceService, ILogger<AttendanceController> logger, IMapper mapper)
+        public ClassroomStudentController(IClassroomStudentService classroomStudentService, ILogger<ClassroomStudentController> logger, IMapper mapper)
         {
-            _attendanceService = attendanceService;
+            _classroomStudentService = classroomStudentService;
             _mapper = mapper;
             _logger = logger;
         }
 
-        // Get Attendances
-       // [MapToApiVersion("1.0")]
-        [Route("")]
-        [HttpGet]
+        // Get ClassroomStudents
+        [MapToApiVersion("1.0")]
+        [HttpGet("")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> Get()
         {
-            _logger.LogInformation("Getting list of all attendances");
-            var result = await _attendanceService.GetAttendanceAsync();
+            _logger.LogInformation("Getting list of all classroomStudents");
+            var result = await _classroomStudentService.GetClassroomStudentAsync();
             return Ok(result);
         }
 
-        // Get Attendences
+        // Get ClassroomStudents
         [MapToApiVersion("1.1")]
-        [Route("")]
-        [HttpGet]
+        [HttpGet("")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public ActionResult<string> GetDataFromNewVersion()
         {
@@ -45,47 +45,46 @@ namespace SchoolManagementAPI.Controllers.V1
             return Ok("Sample Text from V1.1 API");
         }
 
-        // Get Attendance {id}
+        // Get ClassroomStudent {id}
         [MapToApiVersion("1.0")]
-        [Route("{id}")]
-        [HttpGet]
+        [HttpGet("{id}")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> Get(int id)
         {
-            _logger.LogInformation("Getting list of Attendance by ID:{id}", id);
-            var result = await _attendanceService.GetAttendanceAsync(id);
+            _logger.LogInformation("Getting list of classroomStudent by ID:{id}", id);
+            var result = await _classroomStudentService.GetClassroomStudentAsync(id);
             if (result == null)
                 return NotFound();
             return Ok(result);
         }
 
-        // Post Attendance
+        // Post ClassroomStudent
         [MapToApiVersion("1.0")]
-        [Route("")]
-        [HttpPost]
+        [HttpPost(" ")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
-        public async Task<ActionResult> Post([FromBody] AttendanceVm attendanceVm)
+        public async Task<ActionResult> Post([FromBody] ClassroomStudentVm classroomStudentVm)
         {
-            _logger.LogInformation("Add new data for attendance");
-            var data = _mapper.Map<AttendanceVm, Attendance>(attendanceVm);
-            var result = await _attendanceService.CreateAttendanceAsync(data);
+            _logger.LogInformation("Add new data for ClassroomStudent");
+            var Data = _mapper.Map<ClassroomStudentVm, ClassroomStudent>(classroomStudentVm);
+            var result = await _classroomStudentService.CreateClassroomStudentAsync(Data);
+            if (result == null)
+                return BadRequest();
             return Ok(result);
         }
 
-        // Put Attendance {id}
+        // Put ClassroomStudent {id}
         [MapToApiVersion("1.0")]
-        [Route("{id}")]
-        [HttpPut]
+        [HttpPut("{id}")]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Put))]
-        public async Task<ActionResult> Put(int id, [FromBody] AttendanceVm attendanceVm)
+        public async Task<ActionResult> Put(int id, [FromBody] ClassroomStudentVm classroomStudentVm)
         {
             if (id <= 0)
             {
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be <= zero OR it doesn't match with model's Id.");
                 return BadRequest();
             }
-            var data = _mapper.Map<AttendanceVm, Attendance>(attendanceVm);
-            var result = await _attendanceService.UpdateAttendanceAsync(id,data);
+            var data = _mapper.Map<ClassroomStudentVm, ClassroomStudent>(classroomStudentVm);
+            var result = await _classroomStudentService.UpdateClassroomStudentAsync(id, data);
             if (result is null)
             {
                 return NotFound();
@@ -93,10 +92,9 @@ namespace SchoolManagementAPI.Controllers.V1
             return Ok(result);
         }
 
-        // Delete Attendance {id}
+        // Delete ClassroomStudent {id}
         [MapToApiVersion("1.0")]
-        [Route("{id}")]
-        [HttpDelete]
+        [HttpDelete("{id}")]
         [ApiConventionMethod(typeof(CustomApiConventions), nameof(CustomApiConventions.Delete))]
         public async Task<ActionResult> Delete(int id)
         {
@@ -105,23 +103,11 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _attendanceService.DeleteAsync(id);
+            var result = await _classroomStudentService.DeleteAsync(id);
             if (result is null)
                 return NotFound();
             return Ok(result);
         }
 
-        [MapToApiVersion("1.0")]
-        [Route("StudentWithAttendance/{studentId}")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> GetStudentAttendanceDetails(int studentId)
-        {
-            _logger.LogInformation("Getting list of student by ID:{id}", studentId);
-            var result = await _attendanceService.GetStudentAttendanceAsync(studentId);
-            if (result is null)
-                return NotFound();
-            return Ok(result);
-        }
     }
 }

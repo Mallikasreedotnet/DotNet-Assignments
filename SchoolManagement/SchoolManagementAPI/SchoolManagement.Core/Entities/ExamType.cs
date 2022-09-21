@@ -11,7 +11,7 @@ namespace SchoolManagement.Core.Entities
         }
 
         public int ExamTypeId { get; set; }
-        public string Name { get; set; } = null!;
+        public string ExamTypeName { get; set; } = null!;
         public string Description { get; set; } = null!;
 
         public virtual ICollection<Exam> Exams { get; set; }

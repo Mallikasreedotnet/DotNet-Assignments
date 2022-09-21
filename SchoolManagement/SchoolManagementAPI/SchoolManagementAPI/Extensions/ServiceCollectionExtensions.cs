@@ -56,6 +56,7 @@ namespace SchoolManagementAPI.Extensions
             services.AddTransient<IAttendanceRepository, AttendanceRepository>();
             services.AddTransient<IExamRepository,ExamRepository>();
             services.AddTransient<IExamResultRepository, ExamResultRepository>();
+            services.AddTransient<IClassroomStudentRepository, ClassroomStudentRepository>();
 
             services.AddTransient<IDbConnection>(db => new SqlConnection(
                                 configuration.GetConnectionString("schoolManagementDbContext")));
@@ -70,6 +71,8 @@ namespace SchoolManagementAPI.Extensions
             services.AddTransient<ICourseService,CourseService>();
             services.AddTransient<IClassroomService,ClassroomService>();
             services.AddTransient<IExamResultService, ExamResultService>();
+            services.AddTransient<IClassroomStudentService, ClassroomStudentService>();
+
         }
     }
 }

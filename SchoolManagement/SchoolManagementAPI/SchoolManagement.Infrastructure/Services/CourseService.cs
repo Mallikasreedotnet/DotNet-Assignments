@@ -32,7 +32,7 @@ namespace SchoolManagement.Infrastructure.Services
         {
             var courseToBeUpdated = await GetCourseAsync(courseId);
             courseToBeUpdated.Description = course.Description;
-            courseToBeUpdated.Name = course.Name;
+            courseToBeUpdated.CourseName = course.CourseName;
             courseToBeUpdated.GradeId = course.GradeId;
             var data = await _courseRepository.UpdateCourseAsync(courseToBeUpdated);
             return data;

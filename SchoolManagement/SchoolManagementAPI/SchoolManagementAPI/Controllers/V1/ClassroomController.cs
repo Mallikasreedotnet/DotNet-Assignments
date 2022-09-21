@@ -71,7 +71,7 @@ namespace SchoolManagementAPI.Controllers.V1
             {
                 return BadRequest("Teacher is already exist");
             }
-            _logger.LogInformation("Add new data for courses");
+            _logger.LogInformation("Add new data for Classrooms");
             var Data = _mapper.Map<ClassroomVm, Classroom>(classroomVm);
             var result = await _classroomService.CreateClassroomAsync(Data);
             if (result == null)

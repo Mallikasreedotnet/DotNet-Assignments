@@ -32,7 +32,7 @@ namespace SchoolManagement.Infrastructure.Services
         {
             var gradeToBeUpdated = await GetGradeAsync(gradeId);
             gradeToBeUpdated.Description = grade.Description;
-            gradeToBeUpdated.Name = grade.Name;
+            gradeToBeUpdated.GradeName = grade.GradeName;
             var data = await _gradeRepository.UpdateGradeAsync(gradeToBeUpdated);
             return data;
         }

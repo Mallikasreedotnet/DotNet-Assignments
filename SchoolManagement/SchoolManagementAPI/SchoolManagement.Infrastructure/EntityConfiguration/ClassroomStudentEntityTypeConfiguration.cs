@@ -1,12 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SchoolManagement.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Dapper.SqlMapper;
 
 namespace SchoolManagement.Infrastructure.EntityConfiguration
 {
@@ -14,11 +8,11 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
     {
         public void Configure(EntityTypeBuilder<ClassroomStudent> builder)
         {
-            builder.HasNoKey();
+            builder.HasKey(e=>e.ClassroomStudentId);
 
             builder.ToTable("ClassroomStudent");
             
-            builder.Property(e => e.ClassroomId).HasColumnName("classroomId");
+            builder.Property(e => e.ClassroomId).HasColumnName("ClassroomId");
 
             builder.HasOne(d => d.Classroom)
                 .WithMany()

@@ -52,7 +52,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                                                     {
                                                         Fname = student.Fname,
                                                         Lname = student.Lname,
-                                                        GradeName = grade.Name,
+                                                        GradeName = grade.GradeName,
                                                         ClassroomId = classRoom.ClassroomId,
                                                     }).FirstAsync();
               return studentWithClassroomRecord;

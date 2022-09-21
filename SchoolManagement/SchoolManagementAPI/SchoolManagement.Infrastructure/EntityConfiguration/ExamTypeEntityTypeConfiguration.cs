@@ -16,13 +16,13 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
         {
             builder.ToTable("ExamType");
 
-            builder.Property(e => e.ExamTypeId).HasColumnName("examTypeId");
+            builder.Property(e => e.ExamTypeId).HasColumnName("ExamTypeId");
 
             builder.Property(e => e.Description)
                 .HasMaxLength(45)
             .IsUnicode(false);
 
-            builder.Property(e => e.Name)
+            builder.Property(e => e.ExamTypeName)
                 .HasMaxLength(45)
                 .IsUnicode(false);
         }

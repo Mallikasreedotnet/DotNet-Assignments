@@ -5,7 +5,7 @@ namespace SchoolManagementAPI.ViewModel
     public class CourseVm
     {
         [StringLength(25), Required]
-        public string Name { get; set; } = null!;
+        public string CourseName { get; set; } = null!;
         [StringLength(25)]
         public string Description { get; set; } = null!;
         [Required]

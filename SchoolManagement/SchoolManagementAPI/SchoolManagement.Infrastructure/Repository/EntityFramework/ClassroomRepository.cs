@@ -5,7 +5,6 @@ using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
 using System.Data;
-using System.Xml.Linq;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 {
@@ -68,7 +67,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                                    {
                                        StudentFname = student.Fname,
                                        StudentLname = student.Lname,
-                                       GradeName=grade.Name,
+                                       GradeName=grade.GradeName,
                                        Year=classroom.Year,
                                        Section=classroom.Section,
                                    }).ToListAsync();

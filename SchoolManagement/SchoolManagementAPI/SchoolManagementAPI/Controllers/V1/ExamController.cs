@@ -206,7 +206,7 @@ namespace SchoolManagementAPI.Controllers.V1
         [Route("ExamDetails/{studentId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> GetExamTypeDetails(int studentId,int examTypeId,int courseId)
+        public async Task<ActionResult> GetExamTypeDetails(int? studentId,int? examTypeId,int? courseId)
         {
             var result= await _examService.GetExamDetails(studentId, examTypeId,courseId);
             return Ok(result);

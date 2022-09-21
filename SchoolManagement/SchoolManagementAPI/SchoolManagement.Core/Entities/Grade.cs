@@ -12,7 +12,7 @@ namespace SchoolManagement.Core.Entities
         }
         
         public int? GradeId { get; set; }
-        public string Name { get; set; } = null!;
+        public string GradeName { get; set; } = null!;
         public string Description { get; set; } = null!;
 
         public virtual ICollection<Classroom> Classrooms { get; set; }
