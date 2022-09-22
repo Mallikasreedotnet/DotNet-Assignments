@@ -91,12 +91,15 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be <= zero OR it doesn't match with model's Id.");
                 return BadRequest();
             }
+            var availableRepeationData = await _classroomService.GetTeacherwithGrade(classroomVm.GradeId, classroomVm.TeacherId, classroomVm.Section);
+            if (availableRepeationData != null)
+            {
+                return BadRequest("Teacher is already exist");
+            }
             var data = _mapper.Map<ClassroomVm, Classroom>(classroomVm);
             var result = await _classroomService.UpdateClassroomAsync(id, data);
             if (result is null)
-            {
                 return NotFound();
-            }
             return Ok(result);
         }
 
@@ -112,10 +115,15 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _classroomService.DeleteAsync(id);
-            if (result is null)
-                return NotFound();
-            return Ok(result);
+            var existingData=await _classroomService.GetClassroomAsync(id);
+            if (existingData != null)
+            {
+                var result = await _classroomService.DeleteAsync(id);
+                if (result is null)
+                    return NotFound();
+                return Ok(result);
+            }
+            return BadRequest("Classroom not found");
         }
 
 

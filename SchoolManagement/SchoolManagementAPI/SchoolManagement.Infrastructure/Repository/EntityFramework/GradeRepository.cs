@@ -75,5 +75,11 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                               }).FirstAsync();
             return gradeResult;
         }
+
+        public async Task<Grade> GetNotRepeatedDataForGrade(string gradeName,string description)
+        {
+            var repeatedData = "Select * from Grade where gradeName=@gradeName and description=@description";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<Grade>(repeatedData, new { gradeName, description }));
+        }
     }
 }

@@ -62,19 +62,7 @@ namespace SchoolManagementAPI.Controllers.V1
             return Ok(result);
         }
 
-        // Get Parent with student
-        [MapToApiVersion("1.0")]
-        [Route("ParentClass{parentId}")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> GetParentAndStudent(int parentId)
-        {
-            _logger.LogInformation("Getting list of parent by ID:{id}", parentId);
-            var result = await _parentService.GetParentWithStudent(parentId);
-            if (result is null)
-                return NotFound();
-            return Ok(result);
-        }
+        
 
         // Post Parent
         [MapToApiVersion("1.0")]
@@ -123,8 +111,27 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)),"Id field can't be {id}",id);
                 return BadRequest();
             }
-            var result =  await _parentService.DeleteAsync(id);
-            if(result is null)
+            var existingData=await _parentService.GetParentAsync(id);
+            if (existingData != null)
+            {
+                var result = await _parentService.DeleteAsync(id);
+                if (result is null)
+                    return NotFound();
+                return Ok(result);
+            }
+            return BadRequest("parent not found");
+        }
+
+        // Get Parent with student
+        [MapToApiVersion("1.0")]
+        [Route("ParentClass{parentId}")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public async Task<ActionResult> GetParentAndStudent(int parentId)
+        {
+            _logger.LogInformation("Getting list of parent by ID:{id}", parentId);
+            var result = await _parentService.GetParentWithStudent(parentId);
+            if (result is null)
                 return NotFound();
             return Ok(result);
         }

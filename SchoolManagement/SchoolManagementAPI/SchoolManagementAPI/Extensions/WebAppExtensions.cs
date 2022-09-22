@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using SchoolManagementAPI.Middleware;
 using Serilog;
 
 namespace SchoolManagementAPI.Extensions
@@ -20,8 +21,9 @@ namespace SchoolManagementAPI.Extensions
                     }
                 });
             }
+            app.UseMiddleware<ExceptionMiddleware>();
             app.UseHttpsRedirection();
-
+            
             app.UseAuthorization();
 
             app.UseSerilogRequestLogging();

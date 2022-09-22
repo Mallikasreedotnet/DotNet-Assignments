@@ -40,5 +40,9 @@ namespace SchoolManagement.Infrastructure.Services
             return await _classroomStudentRepository.DeleteAsync(classroomStudentId);
         }
 
+        public async Task<ClassroomStudent> GetNotRepeatedData(int classroomId, int studentId)
+        {
+            return await _classroomStudentRepository.GetNotRepeatedData(classroomId, studentId);
+        }
     }
 }

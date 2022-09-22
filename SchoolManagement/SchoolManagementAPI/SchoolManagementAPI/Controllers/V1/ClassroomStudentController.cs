@@ -26,7 +26,7 @@ namespace SchoolManagementAPI.Controllers.V1
 
         // Get ClassroomStudents
         [MapToApiVersion("1.0")]
-        [HttpGet("")]
+        [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> Get()
         {
@@ -60,10 +60,15 @@ namespace SchoolManagementAPI.Controllers.V1
 
         // Post ClassroomStudent
         [MapToApiVersion("1.0")]
-        [HttpPost(" ")]
+        [HttpPost]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public async Task<ActionResult> Post([FromBody] ClassroomStudentVm classroomStudentVm)
         {
+            var notRepeatedData = await _classroomStudentService.GetNotRepeatedData(classroomStudentVm.ClassroomId, classroomStudentVm.StudentId);
+            if (notRepeatedData != null)
+            {
+              return  BadRequest("ClassroomStudent is already exist");
+            }
             _logger.LogInformation("Add new data for ClassroomStudent");
             var Data = _mapper.Map<ClassroomStudentVm, ClassroomStudent>(classroomStudentVm);
             var result = await _classroomStudentService.CreateClassroomStudentAsync(Data);
@@ -82,6 +87,11 @@ namespace SchoolManagementAPI.Controllers.V1
             {
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be <= zero OR it doesn't match with model's Id.");
                 return BadRequest();
+            }
+            var notRepeatedData = await _classroomStudentService.GetNotRepeatedData(classroomStudentVm.ClassroomId, classroomStudentVm.StudentId);
+            if (notRepeatedData != null)
+            {
+                return BadRequest("ClassroomStudent is already exist");
             }
             var data = _mapper.Map<ClassroomStudentVm, ClassroomStudent>(classroomStudentVm);
             var result = await _classroomStudentService.UpdateClassroomStudentAsync(id, data);
@@ -103,10 +113,15 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _classroomStudentService.DeleteAsync(id);
-            if (result is null)
-                return NotFound();
-            return Ok(result);
+            var existingData= await _classroomStudentService.GetClassroomStudentAsync(id);
+            if (existingData != null)
+            {
+                var result = await _classroomStudentService.DeleteAsync(id);
+                if (result is null)
+                    return NotFound();
+                return Ok(result);
+            }
+            return BadRequest("ClassroomStudent not found");
         }
 
     }

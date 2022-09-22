@@ -3,6 +3,7 @@ using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
 using System.Data;
+using static System.Collections.Specialized.BitVector32;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 {
@@ -25,7 +26,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<ClassroomStudent> GetClassroomStudentAsync(int classroomStudentId)
         {
-            var query = "select * from where ClassroomStudentId=@ClassroomStudentId";
+            var query = "select * from ClassroomStudent where ClassroomStudentId=@ClassroomStudentId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<ClassroomStudent>(query, new { classroomStudentId }));
         }
 
@@ -49,6 +50,12 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _schoolDbContext.ClassroomStudents.Remove(deletedToBeClassroomStudent);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeClassroomStudent;
+        }
+
+        public async Task<ClassroomStudent> GetNotRepeatedData(int classroomId,int studentId)
+        {
+            var data = "Select * from ClassroomStudent where classroomId=@classroomId and studentId=@studentId";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<ClassroomStudent>(data, new { classroomId, studentId }));
         }
     }
 }

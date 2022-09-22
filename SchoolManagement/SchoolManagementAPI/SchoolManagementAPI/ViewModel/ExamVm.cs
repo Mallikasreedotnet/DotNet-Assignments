@@ -6,6 +6,7 @@ namespace SchoolManagementAPI.ViewModel
     {
         [Required]
         public int ExamTypeId { get; set; }
+
         [StringLength(30), Required]
         public string ExamName { get; set; } = null!;
         public DateTime StartDate { get; set; }

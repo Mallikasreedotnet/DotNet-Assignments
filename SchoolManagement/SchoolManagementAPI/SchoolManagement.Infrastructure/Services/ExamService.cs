@@ -78,5 +78,10 @@ namespace SchoolManagement.Infrastructure.Services
         {
                 return await _examRepository.GetExamDetails(studentId,examTypeId,courseId);
         }
+
+        public async Task<ExamType> GetNotRepeationData(string examTypeName, string description)
+        {
+            return await _examRepository.GetNotRepeationData(examTypeName,description);
+        }
     }
 }

@@ -66,6 +66,11 @@ namespace SchoolManagementAPI.Controllers.V1
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public async Task<ActionResult> Post([FromBody] GradeVm gradeVm)
         {
+            var repeatedData = await _gradeService.GetNotRepeatedDataForGrade(gradeVm.GradeName, gradeVm.Description);
+            if (repeatedData != null)
+            {
+                return BadRequest("Grade is already exist");
+            }
             _logger.LogInformation("Add new data for grades");
             var Data = _mapper.Map<GradeVm, Grade>(gradeVm);
             var result = await _gradeService.CreateGradeAsync(Data);
@@ -84,13 +89,16 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be <= zero OR it doesn't match with model's Id.");
                 return BadRequest();
             }
-            var data = _mapper.Map<GradeVm, Grade>(gradeVm);
-            var result = await _gradeService.UpdateGradeAsync(id, data);
-            if (result is null)
+            var repeatedData = await _gradeService.GetNotRepeatedDataForGrade(gradeVm.GradeName, gradeVm.Description);
+            if (repeatedData != null)
             {
-                return NotFound();
+                return BadRequest("Grade is already exist");
             }
-            return Ok(result);
+            var data = _mapper.Map<GradeVm, Grade>(gradeVm);
+            var result =  await _gradeService.UpdateGradeAsync(id, data);
+            if (result != null)
+                return Ok(result);
+            return NotFound();
         }
 
         // Delete Grade {id}
@@ -105,10 +113,15 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _gradeService.DeleteAsync(id);
-            if (result is null)
-                return NotFound();
-            return Ok(result);
+            var existingGrade = await _gradeService.GetGradeAsync(id);
+            if (existingGrade != null)
+            {
+                var result = await _gradeService.DeleteAsync(id);
+                if (result is null)
+                    return NotFound();
+                return Ok(result);
+            }
+           return BadRequest("Grade Not Found");
         }
 
         [MapToApiVersion("1.0")]

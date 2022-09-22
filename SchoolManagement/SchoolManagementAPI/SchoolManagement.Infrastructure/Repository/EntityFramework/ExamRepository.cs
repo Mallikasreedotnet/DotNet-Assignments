@@ -83,31 +83,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<IEnumerable<StudentExamDto>> GetExamDetails(int? studentId = null, int? examTypeId = null, int? courseId = null)
         {
-            var examResults = "execute spGetExamResultDetails @studentId , @examTypeId,@courseId";
-            //await (from examType in _schoolDbContext.ExamTypes
-            //                         join exam in _schoolDbContext.Exams
-            //                         on examType.ExamTypeId equals exam.ExamTypeId
-            //                         join examResult in _schoolDbContext.ExamResults
-            //                         on exam.ExamId equals examResult.ExamId
-            //                         join student in _schoolDbContext.Students 
-            //                         on examResult.StudentId equals student.StudentId
-            //                         join course in _schoolDbContext.Courses
-            //                         on examResult.CourseId equals course.CourseId
-            //                         join grade in _schoolDbContext.Grades
-            //                         on course.GradeId equals grade.GradeId
-            //                         where (studentId == 0 || student.StudentId == studentId)
-            //                         &&(examTypeId == 0 || exam.ExamTypeId == examTypeId)
-            //                         &&(courseId == 0 || course.CourseId == courseId)
-            //                         select new StudentExamDto
-            //                         {
-            //                             StudentFname = student.Fname,
-            //                             StudentLname = student.Lname,
-            //                             CourseName = course.CourseName,
-            //                             ExamName = exam.ExamName,
-            //                             ExamTypeName = examType.ExamTypeName,
-            //                             Marks = examResult.Marks,
-            //                             GradeName = grade.GradeName
-            //                         }).ToListAsync();
+            var examResults = "execute spGetExamResultDetails @studentId , @examTypeId , @courseId";
             var data = await _dbconnection.QueryAsync<StudentExamDto>(examResults, new { studentId, examTypeId, courseId });
             return data;
         }
@@ -118,6 +94,12 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _schoolDbContext.ExamTypes.Remove(deletedToBeExamType);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeExamType;
+        }
+
+        public async Task<ExamType> GetNotRepeationData(string examTypeName,string description)
+        {
+            var repeationData = "Select * from ExamType where examTypeName=@examTypeNmae and description=@description";
+            return await _dbconnection.QueryFirstOrDefaultAsync<ExamType>(repeationData, new { examTypeName, description });
         }
     }
 }

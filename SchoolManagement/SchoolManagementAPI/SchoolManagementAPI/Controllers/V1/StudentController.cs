@@ -63,20 +63,6 @@ namespace SchoolManagementAPI.Controllers.V1
         }
 
 
-        // Get Student id with class id
-        [MapToApiVersion("1.0")]
-        [Route("StudentClass{studentId}")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> GetStudentAndClassId(int studentId)
-        {
-            var result = await _studentService.GetStudentsWithClass(studentId);
-            if (result is null)
-                return NotFound();
-            return Ok(result);
-        }
-
-
         // Post Student
         [MapToApiVersion("1.0")]
         [Route("")]
@@ -121,7 +107,25 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _studentService.DeleteAsync(id);
+            var existingData=await _studentService.GetStudentAsync(id);
+            if (existingData != null)
+            {
+                var result = await _studentService.DeleteAsync(id);
+                if (result is null)
+                    return NotFound();
+                return Ok(result);
+            }
+            return BadRequest("student not found");
+        }
+
+        // Get Student id with class id
+        [MapToApiVersion("1.0")]
+        [Route("StudentClass{studentId}")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public async Task<ActionResult> GetStudentAndClassId(int studentId)
+        {
+            var result = await _studentService.GetStudentsWithClass(studentId);
             if (result is null)
                 return NotFound();
             return Ok(result);

@@ -11,5 +11,6 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
         Task<Grade> UpdateGradeAsync(Grade grade);
         Task<Grade> DeleteAsync(int gradeId);
         Task<GradeCourseDto> GetGradeCourseAsync(int gradeId);
+        Task<Grade> GetNotRepeatedDataForGrade(string gradeName, string description);
     }
 }

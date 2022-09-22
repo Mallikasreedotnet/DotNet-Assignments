@@ -23,7 +23,7 @@ namespace SchoolManagementAPI.Controllers.V1
             _mapper = mapper;
         }
 
-        // Get Exam
+        // Get ExamResult
         [MapToApiVersion("1.0")]
         [Route("")]
         [HttpGet]
@@ -68,8 +68,8 @@ namespace SchoolManagementAPI.Controllers.V1
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public async Task<ActionResult> Post([FromBody] ExamResultVm examResultVm)
         {
-            var available = await _examResultService.GetExamDetailsWithId(examResultVm.ExamId, examResultVm.StudentId,examResultVm.CourseId);
-            if (available != null /*&& available.ExamId == examResultVm.ExamId && available.StudentId == examResultVm.StudentId && available.CourseId==examResultVm.CourseId*/)
+            var available = await _examResultService.GetExamDetailsWithId(examResultVm.ExamId, examResultVm.StudentId, examResultVm.CourseId);
+            if (available != null)
             {
                 return BadRequest("ExamResult already exist");
             }
@@ -81,7 +81,7 @@ namespace SchoolManagementAPI.Controllers.V1
             return Ok(result);
         }
 
-        // Put Exam {id}
+        // Put ExamResult {id}
         [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpPut]
@@ -93,6 +93,11 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be <= zero OR it doesn't match with model's Id.");
                 return BadRequest();
             }
+            var available = await _examResultService.GetExamDetailsWithId(examResultVm.ExamId, examResultVm.StudentId, examResultVm.CourseId);
+            if (available != null)
+            {
+                return BadRequest("ExamResult already exist");
+            }
             var data = _mapper.Map<ExamResultVm, ExamResult>(examResultVm);
             var result = await _examResultService.UpdateExamResultAsync(id, data);
             if (result is null)
@@ -100,7 +105,7 @@ namespace SchoolManagementAPI.Controllers.V1
             return Ok(result);
         }
 
-        // Delete Exam {id}
+        // Delete ExamResult {id}
         [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpDelete]
@@ -112,10 +117,15 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _examResultService.DeleteAsync(id);
-            if (result is null)
-                return NotFound();
-            return Ok(result);
+            var existingData=await _examResultService.GetExamResultAsync(id);
+            if (existingData != null)
+            {
+                var result = await _examResultService.DeleteAsync(id);
+                if (result is null)
+                    return NotFound();
+                return Ok(result);
+            }
+            return BadRequest("Examresult not found");
         }
 
     }

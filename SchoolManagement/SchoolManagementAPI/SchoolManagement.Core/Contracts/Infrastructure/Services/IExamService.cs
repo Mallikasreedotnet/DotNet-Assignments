@@ -16,5 +16,6 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Services
         Task<ExamType> UpdateExamTypeAsync(int examTypeId,ExamType examType);
         Task<ExamType> DeleteExamTypeAsync(int examTypeId);
         Task<IEnumerable<StudentExamDto>> GetExamDetails(int? studentId, int? examTypeId,int? courseId);
+        Task<ExamType> GetNotRepeationData(string examTypeName, string description);
     }
 }

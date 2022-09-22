@@ -105,10 +105,15 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _examService.DeleteAsync(id);
-            if (result is null)
-                return NotFound();
-            return Ok(result);
+            var existingData=await _examService.GetExamAsync(id);
+            if (existingData != null)
+            {
+                var result = await _examService.DeleteAsync(id);
+                if (result is null)
+                    return NotFound();
+                return Ok(result);
+            }
+            return BadRequest("Exam not found");
         }
 
 
@@ -156,6 +161,11 @@ namespace SchoolManagementAPI.Controllers.V1
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Post))]
         public async Task<ActionResult> Post([FromBody] ExamTypeVm examTypeVm)
         {
+            var repeatedData = await _examService.GetNotRepeationData(examTypeVm.ExamTypeName, examTypeVm.Description);
+            if(repeatedData != null)
+            {
+                return BadRequest("Examtype is already exist");
+            }
             _logger.LogInformation("Add new data for courses");
             var Data = _mapper.Map<ExamTypeVm, ExamType>(examTypeVm);
             var result = await _examService.CreateExamTypeAsync(Data);
@@ -173,6 +183,11 @@ namespace SchoolManagementAPI.Controllers.V1
             {
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be <= zero OR it doesn't match with model's Id.");
                 return BadRequest();
+            }
+            var repeatedData = await _examService.GetNotRepeationData(examTypeVm.ExamTypeName, examTypeVm.Description);
+            if (repeatedData != null)
+            {
+                return BadRequest("Examtype is already exist");
             }
             var data = _mapper.Map<ExamTypeVm, ExamType>(examTypeVm);
             var result = await _examService.UpdateExamTypeAsync(id, data);
@@ -195,10 +210,15 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _examService.DeleteExamTypeAsync(id);
-            if (result is null)
-                return NotFound();
-            return Ok(result);
+            var existingData=await _examService.GetExamTypeAsync(id);
+            if (existingData != null)
+            {
+                var result = await _examService.DeleteExamTypeAsync(id);
+                if (result is null)
+                    return NotFound();
+                return Ok(result);
+            }
+            return BadRequest("Examtype not found");
         }
 
         // Get ExamType Details

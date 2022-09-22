@@ -45,7 +45,7 @@ namespace SchoolManagementAPI.Controllers.V1
             return Ok("Sample Text from V1.1 API");
         }
 
-        // Get Teacher/{id}
+        // Get Teacher{id}
         [MapToApiVersion("1.0")]
         [Route("{id}")]
         [HttpGet]
@@ -54,20 +54,6 @@ namespace SchoolManagementAPI.Controllers.V1
         {
             _logger.LogInformation("Getting list of teacher by ID:{id}", id);
             var result = await _teacherService.GetTeacherAsync(id);
-            if (result is null)
-                return NotFound();
-            return Ok(result);
-        }
-
-
-        // Get Teacher id with classroom
-        [MapToApiVersion("1.0")]
-        [Route("TeacherClass{teacherId}")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> GetTeacherAndClassroom(int teacherId)
-        {
-            var result = await _teacherService.GetTeacherWithClass(teacherId);
             if (result is null)
                 return NotFound();
             return Ok(result);
@@ -119,7 +105,26 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var result = await _teacherService.DeleteAsync(id);
+            var existingData=await _teacherService.GetTeacherAsync(id);
+            if (existingData is null)
+            {
+                var result = await _teacherService.DeleteAsync(id);
+                if (result is null)
+                    return NotFound();
+                return Ok(result);
+            }
+            return BadRequest("teacher not found");
+        }
+
+
+        // Get Teacher id with classroom
+        [MapToApiVersion("1.0")]
+        [Route("TeacherClass{teacherId}")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public async Task<ActionResult> GetTeacherAndClassroom(int teacherId)
+        {
+            var result = await _teacherService.GetTeacherWithClass(teacherId);
             if (result is null)
                 return NotFound();
             return Ok(result);

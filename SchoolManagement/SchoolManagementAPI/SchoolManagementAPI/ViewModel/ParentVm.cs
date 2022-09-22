@@ -6,6 +6,7 @@ namespace SchoolManagementAPI.ViewModel
     {
         [StringLength(100), Required]
         public string Email { get; set; } = null!;
+
         [Required]
         public string Password { get; set; } = null!;
 
@@ -14,12 +15,16 @@ namespace SchoolManagementAPI.ViewModel
 
         [StringLength(25), Required]
         public string Lname { get; set; } = null!;
+
         [Required]
         public DateTime Dob { get; set; }
+
         [Required]
         public string Phone { get; set; } = null!;
+
         [Required]
         public string Mobile { get; set; } = null!;
+
         public bool Status { get; set; }
         public DateTime LastLoginDate { get; set; }
         public string LastLoginIp { get; set; } = null!;
