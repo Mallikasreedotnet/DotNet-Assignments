@@ -9,6 +9,7 @@ namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
     [ApiVersion("1.1")]
+    [Route("attendance")]
     public class AttendanceController : ApiControllerBase
     {
         private readonly IAttendanceService _attendanceService;
@@ -23,7 +24,7 @@ namespace SchoolManagementAPI.Controllers.V1
         }
 
         // Get Attendances
-       // [MapToApiVersion("1.0")]
+        [MapToApiVersion("1.0")]
         [Route("")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
@@ -117,7 +118,7 @@ namespace SchoolManagementAPI.Controllers.V1
         }
 
         [MapToApiVersion("1.0")]
-        [Route("StudentWithAttendance/{studentId}")]
+        [Route("studentwithattendance/{studentId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> GetStudentAttendanceDetails(int studentId)

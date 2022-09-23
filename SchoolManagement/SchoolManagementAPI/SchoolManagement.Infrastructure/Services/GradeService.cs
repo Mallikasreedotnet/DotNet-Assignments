@@ -28,7 +28,7 @@ namespace SchoolManagement.Infrastructure.Services
            return await _gradeRepository.CreateGradeAsync(grade);
         }
 
-        public async Task<Grade?> UpdateGradeAsync(int gradeId, Grade grade)
+        public async Task<Grade> UpdateGradeAsync(int gradeId, Grade grade)
         {
             var gradeToBeUpdated = await GetGradeAsync(gradeId);
             gradeToBeUpdated.Description = grade.Description;

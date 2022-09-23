@@ -25,17 +25,26 @@ namespace SchoolManagement.Infrastructure.Services
 
         public async Task<ExamResult> CreateExamResultAsync(ExamResult examResult)
         {
-            return await _examResultRepository.CreateExamResultAsync(examResult);
+            var examResultOutput = GetExamResultForPassOrFail(examResult.Marks);
+            examResult.Result = examResultOutput.Item1;
+            examResult.ExamGrade = examResultOutput.Item2;
+            //examResult.ExamResult1 = GetExamResultForPassOrFail(examResult.Marks);
+
+            return examResult;
         }
 
         public async Task<ExamResult> UpdateExamResultAsync(int examResultId, ExamResult examResult)
         {
             var examResultToBeUpdated = await GetExamResultAsync(examResultId);
-            examResultToBeUpdated.ExamId= examResult.ExamId;
-            examResultToBeUpdated.StudentId= examResult.StudentId;
-            examResultToBeUpdated.CourseId= examResult.CourseId;
-            examResultToBeUpdated.Marks= examResult.Marks;  
-            var data= await _examResultRepository.UpdateExamResultAsync(examResultToBeUpdated);
+            examResultToBeUpdated.ExamId = examResult.ExamId;
+            examResultToBeUpdated.StudentId = examResult.StudentId;
+            examResultToBeUpdated.CourseId = examResult.CourseId;
+            examResultToBeUpdated.Marks = examResult.Marks;
+            
+            var examResultOutput= GetExamResultForPassOrFail(examResult.Marks);
+            examResultToBeUpdated.Result = examResultOutput.Item1;
+            examResultToBeUpdated.ExamGrade = examResultOutput.Item2;
+            var data = await _examResultRepository.UpdateExamResultAsync(examResultToBeUpdated);
             return data;
         }
 
@@ -48,5 +57,41 @@ namespace SchoolManagement.Infrastructure.Services
         {
             return await _examResultRepository.GetExamDetailsWithId(examId, studentId, courseId);
         }
+
+        public (string,string) GetExamResultForPassOrFail(int marks)
+        {
+            string examResult;
+            string examGrade;
+            if (marks >= 75)
+            {
+                examResult="Merit";
+                examGrade = "A+";
+                return (examResult, examGrade);
+            }
+            else if (marks >= 65 && marks < 75)
+            {
+                examResult = "Distiction";
+                examGrade = "A";
+                return (examResult, examGrade);
+            }
+            else if (marks >= 55 && marks < 65)
+            {
+                examResult="Credit";
+                examGrade = "B";
+                return (examResult, examGrade);
+            }
+            else if (marks >= 40 && marks < 55)
+            {
+                examResult = "Pass";
+                examGrade = "C";
+                return (examResult, examGrade);
+            }
+            else
+                examResult = "Fail";
+                examGrade = "D";
+            return (examResult, examGrade);
+
+        }
     }
 }
+

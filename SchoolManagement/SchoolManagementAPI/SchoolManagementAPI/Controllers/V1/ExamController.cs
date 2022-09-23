@@ -9,11 +9,14 @@ namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
     [ApiVersion("1.1")]
+    [Route("exam")]
+   
     public class ExamController : ApiControllerBase
     {
         private readonly IExamService _examService;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
+        private int examId;
 
         public ExamController(IExamService examService, ILogger<ExamController> logger, IMapper mapper)
         {
@@ -47,13 +50,13 @@ namespace SchoolManagementAPI.Controllers.V1
 
         // Get Exam {id}
         [MapToApiVersion("1.0")]
-        [Route("{examId}")]
+        [Route("{id}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> Get(int examId)
+        public async Task<ActionResult> Get(int id)
         {
-            _logger.LogInformation("Getting list of Exam by ID:{id}", examId);
-            var result = await _examService.GetExamAsync(examId);
+            _logger.LogInformation("Getting list of Exam by ID:{id}", id);
+            var result = await _examService.GetExamAsync(id);
             if (result == null)
                 return NotFound();
             return Ok(result);

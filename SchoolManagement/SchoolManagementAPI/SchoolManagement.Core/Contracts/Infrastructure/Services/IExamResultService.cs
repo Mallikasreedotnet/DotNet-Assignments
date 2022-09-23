@@ -10,5 +10,7 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Services
         Task<ExamResult> UpdateExamResultAsync(int examResultId, ExamResult examResult);
         Task<ExamResult> DeleteAsync(int examResultId);
         Task<ExamResult> GetExamDetailsWithId(int examId, int studentId, int courseId);
+        public (string,string) GetExamResultForPassOrFail(int marks);
+     
     }
 }

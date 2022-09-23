@@ -9,6 +9,7 @@ namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
     [ApiVersion("1.1")]
+    [Route("classroom")]
     public class ClassroomController : ApiControllerBase
     {
         private readonly IClassroomService _classroomService;
@@ -128,10 +129,10 @@ namespace SchoolManagementAPI.Controllers.V1
 
 
         [MapToApiVersion("1.0")]
-        [Route("api/{classroomId}")]
+        [Route("classroomallstudents/{classroomId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> GetClassroom(int classroomId)
+        public async Task<ActionResult> GetClassroomAllStudents(int classroomId)
         {
             _logger.LogInformation("Getting list of classroomDetails by ID:{id}", classroomId);
             var result = await _classroomService.GetClassroomDetailsAsync(classroomId);

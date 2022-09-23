@@ -1,12 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using SchoolManagement.Core.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static Dapper.SqlMapper;
 
 namespace SchoolManagement.Infrastructure.EntityConfiguration
 {
@@ -25,6 +19,16 @@ namespace SchoolManagement.Infrastructure.EntityConfiguration
             builder.Property(e => e.Marks)
                 .HasMaxLength(45)
                 .IsUnicode(false);
+
+            builder.Property(e => e.Result)
+                    .HasMaxLength(10)
+                    .IsUnicode(false)
+                    .HasColumnName("Result");
+
+            builder.Property(e => e.ExamGrade)
+                .HasMaxLength(10)
+                .IsUnicode(false)
+                .HasColumnName("ExamGrade");
             //builder.HasNoKey();
 
             //builder.ToTable("ExamResult");

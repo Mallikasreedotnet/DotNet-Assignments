@@ -8,6 +8,8 @@
         public string ExamName { get; set; } = null!;
         public string ExamTypeName { get; set; } = null!;
         public string GradeName { get; set; } = null!;
-        public string Marks { get; set; } = null!;
+        public string? Result { get; set; } 
+        public string? ExamGrade { get; set; }
+        public int Marks { get; set; }
     }
 }

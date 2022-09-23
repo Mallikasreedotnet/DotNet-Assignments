@@ -13,8 +13,8 @@ namespace SchoolManagementAPI.ViewModel
         [Required]
         public int CourseId { get; set; }
 
-        
-        public string Marks { get; set; } = null!;
+        [Required]
+        public int Marks { get; set; }
 
     }
 }

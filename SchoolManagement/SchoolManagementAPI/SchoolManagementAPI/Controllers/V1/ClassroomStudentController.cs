@@ -11,6 +11,7 @@ namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
     [ApiVersion("1.1")]
+    [Route("classroomstudent")]
     public class ClassroomStudentController : ApiControllerBase
     {
         private readonly IClassroomStudentService _classroomStudentService;

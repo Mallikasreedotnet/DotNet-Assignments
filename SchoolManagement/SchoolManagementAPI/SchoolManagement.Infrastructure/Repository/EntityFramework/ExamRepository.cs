@@ -81,13 +81,6 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return examType;
         }
 
-        public async Task<IEnumerable<StudentExamDto>> GetExamDetails(int? studentId = null, int? examTypeId = null, int? courseId = null)
-        {
-            var examResults = "execute spGetExamResultDetails @studentId , @examTypeId , @courseId";
-            var data = await _dbconnection.QueryAsync<StudentExamDto>(examResults, new { studentId, examTypeId, courseId });
-            return data;
-        }
-
         public async Task<ExamType> DeleteExamTypeAsync(int examTypeId)
         {
             var deletedToBeExamType = await GetExamTypeAsync(examTypeId);
@@ -95,6 +88,14 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeExamType;
         }
+
+        public async Task<IEnumerable<StudentExamDto>> GetExamDetails(int? studentId = null, int? examTypeId = null, int? courseId = null)
+        {
+            var examResults = "execute spGetExamResultDetails @studentId , @examTypeId , @courseId";
+            var data = await _dbconnection.QueryAsync<StudentExamDto>(examResults, new { studentId, examTypeId, courseId });
+            return data;
+        }
+
 
         public async Task<ExamType> GetNotRepeationData(string examTypeName,string description)
         {

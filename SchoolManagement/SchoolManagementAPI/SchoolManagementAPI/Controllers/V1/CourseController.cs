@@ -10,6 +10,7 @@ namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
     [ApiVersion("1.1")]
+    [Route("course")]
     public class CourseController : ApiControllerBase
     {
         private readonly ICourseService _courseService;

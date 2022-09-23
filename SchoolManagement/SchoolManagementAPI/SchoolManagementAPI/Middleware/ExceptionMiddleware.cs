@@ -73,6 +73,7 @@ namespace SchoolManagementAPI.Middleware
                     break;
             }
             var result = JsonSerializer.Serialize(problemDetails);
+            context.Response.StatusCode = (int)problemDetails.Status;
             await response.WriteAsync(result);
         }
     }

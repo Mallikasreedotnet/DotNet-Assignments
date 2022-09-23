@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.Infrastructure.Specs;
@@ -9,16 +10,18 @@ namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
     [ApiVersion("1.1")]
+    [Route("examresult")]
     public class ExamResultController : ApiControllerBase
     {
         private readonly IExamResultService _examResultService;
+        private readonly IExamResultRepository _examResultRepository;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
-       // private ExamResultVm examVm;
 
-        public ExamResultController(IExamResultService examResultService, ILogger<ExamResultController> logger, IMapper mapper)
+        public ExamResultController(IExamResultService examResultService, IExamResultRepository examResultRepository, ILogger<ExamResultController> logger, IMapper mapper)
         {
             _examResultService = examResultService;
+            _examResultRepository = examResultRepository;
             _logger = logger;
             _mapper = mapper;
         }
@@ -76,9 +79,11 @@ namespace SchoolManagementAPI.Controllers.V1
             _logger.LogInformation("Add new data for ExamResult");
             var Data = _mapper.Map<ExamResultVm, ExamResult>(examResultVm);
             var result = await _examResultService.CreateExamResultAsync(Data);
-            if (result == null)
-                return BadRequest();
-            return Ok(result);
+            var addedExamResult = await _examResultRepository.CreateExamResultAsync(result);
+
+            if (addedExamResult != null)
+                return Ok(result);
+            return BadRequest();
         }
 
         // Put ExamResult {id}
@@ -117,7 +122,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var existingData=await _examResultService.GetExamResultAsync(id);
+            var existingData = await _examResultService.GetExamResultAsync(id);
             if (existingData != null)
             {
                 var result = await _examResultService.DeleteAsync(id);
@@ -127,6 +132,7 @@ namespace SchoolManagementAPI.Controllers.V1
             }
             return BadRequest("Examresult not found");
         }
+
 
     }
 }
