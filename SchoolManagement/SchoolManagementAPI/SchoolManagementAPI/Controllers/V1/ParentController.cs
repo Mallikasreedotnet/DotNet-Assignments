@@ -1,16 +1,15 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
+using SchoolManagement.Infrastructure.Services;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
 
 namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
-    [ApiVersion("1.1")]
-    [ApiConventionType(typeof(DefaultApiConventions))]
+    [Route("parent")]
     public class ParentController : ApiControllerBase
     {
         private readonly IParentService _parentService;
@@ -24,29 +23,18 @@ namespace SchoolManagementAPI.Controllers.V1
             _logger = logger;
         }
 
-        // GET Parent
+        // Get Parents
         [MapToApiVersion("1.0")]
         [Route("")]
         [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions),nameof(DefaultApiConventions.Get))]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> Get()
         {
-            _logger.LogInformation("Getting list of all parents");
-            var result =  await _parentService.GetParentAsync();
+            _logger.LogInformation("Getting list of all Parents");
+            var result = await _parentService.GetParentAsync();
             return Ok(result);
         }
-
-
-        // Get Parents
-        [MapToApiVersion("1.1")]
-        [Route("")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<string> GetDataFromNewVersion()
-        {
-            _logger.LogInformation("Getting sample text from version 2 API");
-            return Ok("Sample Text from V1.1 API");
-        }
+       
 
         // Get Parent/{id}
         [MapToApiVersion("1.0")]
@@ -61,8 +49,6 @@ namespace SchoolManagementAPI.Controllers.V1
                 return NotFound();
             return Ok(result);
         }
-
-        
 
         // Post Parent
         [MapToApiVersion("1.0")]
@@ -124,7 +110,7 @@ namespace SchoolManagementAPI.Controllers.V1
 
         // Get Parent with student
         [MapToApiVersion("1.0")]
-        [Route("ParentClass{parentId}")]
+        [Route("parentwithstudent/{parentId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> GetParentAndStudent(int parentId)

@@ -7,8 +7,7 @@ using SchoolManagementAPI.ViewModel;
 namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
-    [ApiVersion("1.1")]
-    [ApiConventionType(typeof(DefaultApiConventions))]
+    [Route("teacher")]
     public class TeacherController: ApiControllerBase
     {
         private readonly ITeacherService _teacherService;
@@ -34,17 +33,7 @@ namespace SchoolManagementAPI.Controllers.V1
             return Ok(result);
         }
 
-        // Get Teachers
-        [MapToApiVersion("1.1")]
-        [Route("")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<string> GetDataFromNewVersion()
-        {
-            _logger.LogInformation("Getting sample text from version 2 API");
-            return Ok("Sample Text from V1.1 API");
-        }
-
+       
         // Get Teacher{id}
         [MapToApiVersion("1.0")]
         [Route("{id}")]
@@ -106,7 +95,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 return BadRequest();
             }
             var existingData=await _teacherService.GetTeacherAsync(id);
-            if (existingData is null)
+            if (existingData != null)
             {
                 var result = await _teacherService.DeleteAsync(id);
                 if (result is null)
@@ -119,7 +108,7 @@ namespace SchoolManagementAPI.Controllers.V1
 
         // Get Teacher id with classroom
         [MapToApiVersion("1.0")]
-        [Route("TeacherClass{teacherId}")]
+        [Route("teacherclassroomdetails/{teacherId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> GetTeacherAndClassroom(int teacherId)

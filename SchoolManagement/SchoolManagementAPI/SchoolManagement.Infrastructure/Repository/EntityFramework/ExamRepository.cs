@@ -99,7 +99,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<ExamType> GetNotRepeationData(string examTypeName,string description)
         {
-            var repeationData = "Select * from ExamType where examTypeName=@examTypeNmae and description=@description";
+            var repeationData = "Select * from ExamType where ExamTypeName=@examTypeName and Description=@description";
             return await _dbconnection.QueryFirstOrDefaultAsync<ExamType>(repeationData, new { examTypeName, description });
         }
     }

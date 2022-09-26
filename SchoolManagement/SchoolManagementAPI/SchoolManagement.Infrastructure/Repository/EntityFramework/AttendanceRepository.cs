@@ -18,10 +18,10 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _dbconnection = dbconnection;
         }
 
-        public async Task<IEnumerable<Attendance>> GetAttendanceAsync()
+        public async Task<IEnumerable<AttendanceDto>> GetAttendanceAsync()
         {
             var query = "execute spGetAttendance";
-            var attendanceData = await _dbconnection.QueryAsync<Attendance>(query);
+            var attendanceData = await _dbconnection.QueryAsync<AttendanceDto>(query);
             return attendanceData;
         }
 

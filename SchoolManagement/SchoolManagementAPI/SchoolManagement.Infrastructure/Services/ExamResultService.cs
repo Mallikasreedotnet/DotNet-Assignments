@@ -1,5 +1,6 @@
 ﻿using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Contracts.Infrastructure.Services;
+using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Infrastructure.Services
@@ -13,7 +14,7 @@ namespace SchoolManagement.Infrastructure.Services
             _examResultRepository = examResultRepository;
         }
 
-        public async Task<IEnumerable<ExamResult>> GetExamResultAsync()
+        public async Task<IEnumerable<ExamResultDto>> GetExamResultAsync()
         {
             return await _examResultRepository.GetExamResultAsync();
         }

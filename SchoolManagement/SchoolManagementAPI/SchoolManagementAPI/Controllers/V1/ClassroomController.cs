@@ -8,7 +8,6 @@ using SchoolManagementAPI.ViewModel;
 namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
-    [ApiVersion("1.1")]
     [Route("classroom")]
     public class ClassroomController : ApiControllerBase
     {
@@ -35,16 +34,6 @@ namespace SchoolManagementAPI.Controllers.V1
             return Ok(result);
         }
 
-        // Get Classrooms
-        [MapToApiVersion("1.1")]
-        [Route("")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<string> GetDataFromNewVersion()
-        {
-            _logger.LogInformation("Getting sample text from version 2 API");
-            return Ok("Sample Text from V1.1 API");
-        }
 
         // Get Classroom {id}
         [MapToApiVersion("1.0")]
@@ -129,18 +118,29 @@ namespace SchoolManagementAPI.Controllers.V1
 
 
         [MapToApiVersion("1.0")]
-        [Route("classroomallstudents/{classroomId}")]
+        [Route("classroomwithstudentcount/{classroomId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> GetClassroomAllStudents(int classroomId)
+        public async Task<ActionResult> GetClassroomWithStudentCount(int classroomId)
         {
             _logger.LogInformation("Getting list of classroomDetails by ID:{id}", classroomId);
-            var result = await _classroomService.GetClassroomDetailsAsync(classroomId);
+            var result = await _classroomService.GetClassroomWithStudentByCountAsync(classroomId);
             if (result == null)
                 return NotFound();
             return Ok(result);
         }
 
-        
+        [MapToApiVersion("1.0")]
+        [Route("classroomwithstudentdetails/{classroomId}")]
+        [HttpGet]
+        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
+        public async Task<ActionResult> GetClassroomWithStudents(int classroomId)
+        {
+            _logger.LogInformation("Getting list of classroomDetails by ID:{id}", classroomId);
+            var result =await _classroomService.GetClassroomWithStudentDetails(classroomId);
+            if (result == null)
+                return NotFound();
+            return Ok(result);
+        }
     }
 }

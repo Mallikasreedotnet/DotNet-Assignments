@@ -8,7 +8,6 @@ using SchoolManagementAPI.ViewModel;
 namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
-    [ApiVersion("1.1")]
     [Route("attendance")]
     public class AttendanceController : ApiControllerBase
     {
@@ -35,17 +34,7 @@ namespace SchoolManagementAPI.Controllers.V1
             return Ok(result);
         }
 
-        // Get Attendences
-        [MapToApiVersion("1.1")]
-        [Route("")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<string> GetDataFromNewVersion()
-        {
-            _logger.LogInformation("Getting sample text from version 2 API");
-            return Ok("Sample Text from V1.1 API");
-        }
-
+      
         // Get Attendance {id}
         [MapToApiVersion("1.0")]
         [Route("{id}")]

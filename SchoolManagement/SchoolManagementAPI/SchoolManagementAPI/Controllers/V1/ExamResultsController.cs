@@ -9,7 +9,6 @@ using SchoolManagementAPI.ViewModel;
 namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
-    [ApiVersion("1.1")]
     [Route("examresult")]
     public class ExamResultController : ApiControllerBase
     {
@@ -17,6 +16,8 @@ namespace SchoolManagementAPI.Controllers.V1
         private readonly IExamResultRepository _examResultRepository;
         private readonly ILogger _logger;
         private readonly IMapper _mapper;
+
+        public Exception? Id { get; private set; }
 
         public ExamResultController(IExamResultService examResultService, IExamResultRepository examResultRepository, ILogger<ExamResultController> logger, IMapper mapper)
         {
@@ -38,26 +39,16 @@ namespace SchoolManagementAPI.Controllers.V1
             return Ok(result);
         }
 
-        // Get ExamResult
-        [MapToApiVersion("1.1")]
-        [Route("")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<string> GetDataFromNewVersion()
-        {
-            _logger.LogInformation("Getting sample text from version 2 API");
-            return Ok("Sample Text from V1.1 API");
-        }
 
         // Get ExamResult {id}
         [MapToApiVersion("1.0")]
-        [Route("{Id}")]
+        [Route("{id}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> Get(int Id)
+        public async Task<ActionResult> Get(int id)
         {
-            _logger.LogInformation("Getting list of ExamResult by ID:{id}", Id);
-            var result = await _examResultService.GetExamResultAsync(Id);
+            _logger.LogInformation("Getting list of ExamResult by ID:{id}", id);
+            var result = await _examResultService.GetExamResultAsync(id);
             if (result == null)
                 return NotFound();
             return Ok(result);
@@ -80,7 +71,6 @@ namespace SchoolManagementAPI.Controllers.V1
             var Data = _mapper.Map<ExamResultVm, ExamResult>(examResultVm);
             var result = await _examResultService.CreateExamResultAsync(Data);
             var addedExamResult = await _examResultRepository.CreateExamResultAsync(result);
-
             if (addedExamResult != null)
                 return Ok(result);
             return BadRequest();
@@ -132,7 +122,5 @@ namespace SchoolManagementAPI.Controllers.V1
             }
             return BadRequest("Examresult not found");
         }
-
-
     }
 }

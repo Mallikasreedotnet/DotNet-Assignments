@@ -14,7 +14,7 @@ namespace SchoolManagement.Infrastructure.Services
             _attendanceRepository = attendanceRepository;
         }
 
-        public async Task<IEnumerable<Attendance>> GetAttendanceAsync()
+        public async Task<IEnumerable<AttendanceDto>> GetAttendanceAsync()
         {
             return await _attendanceRepository.GetAttendanceAsync();
         }

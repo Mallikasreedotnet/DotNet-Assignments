@@ -5,7 +5,7 @@ using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 namespace SchoolManagementAPI.Controllers.V2
 {
     [ApiVersion("2.0")]
-   
+    [Route("attendance")]
     public class AttendanceController : ApiControllerBase
     {
         private readonly IAttendanceRepository _attendanceRepository;

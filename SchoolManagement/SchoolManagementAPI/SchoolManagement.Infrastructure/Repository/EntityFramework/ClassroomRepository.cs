@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
@@ -53,32 +52,25 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return deletedToBeClassroom;
         }
     
-        public async Task<IEnumerable<ClassroomDetailsDto>> GetClassroomDetailsAsync(int classroomId)
+        public async Task<int> GetClassroomWithStudentByCountAsync(int classroomId)
         {
-            var classroomDetails = await(from classroom in _schoolDbContext.Classrooms
-                                   join classroomstudent in _schoolDbContext.ClassroomStudents
-                                   on classroom.ClassroomId equals classroomstudent.ClassroomId
-                                   join student in _schoolDbContext.Students
-                                   on classroomstudent.StudentId equals student.StudentId
-                                   join grade in _schoolDbContext.Grades
-                                   on classroom.GradeId equals grade.GradeId
-                                   where classroom.ClassroomId == classroomId
-                                   select new ClassroomDetailsDto
-                                   {
-                                       StudentFname = student.Fname,
-                                       StudentLname = student.Lname,
-                                       GradeName=grade.GradeName,
-                                       Year=classroom.Year,
-                                       Section=classroom.Section,
-                                   }).ToListAsync();
-            return classroomDetails;
+            var classroomData = "execute spGetClassroomWithStudentCount @classroomId";
+            var data=await _dbconnection.QuerySingleOrDefaultAsync<int>(classroomData,new{ classroomId });
+              return data;
+        }
 
+        public async Task<IEnumerable<ClassroomDetailsDto>> GetClassroomWithStudentDetails(int classroomId)
+        {
+            var classroomData = "execute spGetClassroomWithStudentDetails @classroomId";
+            var data = await _dbconnection.QueryAsync<ClassroomDetailsDto>(classroomData, new { classroomId });
+            return data;
         }
 
         public async Task<Classroom> GetTeacherwithGrade(int gradeId,int teacherId, string section)
         {
-            var Data = "select * from Classroom where gradeId=@gradeId and teacherId=@teacherId and section=@section";
-            return  (await _dbconnection.QueryFirstOrDefaultAsync<Classroom>(Data, new { gradeId,teacherId,section}));
+            var query = "Select * from Classroom where gradeId=@gradeId and teacherId=@teacherId and section=@section";
+            return  (await _dbconnection.QueryFirstOrDefaultAsync<Classroom>(query, new { gradeId,teacherId,section}));
         }
+
     }
 }

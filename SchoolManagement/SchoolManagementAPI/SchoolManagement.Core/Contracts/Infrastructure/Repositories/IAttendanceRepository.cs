@@ -5,7 +5,7 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
 {
     public interface IAttendanceRepository
     {
-        Task<IEnumerable<Attendance>> GetAttendanceAsync();
+        Task<IEnumerable<AttendanceDto>> GetAttendanceAsync();
         Task<Attendance> GetAttendanceAsync(int studentId);
         Task<Attendance> CreateAttendanceAsync(Attendance attendance);
         Task<Attendance> UpdateAttendanceAsync( Attendance attendance);

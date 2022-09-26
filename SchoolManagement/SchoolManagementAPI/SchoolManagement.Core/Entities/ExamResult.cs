@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace SchoolManagement.Core.Entities
+﻿namespace SchoolManagement.Core.Entities
 {
     public partial class ExamResult
     {

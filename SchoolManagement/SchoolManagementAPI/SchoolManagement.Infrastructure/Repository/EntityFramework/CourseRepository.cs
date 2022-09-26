@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
@@ -31,7 +32,6 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Course> CreateCourseAsync(Course course)
         {
-
             _schoolDbContext.Courses.Add(course);
             await _schoolDbContext.SaveChangesAsync();
             return course;
@@ -51,10 +51,18 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeCourse;
         }
-        public async Task<Course> GetCourseName(string Name,int gradeId)
+        public async Task<Course> GetCourseName(string courseName,int gradeId)
         {
-            var avaliableName = "execute spGetCourseAvaliable @gradeId,@Name";
-            return (await _dbconnection.QueryFirstOrDefaultAsync<Course>(avaliableName, new { Name , gradeId }));
+            var avaliableName = "execute spGetCourseAvaliable @gradeId,@courseName";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<Course>(avaliableName, new { courseName , gradeId }));
+        }
+
+        public async Task<Course> GetCourseWithCourseName(string? courseName)
+        {
+            var query = "select * from course where CourseName=@courseName";
+            var result = await _dbconnection.QueryFirstOrDefaultAsync<Course>(query, new { courseName });
+            return result;
+
         }
     }
 }

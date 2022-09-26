@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
 using System.Data;
@@ -16,10 +17,10 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _dbconnection = dbconnection;
         }
 
-        public async Task<IEnumerable<ExamResult>> GetExamResultAsync()
+        public async Task<IEnumerable<ExamResultDto>> GetExamResultAsync()
         {
             var query = "execute spGetExamResult";
-            var ExamData = await _dbconnection.QueryAsync<ExamResult>(query);
+            var ExamData = await _dbconnection.QueryAsync<ExamResultDto>(query);
             return ExamData;
         }
 

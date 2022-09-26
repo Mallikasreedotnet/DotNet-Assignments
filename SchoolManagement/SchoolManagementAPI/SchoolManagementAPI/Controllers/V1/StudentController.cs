@@ -1,17 +1,14 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Contracts.Infrastructure.Services;
 using SchoolManagement.Core.Entities;
-using SchoolManagement.Infrastructure.Services;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
 
 namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
-    [ApiVersion("1.1")]
-    [ApiConventionType(typeof(DefaultApiConventions))]
+    [Route("student")]
     public class StudentController : ApiControllerBase
     {
         private readonly IStudentService _studentService;
@@ -37,17 +34,6 @@ namespace SchoolManagementAPI.Controllers.V1
         }
 
 
-        // Get Students
-        [MapToApiVersion("1.1")]
-        [Route("")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<string> GetDataFromNewVersion()
-        {
-            _logger.LogInformation("Getting sample text from version 2 API");
-            return Ok("Sample Text from V1.1 API");
-        }
-
         // Get Student/{id}
         [MapToApiVersion("1.0")]
         [Route("{id}")]
@@ -61,7 +47,6 @@ namespace SchoolManagementAPI.Controllers.V1
                 return NotFound();
             return Ok(result);
         }
-
 
         // Post Student
         [MapToApiVersion("1.0")]
@@ -120,7 +105,7 @@ namespace SchoolManagementAPI.Controllers.V1
 
         // Get Student id with class id
         [MapToApiVersion("1.0")]
-        [Route("StudentClass{studentId}")]
+        [Route("studentwithclassroomdetails/{studentId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> GetStudentAndClassId(int studentId)

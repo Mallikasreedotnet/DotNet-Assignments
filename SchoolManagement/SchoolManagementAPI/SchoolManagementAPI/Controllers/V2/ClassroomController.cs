@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Entities;
+using SchoolManagement.Infrastructure.Repository.EntityFramework;
 using SchoolManagementAPI.Infrastructure.Specs;
 using SchoolManagementAPI.ViewModel;
 
@@ -20,14 +21,17 @@ namespace SchoolManagementAPI.Controllers.V2
             _mapper = mapper;   
         }
 
-        // Get Classrooms
-        [Route("")]
+        // Get Classroom {id}
+        [MapToApiVersion("2.0")]
+        [Route("{id}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public async Task<ActionResult> Get(string? Fname = null)
+        public async Task<ActionResult> Get(int id)
         {
-            _logger.LogInformation("Getting list of all classrooms");
-            var result = await _classroomRepository.GetClassroomAsync();
+            _logger.LogInformation("Getting list of Classroom by ID:{id}", id);
+            var result = await _classroomRepository.GetClassroomAsync(id);
+            if (result == null)
+                return NotFound();
             return Ok(result);
         }
     }

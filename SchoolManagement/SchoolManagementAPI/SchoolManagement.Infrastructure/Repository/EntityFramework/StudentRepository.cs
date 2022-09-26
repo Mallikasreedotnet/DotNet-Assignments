@@ -54,6 +54,8 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                                                         Lname = student.Lname,
                                                         GradeName = grade.GradeName,
                                                         ClassroomId = classRoom.ClassroomId,
+                                                        Year=classRoom.Year,
+                                                        Section=classRoom.Section,
                                                     }).FirstAsync();
               return studentWithClassroomRecord;
         }

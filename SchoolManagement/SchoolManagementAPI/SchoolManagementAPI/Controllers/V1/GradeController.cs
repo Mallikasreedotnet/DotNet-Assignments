@@ -8,7 +8,7 @@ using SchoolManagementAPI.ViewModel;
 namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
-    [ApiVersion("1.1")]
+    [Route("grade")]
     public class GradeController : ApiControllerBase
     {
         private readonly IGradeService _gradeService;
@@ -33,17 +33,6 @@ namespace SchoolManagementAPI.Controllers.V1
             return Ok(result);
         }
 
-
-        // Get Grades
-        [MapToApiVersion("1.1")]
-        [Route("")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<string> GetDataFromNewVersion()
-        {
-            _logger.LogInformation("Getting sample text from version 2 API");
-            return Ok("Sample Text from V1.1 API");
-        }
 
         // Get Grade {id}
         [MapToApiVersion("1.0")]
@@ -125,7 +114,7 @@ namespace SchoolManagementAPI.Controllers.V1
         }
 
         [MapToApiVersion("1.0")]
-        [Route("api/{gradeId}")]
+        [Route("gradedetails/{gradeId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> GetGradeDetails(int gradeId)

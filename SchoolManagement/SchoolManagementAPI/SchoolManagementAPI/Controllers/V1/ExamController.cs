@@ -8,7 +8,6 @@ using SchoolManagementAPI.ViewModel;
 namespace SchoolManagementAPI.Controllers.V1
 {
     [ApiVersion("1.0")]
-    [ApiVersion("1.1")]
     [Route("exam")]
    
     public class ExamController : ApiControllerBase
@@ -37,16 +36,6 @@ namespace SchoolManagementAPI.Controllers.V1
             return Ok(result);
         }
 
-        // Get Exam
-        [MapToApiVersion("1.1")]
-        [Route("")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<string> GetDataFromNewVersion()
-        {
-            _logger.LogInformation("Getting sample text from version 2 API");
-            return Ok("Sample Text from V1.1 API");
-        }
 
         // Get Exam {id}
         [MapToApiVersion("1.0")]
@@ -132,16 +121,6 @@ namespace SchoolManagementAPI.Controllers.V1
             return Ok(result);
         }
 
-        // Get ExamTypes
-        [MapToApiVersion("1.1")]
-        [Route("type")]
-        [HttpGet]
-        [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
-        public ActionResult<string> GetDataFromNewVersions()
-        {
-            _logger.LogInformation("Getting sample text from version 2 API");
-            return Ok("Sample Text from V1.1 API");
-        }
 
         // Get ExamType {id}
         [MapToApiVersion("1.0")]
@@ -226,7 +205,7 @@ namespace SchoolManagementAPI.Controllers.V1
 
         // Get ExamType Details
         [MapToApiVersion("1.0")]
-        [Route("ExamDetails/{studentId}")]
+        [Route("examdetails/{studentId}")]
         [HttpGet]
         [ApiConventionMethod(typeof(DefaultApiConventions), nameof(DefaultApiConventions.Get))]
         public async Task<ActionResult> GetExamTypeDetails(int? studentId,int? examTypeId,int? courseId)

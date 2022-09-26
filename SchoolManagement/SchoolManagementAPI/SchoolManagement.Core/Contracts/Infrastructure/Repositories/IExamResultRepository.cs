@@ -1,11 +1,12 @@
-﻿using SchoolManagement.Core.Entities;
+﻿using SchoolManagement.Core.Dtos;
+using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
 {
     public interface IExamResultRepository
     {
         Task<ExamResult> CreateExamResultAsync(ExamResult examResult);
-        Task<IEnumerable<ExamResult>> GetExamResultAsync();
+        Task<IEnumerable<ExamResultDto>> GetExamResultAsync();
         Task<ExamResult> GetExamResultAsync(int examResultId);
         Task<ExamResult> UpdateExamResultAsync(ExamResult examResult);
         Task<ExamResult> DeleteAsync(int examResultId);

@@ -47,5 +47,10 @@ namespace SchoolManagement.Infrastructure.Services
         {
             return await _courseRepository.GetCourseName(Name,gradeId);
         }
+
+        public async Task<Course> GetCourseWithCourseName(string? courseName)
+        {
+            return await _courseRepository.GetCourseWithCourseName(courseName);
+        }
     }
 }
