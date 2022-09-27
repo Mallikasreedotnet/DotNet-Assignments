@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 using SchoolManagementAPI.ViewModel;
 
@@ -19,7 +20,6 @@ namespace SchoolManagementAPI.Configuration
             CreateMap<ExamTypeVm, ExamType>();  
             CreateMap<ExamResultVm, ExamResult>();
             CreateMap<ClassroomStudentVm, ClassroomStudent>();
-
         }
     }
 }

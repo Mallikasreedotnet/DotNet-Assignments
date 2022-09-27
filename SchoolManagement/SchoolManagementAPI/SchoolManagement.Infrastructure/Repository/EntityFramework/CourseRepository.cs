@@ -1,6 +1,6 @@
 ﻿using Dapper;
-using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
 using System.Data;
@@ -17,17 +17,23 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _dbconnection = dbconnection;
         }
 
-        public async Task<IEnumerable<Course>> GetCourseAsync()
+        public async Task<IEnumerable<CourseDto>> GetCourseAsync()
         {
             var query = "execute spGetCourse";
-            var courseData = await _dbconnection.QueryAsync<Course>(query);
+            var courseData = await _dbconnection.QueryAsync<CourseDto>(query);
             return courseData;
         }
 
-        public async Task<Course> GetCourseAsync(int courseId)
+        public async Task<CourseDto> GetCourseAsync(int courseId)
         {
             var query = "execute spGetCourseId @CourseId";
-            return (await _dbconnection.QueryFirstOrDefaultAsync<Course>(query, new { courseId }));
+            return (await _dbconnection.QueryFirstOrDefaultAsync<CourseDto>(query, new { courseId }));
+        }
+
+        public async Task<Course> GetCourseByIdAsync(int courseId)
+        {
+            var query = "Select * from Course where courseId=@courseId";
+            return await _dbconnection.QueryFirstOrDefaultAsync<Course>(query, new { courseId });
         }
 
         public async Task<Course> CreateCourseAsync(Course course)
@@ -46,7 +52,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Course> DeleteAsync(int courseId)
         {
-            var deletedToBeCourse = await GetCourseAsync(courseId);
+            var deletedToBeCourse = await GetCourseByIdAsync(courseId);
             _schoolDbContext.Courses.Remove(deletedToBeCourse);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeCourse;

@@ -13,14 +13,19 @@ namespace SchoolManagement.Infrastructure.Services
             _gradeRepository = gradeRepository;
         }
 
-        public async Task<IEnumerable<Grade>> GetGradeAsync()
+        public async Task<IEnumerable<GradeDto>> GetGradeAsync()
         {
             return await _gradeRepository.GetGradeAsync();
         }
 
-        public async Task<Grade> GetGradeAsync(int gradeId)
+        public async Task<GradeDto> GetGradeAsync(int gradeId)
         {
            return await _gradeRepository.GetGradeAsync(gradeId);
+        }
+
+        public async Task<Grade> GetGradeByIdAsync(int gradeId)
+        {
+            return await _gradeRepository.GetGradeByIdAsync(gradeId);
         }
 
         public async Task<Grade> CreateGradeAsync(Grade grade)
@@ -30,7 +35,7 @@ namespace SchoolManagement.Infrastructure.Services
 
         public async Task<Grade> UpdateGradeAsync(int gradeId, Grade grade)
         {
-            var gradeToBeUpdated = await GetGradeAsync(gradeId);
+            var gradeToBeUpdated = await GetGradeByIdAsync(gradeId);
             gradeToBeUpdated.Description = grade.Description;
             gradeToBeUpdated.GradeName = grade.GradeName;
             var data = await _gradeRepository.UpdateGradeAsync(gradeToBeUpdated);

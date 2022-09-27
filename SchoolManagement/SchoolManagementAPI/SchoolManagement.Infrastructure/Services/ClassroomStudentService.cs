@@ -1,5 +1,6 @@
 ﻿using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Contracts.Infrastructure.Services;
+using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Infrastructure.Services
@@ -12,14 +13,19 @@ namespace SchoolManagement.Infrastructure.Services
             _classroomStudentRepository = classroomStudentRepository;
         }
 
-        public async Task<IEnumerable<ClassroomStudent>> GetClassroomStudentAsync()
+        public async Task<IEnumerable<ClassroomStudentDto>> GetClassroomStudentAsync()
         {
             return await _classroomStudentRepository.GetClassroomStudentAsync();
         }
 
-        public async Task<ClassroomStudent> GetClassroomStudentAsync(int classroomStudentId)
+        public async Task<ClassroomStudentDto> GetClassroomStudentAsync(int classroomStudentId)
         {
             return await _classroomStudentRepository.GetClassroomStudentAsync(classroomStudentId);
+        }
+
+        public async Task<ClassroomStudent> GetClassroomStudentByIdAsync(int classroomStudentId)
+        {
+            return await _classroomStudentRepository.GetClassroomStudentByIdAsync(classroomStudentId);
         }
 
         public async Task<ClassroomStudent> CreateClassroomStudentAsync(ClassroomStudent classroomStudent)
@@ -28,7 +34,7 @@ namespace SchoolManagement.Infrastructure.Services
         }
         public async Task<ClassroomStudent> UpdateClassroomStudentAsync(int classroomStudentId, ClassroomStudent classroomStudent)
         {
-            var classroomStudentToBeUpdated = await GetClassroomStudentAsync(classroomStudentId);
+            var classroomStudentToBeUpdated = await GetClassroomStudentByIdAsync(classroomStudentId);
             classroomStudentToBeUpdated.ClassroomId = classroomStudent.ClassroomId;
             classroomStudentToBeUpdated.StudentId = classroomStudent.StudentId;
             var data = await _classroomStudentRepository.UpdateClassroomStudentAsync(classroomStudentToBeUpdated);

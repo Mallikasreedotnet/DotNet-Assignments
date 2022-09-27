@@ -2,7 +2,7 @@
 
 namespace SchoolManagement.Core.Entities
 {
-    [Table("Grade")]
+   // [Table("Grade")]
     public class Grade
     {
         public Grade()

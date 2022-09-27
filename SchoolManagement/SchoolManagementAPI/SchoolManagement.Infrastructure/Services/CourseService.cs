@@ -1,5 +1,6 @@
 ﻿using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Contracts.Infrastructure.Services;
+using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Infrastructure.Services
@@ -13,14 +14,19 @@ namespace SchoolManagement.Infrastructure.Services
             _courseRepository = courseRepository;
         }
 
-        public async Task<IEnumerable<Course>> GetCourseAsync()
+        public async Task<IEnumerable<CourseDto>> GetCourseAsync()
         {
             return await _courseRepository.GetCourseAsync();
         }
 
-        public async Task<Course> GetCourseAsync(int courseId)
+        public async Task<CourseDto> GetCourseAsync(int courseId)
         {
             return await _courseRepository.GetCourseAsync(courseId);
+        }
+
+        public async Task<Course> GetCourseByIdAsync(int courseId)
+        {
+            return await _courseRepository.GetCourseByIdAsync(courseId);
         }
 
         public async Task<Course> CreateCourseAsync(Course course)
@@ -30,7 +36,7 @@ namespace SchoolManagement.Infrastructure.Services
 
         public async Task<Course> UpdateCourseAsync(int courseId, Course course)
         {
-            var courseToBeUpdated = await GetCourseAsync(courseId);
+            var courseToBeUpdated = await GetCourseByIdAsync(courseId);
             courseToBeUpdated.Description = course.Description;
             courseToBeUpdated.CourseName = course.CourseName;
             courseToBeUpdated.GradeId = course.GradeId;

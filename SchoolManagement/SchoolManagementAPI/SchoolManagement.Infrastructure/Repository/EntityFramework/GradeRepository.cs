@@ -18,16 +18,22 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _schoolDbContext = schoolDbContext;
             _dbconnection = dbConnection;
         }
-        public async Task<IEnumerable<Grade>> GetGradeAsync()
+        public async Task<IEnumerable<GradeDto>> GetGradeAsync()
         {
-            var query = "execute spGetGrade";
-            var result = await _dbconnection.QueryAsync<Grade>(query);
+            var query = "select * from Grade";
+            var result = await _dbconnection.QueryAsync<GradeDto>(query);
             return result;
         }
 
-        public async Task<Grade> GetGradeAsync(int gradeId)
+        public async Task<GradeDto> GetGradeAsync(int gradeId)
         {
-            var query = "execute spGetGradeId @gradeId";
+            var query = "select * from Grade where GradeId=@gradeId";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<GradeDto>(query, new { gradeId }));
+        }
+
+        public async Task<Grade> GetGradeByIdAsync(int gradeId)
+        {
+            var query = "select * from Grade where GradeId=@gradeId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<Grade>(query, new { gradeId }));
         }
 
@@ -47,7 +53,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Grade> DeleteAsync(int gradeId)
         {
-            var deletedToBeGrade = await GetGradeAsync(gradeId);
+            var deletedToBeGrade = await GetGradeByIdAsync(gradeId);
             _schoolDbContext.Grades.Remove(deletedToBeGrade);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeGrade;

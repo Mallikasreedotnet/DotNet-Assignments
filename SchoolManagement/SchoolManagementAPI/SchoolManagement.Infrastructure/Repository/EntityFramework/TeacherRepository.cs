@@ -18,39 +18,25 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _dbconnection = dbconnection;
         }
 
-        public async Task<IEnumerable<Teacher>> GetTeacherAsync()
+        public async Task<IEnumerable<TeacherDto>> GetTeacherAsync()
         {
-            var query = "execute spGetTeacher";
-            var teacherData = await _dbconnection.QueryAsync<Teacher>(query);
+            var query = "select * from Teacher";
+            var teacherData = await _dbconnection.QueryAsync<TeacherDto>(query);
             return teacherData;
         }
 
-        public async Task<Teacher> GetTeacherAsync(int teacherId)
+        public async Task<TeacherDto> GetTeacherAsync(int teacherId)
         {
-            var query = "execute spGetTeacherId @TeacherId";
-            return (await _dbconnection.QueryFirstOrDefaultAsync<Teacher>(query, new { teacherId }));
+            var query = "select * from Teacher where TeacherId=@TeacherId";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<TeacherDto>(query, new { teacherId }));
             
         }
 
-        public async Task<ClassroomDto> GetTeacherWithClass(int teacherId)
+        public async Task<Teacher> GetTeacherByIdAsync(int teacherId)
         {
-            var teacherWithClassroomRecord = await(from teacher in _schoolDbContext.Teachers
-                                             join classroom in _schoolDbContext.Classrooms
-                                             on teacher.TeacherId equals classroom.TeacherId
-                                             join grade in _schoolDbContext.Grades
-                                             on classroom.GradeId equals grade.GradeId
-                                             join course in _schoolDbContext.Courses
-                                             on classroom.GradeId equals course.CourseId
-                                             where teacher.TeacherId == teacherId
-                                             select new ClassroomDto
-                                             {
-                                                 TeacherFname=teacher.Fname,
-                                                 TeacherLname=teacher.Lname,
-                                                 Section=classroom.Section,
-                                                 CourseName=course.CourseName,
-                                                 GradeName=grade.GradeName
-                                             }).FirstAsync();
-            return teacherWithClassroomRecord;
+            var query = "select * from Teacher where TeacherId=@TeacherId";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<Teacher>(query, new { teacherId }));
+
         }
 
         public async Task<Teacher> CreateTeacherAsync(Teacher teacher)
@@ -69,10 +55,32 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Teacher> DeleteAsync(int teacherId)
         {
-            var deletedToBeTeacher= await GetTeacherAsync(teacherId);
+            var deletedToBeTeacher= await GetTeacherByIdAsync(teacherId);
             _schoolDbContext.Teachers.Remove(deletedToBeTeacher);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeTeacher;
         }
+
+        public async Task<ClassroomTeacherDto> GetTeacherWithClass(int teacherId)
+        {
+            var teacherWithClassroomRecord = await (from teacher in _schoolDbContext.Teachers
+                                                    join classroom in _schoolDbContext.Classrooms
+                                                    on teacher.TeacherId equals classroom.TeacherId
+                                                    join grade in _schoolDbContext.Grades
+                                                    on classroom.GradeId equals grade.GradeId
+                                                    join course in _schoolDbContext.Courses
+                                                    on classroom.GradeId equals course.CourseId
+                                                    where teacher.TeacherId == teacherId
+                                                    select new ClassroomTeacherDto
+                                                    {
+                                                        TeacherFname = teacher.Fname,
+                                                        TeacherLname = teacher.Lname,
+                                                        Section = classroom.Section,
+                                                        CourseName = course.CourseName,
+                                                        GradeName = grade.GradeName
+                                                    }).FirstAsync();
+            return teacherWithClassroomRecord;
+        }
+
     }
 }

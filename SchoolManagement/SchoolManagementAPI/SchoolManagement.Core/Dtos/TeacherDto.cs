@@ -1,11 +1,7 @@
-﻿namespace SchoolManagement.Core.Entities
+﻿namespace SchoolManagement.Core.Dtos
 {
-    public partial class Teacher
+    public class TeacherDto
     {
-        public Teacher()
-        {
-            Classrooms = new HashSet<Classroom>();
-        }
         public int TeacherId { get; set; }
         public string Email { get; set; } = null!;
         public string Password { get; set; } = null!;
@@ -17,7 +13,5 @@
         public bool Status { get; set; }
         public DateTime LastLoginDate { get; set; }
         public string LastLoginIp { get; set; } = null!;
-
-        public virtual ICollection<Classroom> Classrooms { get; set; }
     }
 }

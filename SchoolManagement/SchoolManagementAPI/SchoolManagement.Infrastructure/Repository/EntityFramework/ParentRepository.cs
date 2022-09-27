@@ -18,33 +18,23 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _dbconnection = dbconnection;
         }
 
-        public async Task<IEnumerable<Parent>> GetParentAsync()
+        public async Task<IEnumerable<ParentDto>> GetParentAsync()
         {
-            var query = "execute spGetParent";
-            var parentData = await _dbconnection.QueryAsync<Parent>(query);
+            var query = "select * from Parent";
+            var parentData = await _dbconnection.QueryAsync<ParentDto>(query);
             return parentData;
         }
 
-        public async Task<Parent> GetParentAsync(int parentId)
+        public async Task<ParentDto> GetParentAsync(int parentId)
         {
-            var query = "execute spGetParentId @parentId";
-            return (await _dbconnection.QueryFirstOrDefaultAsync<Parent>(query, new { parentId }));
-
+            var query = "select * from Parent where ParentId=@parentId";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<ParentDto>(query, new { parentId }));
         }
 
-        public async Task<IEnumerable<ParentDto>> GetParentWithStudent(int parentId)
+        public async Task<Parent> GetParentByIdAsync(int parentId)
         {
-            var parentWithStudents = await (from parent in _schoolDbContext.Parents
-                                            join student in _schoolDbContext.Students
-                                            on parent.ParentId equals student.ParentId
-                                            where parent.ParentId == parentId
-                                            select new ParentDto
-                                            {
-                                                StudentId = student.StudentId,
-                                                Lname = student.Lname,
-                                                Fname = student.Fname,
-                                            }).ToListAsync();
-            return parentWithStudents;
+            var query = "select * from Parent where ParentId=@parentId";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<Parent>(query, new { parentId }));
         }
 
         public async Task<Parent> CreateParentAsync(Parent parent)
@@ -63,10 +53,24 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Parent> DeleteAsync(int parentId)
         {
-            var deletedToBeParent = await GetParentAsync(parentId);
+            var deletedToBeParent = await GetParentByIdAsync(parentId);
             _schoolDbContext.Parents.Remove(deletedToBeParent);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeParent;
+        }
+        public async Task<IEnumerable<ParentWithStudentDto>> GetParentWithStudent(int parentId)
+        {
+            var parentWithStudents = await (from parent in _schoolDbContext.Parents
+                                            join student in _schoolDbContext.Students
+                                            on parent.ParentId equals student.ParentId
+                                            where parent.ParentId == parentId
+                                            select new ParentWithStudentDto
+                                            {
+                                                StudentId = student.StudentId,
+                                                Lname = student.Lname,
+                                                Fname = student.Fname,
+                                            }).ToListAsync();
+            return parentWithStudents;
         }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace SchoolManagement.Core.Entities
 {
-    [Table("ExamType")]
+   // [Table("ExamType")]
     public class ExamType
     {
         public ExamType()

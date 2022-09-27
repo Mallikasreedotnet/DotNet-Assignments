@@ -95,7 +95,7 @@ namespace SchoolManagementAPI.Controllers.V1
                 _logger.LogError(new ArgumentOutOfRangeException(nameof(id)), "Id field can't be {id}", id);
                 return BadRequest();
             }
-            var existingData=await _attendanceService.GetAttendanceAsync(id);
+            var existingData=await _attendanceService.GetAttendanceByIdAsync(id);
             if (existingData != null)
             {
                 var result = await _attendanceService.DeleteAsync(id);

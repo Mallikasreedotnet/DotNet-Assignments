@@ -17,16 +17,22 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _dbconnection = dbconnection;
         }
 
-        public async Task<IEnumerable<Classroom>> GetClassroomAsync()
+        public async Task<IEnumerable<ClassroomDto>> GetClassroomAsync()
         {
             var query = "execute spGetClassroom";
-            var classroomData = await _dbconnection.QueryAsync<Classroom>(query);
+            var classroomData = await _dbconnection.QueryAsync<ClassroomDto>(query);
             return classroomData;
         }
 
-        public async Task<Classroom> GetClassroomAsync(int classroomId)
+        public async Task<ClassroomDto> GetClassroomAsync(int classroomId)
         {
             var query = "execute spGetClassroomId @ClassroomId";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<ClassroomDto>(query, new { classroomId }));
+        }
+
+        public async Task<Classroom> GetClassroomByIdAsync(int classroomId)
+        {
+            var query = "select * from Classroom where ClassroomId=@classroomId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<Classroom>(query, new { classroomId }));
         }
 
@@ -46,7 +52,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Classroom> DeleteAsync(int classroomId)
         {
-            var deletedToBeClassroom = await GetClassroomAsync(classroomId);
+            var deletedToBeClassroom = await GetClassroomByIdAsync(classroomId);
             _schoolDbContext.Classrooms.Remove(deletedToBeClassroom);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeClassroom;

@@ -19,9 +19,13 @@ namespace SchoolManagement.Infrastructure.Services
             return await _attendanceRepository.GetAttendanceAsync();
         }
 
-        public async Task<Attendance> GetAttendanceAsync(int attendanceId)
+        public async Task<AttendanceDto> GetAttendanceAsync(int attendanceId)
         {
             return await _attendanceRepository.GetAttendanceAsync(attendanceId);
+        }
+        public async Task<Attendance> GetAttendanceByIdAsync(int attendanceId)
+        {
+            return await _attendanceRepository.GetAttendanceByIdAsync(attendanceId);
         }
 
         public async Task<Attendance> CreateAttendanceAsync(Attendance attendance)
@@ -31,7 +35,7 @@ namespace SchoolManagement.Infrastructure.Services
 
         public async Task<Attendance> UpdateAttendanceAsync(int attendanceId, Attendance attendance)
         {
-            var attendanceToBeUpdated = await GetAttendanceAsync(attendanceId);
+            var attendanceToBeUpdated = await _attendanceRepository.GetAttendanceByIdAsync(attendanceId);
             attendanceToBeUpdated.StudentId = attendance.StudentId;
             attendanceToBeUpdated.Date = attendance.Date;
             attendanceToBeUpdated.Status = attendance.Status;

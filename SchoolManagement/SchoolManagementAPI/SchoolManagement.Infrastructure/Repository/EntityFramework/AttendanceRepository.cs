@@ -25,10 +25,16 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return attendanceData;
         }
 
-        public async Task<Attendance> GetAttendanceAsync(int attendanceId)
+        public async Task<AttendanceDto> GetAttendanceAsync(int attendanceId)
         {
             var query = "execute spGetAttendanceId @AttendanceId";
-            return (await _dbconnection.QueryFirstOrDefaultAsync<Attendance>(query, new { attendanceId }));
+            return (await _dbconnection.QueryFirstOrDefaultAsync<AttendanceDto>(query, new { attendanceId }));
+        }
+
+        public async Task<Attendance> GetAttendanceByIdAsync(int attendanceId)
+        {
+            var query = "select * from Attendance where AttendanceId=@attendanceId";
+           return await _dbconnection.QueryFirstOrDefaultAsync<Attendance>(query, new { attendanceId });
         }
 
         public async Task<Attendance> CreateAttendanceAsync(Attendance attendance)
@@ -39,7 +45,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return attendance;
         }
 
-        public async Task<Attendance> UpdateAttendanceAsync( Attendance attendance)
+        public async Task<Attendance> UpdateAttendanceAsync(Attendance attendance)
         {
             _schoolDbContext.Attendances.Update(attendance);
             await _schoolDbContext.SaveChangesAsync();
@@ -66,7 +72,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Attendance> DeleteAsync(int attendanceId)
         {
-            var deletedToBeAttendance = await GetAttendanceAsync(attendanceId);
+            var deletedToBeAttendance = await GetAttendanceByIdAsync(attendanceId);
             _schoolDbContext.Attendances.Remove(deletedToBeAttendance);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeAttendance;

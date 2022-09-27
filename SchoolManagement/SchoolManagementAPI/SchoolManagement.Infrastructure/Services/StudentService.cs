@@ -13,14 +13,19 @@ namespace SchoolManagement.Infrastructure.Services
             _studentRepository = studentRepository;
         }
 
-        public async Task<IEnumerable<Student>> GetStudentAsync()
+        public async Task<IEnumerable<StudentDto>> GetStudentAsync()
         {
            return await _studentRepository.GetStudentAsync();
         }
 
-        public async Task<Student> GetStudentAsync(int studentId)
+        public async Task<StudentDto> GetStudentAsync(int studentId)
         {
            return await _studentRepository.GetStudentAsync(studentId);
+        }
+
+        public async Task<Student> GetStudentByIdAsync(int studentId)
+        {
+            return await _studentRepository.GetStudentByIdAsync(studentId);
         }
 
         public async Task<Student> CreateStudentAsync(Student student)
@@ -34,7 +39,7 @@ namespace SchoolManagement.Infrastructure.Services
         }
         public async Task<Student> UpdateAsync(int studentId, Student student)
         {
-            var studentToBeUpdated = await GetStudentAsync(studentId);
+            var studentToBeUpdated = await GetStudentByIdAsync(studentId);
             studentToBeUpdated.Email = student.Email;
             studentToBeUpdated.Password = student.Password;
             studentToBeUpdated.Fname = student.Fname;

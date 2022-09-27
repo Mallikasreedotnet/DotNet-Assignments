@@ -1,11 +1,13 @@
-﻿using SchoolManagement.Core.Entities;
+﻿using SchoolManagement.Core.Dtos;
+using SchoolManagement.Core.Entities;
 
 namespace SchoolManagement.Core.Contracts.Infrastructure.Services
 {
     public interface IClassroomStudentService
     {
-        Task<IEnumerable<ClassroomStudent>> GetClassroomStudentAsync();
-        Task<ClassroomStudent> GetClassroomStudentAsync(int classroomStudentId);
+        Task<IEnumerable<ClassroomStudentDto>> GetClassroomStudentAsync();
+        Task<ClassroomStudentDto> GetClassroomStudentAsync(int classroomStudentId);
+        Task<ClassroomStudent> GetClassroomStudentByIdAsync(int classroomStudentId);
         Task<ClassroomStudent> CreateClassroomStudentAsync(ClassroomStudent classroomStudent);
         Task<ClassroomStudent> UpdateClassroomStudentAsync(int classroomStudentId,ClassroomStudent classroomStudent);
         Task<ClassroomStudent> DeleteAsync(int classroomStudentId);

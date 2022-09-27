@@ -17,25 +17,46 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _schoolDbContext = schoolDbContext;
             _dbconnection = dbconnection;
         }
-        public async Task<IEnumerable<Student>> GetStudentAsync()
+        public async Task<IEnumerable<StudentDto>> GetStudentAsync()
         {
             var query = "execute spGetStudents";
-            var studentData = await _dbconnection.QueryAsync<Student>(query);
+            var studentData = await _dbconnection.QueryAsync<StudentDto>(query);
             return studentData;
         }
 
-        public async Task<Student> GetStudentAsync(int studentId)
+        public async Task<StudentDto> GetStudentAsync(int studentId)
         {
             var query = "execute spGetStudentId @StudentId";
-            return (await _dbconnection.QueryFirstOrDefaultAsync<Student>(query, new { studentId }));
-      
+            return (await _dbconnection.QueryFirstOrDefaultAsync<StudentDto>(query, new { studentId }));
         }
+
+        public async Task<Student> GetStudentByIdAsync(int studentId)
+        {
+            var query = "select * from Student where StudentId=@StudentId";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<Student>(query, new { studentId }));
+        }
+
 
         public async Task<Student> CreateStudentAsync(Student student)
         {
             _schoolDbContext.Students.Add(student);
             await _schoolDbContext.SaveChangesAsync();
             return student;
+        }
+
+        public async Task<Student> UpdateAsync(Student student)
+        {
+            _schoolDbContext.Students.Update(student);
+            await _schoolDbContext.SaveChangesAsync();
+            return student;
+        }
+
+        public async Task<Student> DeleteAsync(int studentId)
+        {
+            var deletedToBeStudent = await GetStudentByIdAsync(studentId);
+            _schoolDbContext.Students.Remove(deletedToBeStudent);
+            await _schoolDbContext.SaveChangesAsync();
+            return deletedToBeStudent;
         }
 
         public async Task<StudentsWithClassDto> GetStudentsWithClass(int studentId)
@@ -54,26 +75,11 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
                                                         Lname = student.Lname,
                                                         GradeName = grade.GradeName,
                                                         ClassroomId = classRoom.ClassroomId,
-                                                        Year=classRoom.Year,
-                                                        Section=classRoom.Section,
+                                                        Year = classRoom.Year,
+                                                        Section = classRoom.Section,
                                                     }).FirstAsync();
-              return studentWithClassroomRecord;
+            return studentWithClassroomRecord;
         }
 
-
-        public async Task<Student> UpdateAsync(Student student)
-        {
-            _schoolDbContext.Students.Update(student);
-            await _schoolDbContext.SaveChangesAsync();
-            return student;
-        }
-
-        public async Task<Student> DeleteAsync(int studentId)
-        {
-            var deletedToBeStudent = await GetStudentAsync(studentId);
-            _schoolDbContext.Students.Remove(deletedToBeStudent);
-            await _schoolDbContext.SaveChangesAsync();
-            return deletedToBeStudent;
-        }
     }
 }

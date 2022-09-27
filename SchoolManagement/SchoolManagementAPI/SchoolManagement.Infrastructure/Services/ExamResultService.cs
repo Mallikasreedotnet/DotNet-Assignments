@@ -19,9 +19,14 @@ namespace SchoolManagement.Infrastructure.Services
             return await _examResultRepository.GetExamResultAsync();
         }
 
-        public async Task<ExamResult> GetExamResultAsync(int examResultId)
+        public async Task<ExamResultDto> GetExamResultAsync(int examResultId)
         {
             return await _examResultRepository.GetExamResultAsync(examResultId);
+        }
+
+        public async Task<ExamResult> GetExamResultByIdAsync(int examResultId)
+        {
+            return await _examResultRepository.GetExamResultByIdAsync(examResultId);
         }
 
         public async Task<ExamResult> CreateExamResultAsync(ExamResult examResult)
@@ -30,13 +35,12 @@ namespace SchoolManagement.Infrastructure.Services
             examResult.Result = examResultOutput.Item1;
             examResult.ExamGrade = examResultOutput.Item2;
             //examResult.ExamResult1 = GetExamResultForPassOrFail(examResult.Marks);
-
             return examResult;
         }
 
         public async Task<ExamResult> UpdateExamResultAsync(int examResultId, ExamResult examResult)
         {
-            var examResultToBeUpdated = await GetExamResultAsync(examResultId);
+            var examResultToBeUpdated = await GetExamResultByIdAsync(examResultId);
             examResultToBeUpdated.ExamId = examResult.ExamId;
             examResultToBeUpdated.StudentId = examResult.StudentId;
             examResultToBeUpdated.CourseId = examResult.CourseId;
@@ -91,7 +95,6 @@ namespace SchoolManagement.Infrastructure.Services
                 examResult = "Fail";
                 examGrade = "D";
             return (examResult, examGrade);
-
         }
     }
 }

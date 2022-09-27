@@ -13,14 +13,18 @@ namespace SchoolManagement.Infrastructure.Services
         {
             _parentRepository = parentRepository;
         }
-        public async Task<IEnumerable<Parent>> GetParentAsync()
+        public async Task<IEnumerable<ParentDto>> GetParentAsync()
         {
             return await _parentRepository.GetParentAsync();
         }
 
-        public async Task<Parent> GetParentAsync(int parentId)
+        public async Task<ParentDto> GetParentAsync(int parentId)
         {
             return await _parentRepository.GetParentAsync(parentId);
+        }
+        public async Task<Parent> GetParentByIdAsync(int parentId)
+        {
+            return await _parentRepository.GetParentByIdAsync(parentId);
         }
 
         public async Task<Parent> CreateParentAsync(Parent parent)
@@ -28,13 +32,13 @@ namespace SchoolManagement.Infrastructure.Services
             return await _parentRepository.CreateParentAsync(parent);
         }
 
-        public async Task<IEnumerable<ParentDto>> GetParentWithStudent(int parentId)
+        public async Task<IEnumerable<ParentWithStudentDto>> GetParentWithStudent(int parentId)
         {
             return await _parentRepository.GetParentWithStudent(parentId);
         }
         public async Task<Parent> UpdateParentAsync(int parentId,Parent parent)
         {
-            var parentToBeUpdated = await GetParentAsync(parentId);
+            var parentToBeUpdated = await GetParentByIdAsync(parentId);
             parentToBeUpdated.Email = parent.Email;
             parentToBeUpdated.Password = parent.Password;
             parentToBeUpdated.Fname = parent.Fname;

@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using Microsoft.EntityFrameworkCore;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
 using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
@@ -18,16 +17,22 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _dbconnection = dbconnection;
         }
 
-        public async Task<IEnumerable<Exam>> GetExamAsync()
+        public async Task<IEnumerable<ExamDto>> GetExamAsync()
         {
             var query = "execute spGetExam";
-            var ExamData = await _dbconnection.QueryAsync<Exam>(query);
+            var ExamData = await _dbconnection.QueryAsync<ExamDto>(query);
             return ExamData;
         }
 
-        public async Task<Exam> GetExamAsync(int examId)
+        public async Task<ExamDto> GetExamAsync(int examId)
         {
             var query = "execute spGetExamId @examId";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<ExamDto>(query, new { examId }));
+        }
+
+        public async Task<Exam> GetExamByIdAsync(int examId)
+        {
+            var query = "select * from Exam where ExamId=@examId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<Exam>(query, new { examId }));
         }
 
@@ -47,23 +52,29 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<Exam> DeleteAsync(int ExamId)
         {
-            var deletedToBeExam = await GetExamAsync(ExamId);
+            var deletedToBeExam = await GetExamByIdAsync(ExamId);
             _schoolDbContext.Exams.Remove(deletedToBeExam);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeExam;
         }
 
         // Exam Type
-        public async Task<IEnumerable<ExamType>> GetExamTypeAsync()
+        public async Task<IEnumerable<ExamTypeDto>> GetExamTypeAsync()
         {
-            var query = "execute spGetExamType";
-            var courseData = await _dbconnection.QueryAsync<ExamType>(query);
+            var query = "select * from ExamType";
+            var courseData = await _dbconnection.QueryAsync<ExamTypeDto>(query);
             return courseData;
         }
 
-        public async Task<ExamType> GetExamTypeAsync(int examTypeId)
+        public async Task<ExamTypeDto> GetExamTypeAsync(int examTypeId)
         {
-            var query = "execute spGetExamTypeId @examTypeId";
+            var query = "select * from examtype where ExamTypeId=@examTypeId";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<ExamTypeDto>(query, new { examTypeId }));
+        }
+
+        public async Task<ExamType> GetExamTypeByIdAsync(int examTypeId)
+        {
+            var query = "select * from examtype where ExamTypeId=@examTypeId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<ExamType>(query, new { examTypeId }));
         }
 
@@ -83,7 +94,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<ExamType> DeleteExamTypeAsync(int examTypeId)
         {
-            var deletedToBeExamType = await GetExamTypeAsync(examTypeId);
+            var deletedToBeExamType = await GetExamTypeByIdAsync(examTypeId);
             _schoolDbContext.ExamTypes.Remove(deletedToBeExamType);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeExamType;

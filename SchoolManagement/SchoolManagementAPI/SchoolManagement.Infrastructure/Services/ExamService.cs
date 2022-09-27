@@ -13,14 +13,19 @@ namespace SchoolManagement.Infrastructure.Services
             _examRepository = examRepository;
         }
 
-        public async Task<IEnumerable<Exam>> GetExamAsync()
+        public async Task<IEnumerable<ExamDto>> GetExamAsync()
         {
            return await _examRepository.GetExamAsync();
         }
 
-        public async Task<Exam> GetExamAsync(int examId)
+        public async Task<ExamDto> GetExamAsync(int examId)
         {
             return await _examRepository.GetExamAsync(examId);
+        }
+
+        public async Task<Exam> GetExamByIdAsync(int examId)
+        {
+            return await _examRepository.GetExamByIdAsync(examId);
         }
 
         public async Task<Exam> CreateExamAsync(Exam exam)
@@ -30,7 +35,7 @@ namespace SchoolManagement.Infrastructure.Services
 
         public async Task<Exam> UpdateExamAsync(int examId, Exam exam)
         {
-            var examToBeUpdated = await GetExamAsync(examId);
+            var examToBeUpdated = await GetExamByIdAsync(examId);
             examToBeUpdated.StartDate = exam.StartDate;
             examToBeUpdated.ExamName = exam.ExamName;
             examToBeUpdated.ExamTypeId = exam.ExamTypeId;
@@ -44,14 +49,19 @@ namespace SchoolManagement.Infrastructure.Services
         }
 
         // Exam Type
-        public async Task<IEnumerable<ExamType>> GetExamTypeAsync()
+        public async Task<IEnumerable<ExamTypeDto>> GetExamTypeAsync()
         {
            return await _examRepository.GetExamTypeAsync();
         }
 
-        public async Task<ExamType> GetExamTypeAsync(int examTypeId)
+        public async Task<ExamTypeDto> GetExamTypeAsync(int examTypeId)
         {
             return await _examRepository.GetExamTypeAsync(examTypeId);
+        }
+
+        public async Task<ExamType> GetExamTypeByIdAsync(int examTypeId)
+        {
+            return await _examRepository.GetExamTypeByIdAsync(examTypeId);
         }
 
         public async Task<ExamType> CreateExamTypeAsync(ExamType examType)
@@ -61,7 +71,7 @@ namespace SchoolManagement.Infrastructure.Services
 
         public async Task<ExamType> UpdateExamTypeAsync(int examTypeId, ExamType examType)
         {
-            var examTypeToBeUpdated = await GetExamTypeAsync(examTypeId);
+            var examTypeToBeUpdated = await GetExamTypeByIdAsync(examTypeId);
             examTypeToBeUpdated.Description = examType.Description;
             examTypeToBeUpdated.ExamTypeName = examType.ExamTypeName;
            var data= await _examRepository.UpdateExamTypeAsync(examTypeToBeUpdated);

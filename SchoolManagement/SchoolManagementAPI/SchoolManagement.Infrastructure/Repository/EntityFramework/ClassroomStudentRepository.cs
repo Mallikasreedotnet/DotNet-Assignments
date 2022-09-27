@@ -1,9 +1,9 @@
 ﻿using Dapper;
 using SchoolManagement.Core.Contracts.Infrastructure.Repositories;
+using SchoolManagement.Core.Dtos;
 using SchoolManagement.Core.Entities;
 using SchoolManagement.Infrastructure.Data;
 using System.Data;
-using static System.Collections.Specialized.BitVector32;
 
 namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 {
@@ -17,14 +17,20 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             _dbconnection = dbconnection;
         }
 
-        public async Task<IEnumerable<ClassroomStudent>> GetClassroomStudentAsync()
+        public async Task<IEnumerable<ClassroomStudentDto>> GetClassroomStudentAsync()
         {
-            var query = "select * from ClassroomStudent";
-            var classroomData = await _dbconnection.QueryAsync<ClassroomStudent>(query);
+            var query = "execute spGetClassroomStudent";
+            var classroomData = await _dbconnection.QueryAsync<ClassroomStudentDto>(query);
             return classroomData;
         }
 
-        public async Task<ClassroomStudent> GetClassroomStudentAsync(int classroomStudentId)
+        public async Task<ClassroomStudentDto> GetClassroomStudentAsync(int classroomStudentId)
+        {
+            var query = "execute spGetClassroomStudentId @ClassroomStudentId";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<ClassroomStudentDto>(query, new { classroomStudentId }));
+        }
+
+        public async Task<ClassroomStudent> GetClassroomStudentByIdAsync(int classroomStudentId)
         {
             var query = "select * from ClassroomStudent where ClassroomStudentId=@ClassroomStudentId";
             return (await _dbconnection.QueryFirstOrDefaultAsync<ClassroomStudent>(query, new { classroomStudentId }));
@@ -46,7 +52,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<ClassroomStudent> DeleteAsync(int classroomStudentId)
         {
-            var deletedToBeClassroomStudent = await GetClassroomStudentAsync(classroomStudentId);
+            var deletedToBeClassroomStudent = await GetClassroomStudentByIdAsync(classroomStudentId);
             _schoolDbContext.ClassroomStudents.Remove(deletedToBeClassroomStudent);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeClassroomStudent;

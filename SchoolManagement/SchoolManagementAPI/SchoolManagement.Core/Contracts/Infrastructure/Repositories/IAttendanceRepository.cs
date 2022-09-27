@@ -6,10 +6,11 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
     public interface IAttendanceRepository
     {
         Task<IEnumerable<AttendanceDto>> GetAttendanceAsync();
-        Task<Attendance> GetAttendanceAsync(int studentId);
+        Task<AttendanceDto> GetAttendanceAsync(int attendanceId);
         Task<Attendance> CreateAttendanceAsync(Attendance attendance);
         Task<Attendance> UpdateAttendanceAsync( Attendance attendance);
-        Task<Attendance> DeleteAsync(int studentId);
+        Task<Attendance> DeleteAsync(int attendanceId);
         Task<StudentAttendanceDto> GetStudentAttendanceAsync(int studentId);
+        Task<Attendance> GetAttendanceByIdAsync(int attendanceId);
     }
 }

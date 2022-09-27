@@ -24,10 +24,16 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
             return ExamData;
         }
 
-        public async Task<ExamResult> GetExamResultAsync(int examResultId)
+        public async Task<ExamResultDto> GetExamResultAsync(int examResultId)
         {
             var query = "execute spGetExamResultId @examResultId";
-            return (await _dbconnection.QueryFirstOrDefaultAsync<ExamResult>(query, new {examResultId}));
+            return (await _dbconnection.QueryFirstOrDefaultAsync<ExamResultDto>(query, new {examResultId}));
+        }
+
+        public async Task<ExamResult> GetExamResultByIdAsync(int examResultId)
+        {
+            var query = "Select * from ExamResult where ExamResultId=@examResultId";
+            return (await _dbconnection.QueryFirstOrDefaultAsync<ExamResult>(query, new { examResultId }));
         }
 
         public async Task<ExamResult> CreateExamResultAsync(ExamResult examResult)
@@ -46,7 +52,7 @@ namespace SchoolManagement.Infrastructure.Repository.EntityFramework
 
         public async Task<ExamResult> DeleteAsync(int examResultId)
         {
-            var deletedToBeExamResult = await GetExamResultAsync(examResultId);
+            var deletedToBeExamResult = await GetExamResultByIdAsync(examResultId);
             _schoolDbContext.ExamResults.Remove(deletedToBeExamResult);
             await _schoolDbContext.SaveChangesAsync();
             return deletedToBeExamResult;

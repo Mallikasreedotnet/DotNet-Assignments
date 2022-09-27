@@ -13,17 +13,22 @@ namespace SchoolManagement.Infrastructure.Services
             _teacherRepository = repository;
         }
 
-        public async Task<IEnumerable<Teacher>> GetTeacherAsync()
+        public async Task<IEnumerable<TeacherDto>> GetTeacherAsync()
         {
             return await _teacherRepository.GetTeacherAsync();
         }
 
-        public async Task<Teacher> GetTeacherAsync(int teacherId)
+        public async Task<TeacherDto> GetTeacherAsync(int teacherId)
         {
             return await _teacherRepository.GetTeacherAsync(teacherId);
         }
 
-        public async Task<ClassroomDto> GetTeacherWithClass(int teacherId)
+        public async Task<Teacher> GetTeacherByIdAsync(int teacherId)
+        {
+            return await _teacherRepository.GetTeacherByIdAsync(teacherId);
+        }
+
+        public async Task<ClassroomTeacherDto> GetTeacherWithClass(int teacherId)
         {
            return await _teacherRepository.GetTeacherWithClass(teacherId);
         }
@@ -35,7 +40,7 @@ namespace SchoolManagement.Infrastructure.Services
 
         public async Task<Teacher> UpdateAsync(int teacherId, Teacher teacher)
         {
-            var updatedToBeTeacher = await GetTeacherAsync(teacherId);
+            var updatedToBeTeacher = await GetTeacherByIdAsync(teacherId);
             updatedToBeTeacher.Email = teacher.Email;
             updatedToBeTeacher.Password = teacher.Password;
             updatedToBeTeacher.Fname = teacher.Fname;

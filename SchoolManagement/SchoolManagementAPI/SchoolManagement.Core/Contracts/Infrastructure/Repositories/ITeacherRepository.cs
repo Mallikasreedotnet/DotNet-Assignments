@@ -5,11 +5,12 @@ namespace SchoolManagement.Core.Contracts.Infrastructure.Repositories
 {
     public interface ITeacherRepository
     {
-        Task<IEnumerable<Teacher>> GetTeacherAsync();
-        Task<Teacher> GetTeacherAsync(int teacherId);
+        Task<IEnumerable<TeacherDto>> GetTeacherAsync();
+        Task<TeacherDto> GetTeacherAsync(int teacherId);
+        Task<Teacher> GetTeacherByIdAsync(int teacherId);
         Task<Teacher> CreateTeacherAsync(Teacher teacher);
         Task<Teacher> UpdateAsync(Teacher teacher);
         Task<Teacher> DeleteAsync(int teacherId);
-        Task<ClassroomDto> GetTeacherWithClass(int teacherId);
+        Task<ClassroomTeacherDto> GetTeacherWithClass(int teacherId);
     }
 }

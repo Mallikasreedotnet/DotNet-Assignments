@@ -13,23 +13,26 @@ namespace SchoolManagement.Infrastructure.Services
             _classroomRepository = classroomRepository;
         }
 
-        public async Task<IEnumerable<Classroom>> GetClassroomAsync()
+        public async Task<IEnumerable<ClassroomDto>> GetClassroomAsync()
         {
             return await _classroomRepository.GetClassroomAsync();
         }
 
-        public async Task<Classroom> GetClassroomAsync(int classroomId)
+        public async Task<ClassroomDto> GetClassroomAsync(int classroomId)
         {
             return await _classroomRepository.GetClassroomAsync(classroomId);
         }
-
+        public async Task<Classroom> GetClassroomByIdAsync(int classroomId)
+        {
+            return await _classroomRepository.GetClassroomByIdAsync(classroomId);
+        }
         public async Task<Classroom> CreateClassroomAsync(Classroom classroom)
         {
             return await _classroomRepository.CreateClassroomAsync(classroom);
         }
         public async Task<Classroom> UpdateClassroomAsync(int classroomId, Classroom classroom)
         {
-            var classroomToBeUpdated = await GetClassroomAsync(classroomId);
+            var classroomToBeUpdated = await GetClassroomByIdAsync(classroomId);
             classroomToBeUpdated.Section = classroom.Section;
             classroomToBeUpdated.TeacherId = classroom.TeacherId;
             classroomToBeUpdated.Status = classroom.Status;
